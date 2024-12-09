@@ -1,14 +1,23 @@
-import { publicProcedure, router } from "./trpc";
-import { z } from "zod";
+import getPage from "./procedures/get-page";
+import { router } from "./trpc";
+import * as maptiler from "@maptiler/client";
+import { createHTTPServer } from "@trpc/server/adapters/standalone";
+
+maptiler.config.apiKey = process.env.MAPTILER_API_KEY!;
 
 const appRouter = router({
-  getPage: publicProcedure
-    .input(z.tuple([z.number(), z.number()]))
-    .query(async function getPage(opts) {
-      const { input: latLng } = opts;
-    }),
+  getPage,
 });
 
 // Export type router type signature,
 // NOT the router itself. -> otherwise server code might be visible from client bundle
 export type AppRouter = typeof appRouter;
+
+const server = createHTTPServer({
+  router: appRouter,
+});
+
+const PORT = process.env.PORT ?? 3000;
+
+server.listen(PORT);
+console.log(`Listening on port ${PORT}`);
