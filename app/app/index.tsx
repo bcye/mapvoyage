@@ -1,23 +1,38 @@
 import Infobox from "@/components/infobox";
-import { Region } from "@/types/geo";
-import { LocationPuck, MapView, VectorSource } from "@rnmapbox/maps";
+import {
+  Camera,
+  LocationPuck,
+  MapState,
+  MapView,
+  VectorSource,
+  setAccessToken,
+} from "@rnmapbox/maps";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 
+// set a stub access token as were using maptiler
+setAccessToken("adsfwads");
+
 export default function Index() {
-  const [region, setRegion] = useState<Region | null>(null);
+  const [region, setRegion] = useState<MapState["properties"] | null>(null);
+
+  function onIdle(state: MapState) {
+    setRegion(state.properties);
+  }
 
   return (
     <View style={styles.container}>
       <MapView
         style={styles.map}
-        regionDidChangeDebounceTime={500}
-        onRegionDidChange={setRegion}
+        styleURL={`https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.EXPO_PUBLIC_MAPTILER_KEY}`}
+        onMapIdle={onIdle}
       >
-        <LocationPuck />
+        <Camera followUserLocation={true} />
+        <LocationPuck visible={true} />
         <VectorSource
-          url={`https://api.maptiler.com/maps/streets-v2/tiles.json?key=${process.env.EXPO_PUBLIC_MAPTILER_KEY!}`}
-        ></VectorSource>
+          id="maptiler"
+          url={`https://api.maptiler.com/tiles/v3/tiles.json?key=${process.env.EXPO_PUBLIC_MAPTILER_KEY}`}
+        />
       </MapView>
       {region && <Infobox region={region} />}
     </View>

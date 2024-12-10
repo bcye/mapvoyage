@@ -28,6 +28,7 @@
     "expo-font": "~13.0.1",
     "expo-haptics": "~14.0.0",
     "expo-linking": "~7.0.3",
+    "expo-location": "~18.0.3",
     "expo-router": "~4.0.11",
     "expo-splash-screen": "~0.29.15",
     "expo-status-bar": "~2.0.0",
@@ -44,11 +45,11 @@
     "react-native-ui-lib": "^7.34.5",
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
-    "use-debounce": "^10.0.4",
-    "expo-location": "~18.0.3"
+    "use-debounce": "^10.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@react-native-community/cli": "^15.1.2",
     "@types/jest": "^29.5.12",
     "@types/react": "~18.3.12",
     "@types/react-test-renderer": "^18.3.0",
