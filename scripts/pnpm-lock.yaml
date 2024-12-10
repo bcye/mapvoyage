@@ -11,17 +11,8 @@ importers:
       xml2js:
         specifier: ^0.6.2
         version: 0.6.2
-    devDependencies:
-      prettier:
-        specifier: ^3.4.2
-        version: 3.4.2
 
 packages:
-
-  prettier@3.4.2:
-    resolution: {integrity: sha512-e9MewbtFo+Fevyuxn/4rrcDAaq0IYxPGLvObpQjiZBMAzB9IGmzlnG9RZy3FFas+eBMu2vA0CszMeduow5dIuQ==}
-    engines: {node: '>=14'}
-    hasBin: true
 
   sax@1.4.1:
     resolution: {integrity: sha512-+aWOz7yVScEGoKNd4PA10LZ8sk0A/z5+nXQG5giUO5rprX9jgYsTdov9qCchZiPIZezbZH+jRut8nPodFAX4Jg==}
@@ -35,8 +26,6 @@ packages:
     engines: {node: '>=4.0'}
 
 snapshots:
-
-  prettier@3.4.2: {}
 
   sax@1.4.1: {}
 

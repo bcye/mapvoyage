@@ -5,7 +5,7 @@ import { Region } from "react-native-maps";
 import { useDebounce } from "use-debounce";
 
 export default function Infobox({ region }: { region: Region }) {
-  const [dRegion] = useDebounce(region, 200);
+  const [dRegion] = useDebounce(region, 500);
   const query = useMemo(
     () => ({
       bbox: [
