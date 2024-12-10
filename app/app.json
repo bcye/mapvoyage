@@ -12,6 +12,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "eu.bruceroettgers.mapvoyage",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
