@@ -9,9 +9,10 @@ import {
 } from "@rnmapbox/maps";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 // set a stub access token as were using maptiler
-setAccessToken("adsfwads");
+setAccessToken?.("adsfwads");
 
 export default function Index() {
   const [region, setRegion] = useState<MapState["properties"] | null>(null);
@@ -21,7 +22,7 @@ export default function Index() {
   }
 
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={styles.container}>
       <MapView
         style={styles.map}
         styleURL={`https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.EXPO_PUBLIC_MAPTILER_KEY}`}
@@ -35,7 +36,7 @@ export default function Index() {
         />
       </MapView>
       {region && <Infobox region={region} />}
-    </View>
+    </GestureHandlerRootView>
   );
 }
 
