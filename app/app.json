@@ -32,7 +32,14 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Show current location on map."
+        }
+      ],
+      ["@rnmapbox/maps", {}]
     ],
     "experiments": {
       "typedRoutes": true

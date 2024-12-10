@@ -1,22 +1,21 @@
+import { Region } from "@/types/geo";
 import { trpc } from "@/utils/trpc";
 import { Bbox } from "@server/types/maptiler";
-import { useEffect, useMemo } from "react";
-import { Region } from "react-native-maps";
+import { useMemo } from "react";
 import { useDebounce } from "use-debounce";
 
 export default function Infobox({ region }: { region: Region }) {
-  const [dRegion] = useDebounce(region, 500);
+  const [lng, lat] = region.geometry.coordinates;
+  // construct a bounding box from the visible bounds
+  const [ne, sw] = region.properties.visibleBounds;
+  const bbox: Bbox = [sw[0], sw[1], ne[0], ne[1]];
+
   const query = useMemo(
     () => ({
-      bbox: [
-        dRegion.longitude - dRegion.longitudeDelta,
-        dRegion.latitude - dRegion.latitudeDelta,
-        dRegion.longitude + dRegion.longitudeDelta,
-        dRegion.latitude + dRegion.latitudeDelta,
-      ] as Bbox,
-      latLng: [dRegion.latitude, dRegion.longitude] as [number, number],
+      bbox,
+      latLng: [lat, lng] as [number, number],
     }),
-    [dRegion],
+    [region],
   );
   const wikiQuery = trpc.getPage.useQuery(query);
 
