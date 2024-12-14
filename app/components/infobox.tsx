@@ -3,7 +3,7 @@ import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { MapState } from "@rnmapbox/maps";
 import { Bbox } from "@server/types/maptiler";
 import { useMemo } from "react";
-import { Text } from "react-native";
+import { Assets, Icon, SkeletonView, Text, View } from "react-native-ui-lib";
 import { useDebounce } from "use-debounce";
 
 const snapPoints = ["20%", "40%", "100%"];
@@ -32,9 +32,33 @@ export default function Infobox({
   return (
     <BottomSheet index={1} snapPoints={snapPoints} enableDynamicSizing={false}>
       <BottomSheetScrollView>
-        <Text>{wikiQuery.data?.title ?? "Loading"}</Text>
-        <Text>{wikiQuery.data?.wikitext ?? "Loading"}</Text>
+        <View padding-8>
+          <Text tex60>{wikiQuery.data?.title ?? "Loading"}</Text>
+          {false ? (
+            <SkeletonView
+              template={SkeletonView.templates.TEXT_CONTENT}
+              showContent={wikiQuery.isLoading}
+            />
+          ) : (
+            <View flex row gap-4 marginT-4>
+              <Infocard title="Understand" />
+              <Infocard title="History" />
+              <Infocard title="See" />
+              <Infocard title="Eat" />
+              <Infocard title="Drink" />
+            </View>
+          )}
+        </View>
       </BottomSheetScrollView>
     </BottomSheet>
+  );
+}
+
+function Infocard({ title, icon, full }: { title: string; icon?: string }) {
+  return (
+    <View flex bg-$backgroundNeutralMedium width={"50%"} padding-6 br30>
+      {icon && <Icon source={icon} />}
+      <Text text80>{title}</Text>
+    </View>
   );
 }
