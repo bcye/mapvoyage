@@ -2,7 +2,7 @@
 
 I'm building an open source app for viewing the Wikivoyage travel guide on a map. 
 
-If you're interested in contributing (code, design, ideas, testing or otherwise), want to be informed about progress on this app or are interested in joining this project you can contact me at hi@mapvoyage.app :) 
+If you're interested in contributing (code, design, ideas, testing or otherwise), want to be informed about progress on this app or are interested in joining this project you can contact me via email at hello at mapvoyage dot app :) 
 
 ## Tech Stack
 Is not yet set in stone, but mainly:
