@@ -2,8 +2,16 @@ import { trpc } from "@/utils/trpc";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { MapState } from "@rnmapbox/maps";
 import { Bbox } from "@server/types/maptiler";
+import React from "react";
 import { useMemo } from "react";
-import { Assets, Icon, SkeletonView, Text, View } from "react-native-ui-lib";
+import {
+  GridList,
+  GridView,
+  Icon,
+  SkeletonView,
+  Text,
+  View,
+} from "react-native-ui-lib";
 import { useDebounce } from "use-debounce";
 
 const snapPoints = ["20%", "40%", "100%"];
@@ -27,26 +35,31 @@ export default function Infobox({
     [dRegion.center, dRegion.bounds],
   );
   const wikiQuery = trpc.getPage.useQuery(query);
-  console.log(wikiQuery);
 
   return (
     <BottomSheet index={1} snapPoints={snapPoints} enableDynamicSizing={false}>
       <BottomSheetScrollView>
         <View padding-8>
-          <Text tex60>{wikiQuery.data?.title ?? "Loading"}</Text>
+          <Text text40M center>
+            {wikiQuery.data?.title ?? "Loading"}
+          </Text>
           {false ? (
             <SkeletonView
               template={SkeletonView.templates.TEXT_CONTENT}
               showContent={wikiQuery.isLoading}
             />
           ) : (
-            <View flex row gap-4 marginT-4>
-              <Infocard title="Understand" />
-              <Infocard title="History" />
-              <Infocard title="See" />
-              <Infocard title="Eat" />
-              <Infocard title="Drink" />
-            </View>
+            <>
+              <View flex row gap-4 marginT-12>
+                <Infocard title="Understand" />
+                <Infocard title="History" />
+              </View>
+              <View flex row gap-4 marginT-12>
+                <Infocard title="See" />
+                <Infocard title="Eat" />
+                <Infocard title="Drink" />
+              </View>
+            </>
           )}
         </View>
       </BottomSheetScrollView>
@@ -54,11 +67,11 @@ export default function Infobox({
   );
 }
 
-function Infocard({ title, icon, full }: { title: string; icon?: string }) {
+function Infocard({ title, icon }: { title: string; icon?: string }) {
   return (
-    <View flex bg-$backgroundNeutralMedium width={"50%"} padding-6 br30>
+    <View bg-$backgroundNeutralMedium padding-6 br30 flex height={50}>
       {icon && <Icon source={icon} />}
-      <Text text80>{title}</Text>
+      <Text text60L>{title}</Text>
     </View>
   );
 }
