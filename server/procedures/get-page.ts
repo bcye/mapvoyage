@@ -72,12 +72,9 @@ const getPage = publicProcedure
 
     if (!rows[0]) throw err;
 
-    const wikitext = await readFile(
-      path.join(process.env.WIKITEXT_DIR!, `${rows[0].wikidata_id}.txt`),
-      "utf-8",
-    );
+    const pageId: string = rows[0].wikidata_id;
 
-    return { title, wikitext };
+    return { title, pageId };
   });
 
 export default getPage;

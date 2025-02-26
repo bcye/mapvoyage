@@ -10,9 +10,11 @@ import {
   Icon,
   SkeletonView,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native-ui-lib";
 import { useDebounce } from "use-debounce";
+import { Link } from "expo-router";
 
 const snapPoints = ["20%", "40%", "100%"];
 
@@ -43,21 +45,21 @@ export default function Infobox({
           <Text text40M center>
             {wikiQuery.data?.title ?? "Loading"}
           </Text>
-          {false ? (
+          {!wikiQuery.data ? (
             <SkeletonView
               template={SkeletonView.templates.TEXT_CONTENT}
               showContent={wikiQuery.isLoading}
             />
           ) : (
             <>
-              <View flex row gap-4 marginT-12>
-                <Infocard title="Understand" />
-                <Infocard title="History" />
+              <View flex row gap-8 marginT-12>
+                <Infocard pageId={wikiQuery.data.pageId} title="Understand" />
+                <Infocard pageId={wikiQuery.data.pageId} title="History" />
               </View>
-              <View flex row gap-4 marginT-12>
-                <Infocard title="See" />
-                <Infocard title="Eat" />
-                <Infocard title="Drink" />
+              <View flex row gap-8 marginT-8>
+                <Infocard pageId={wikiQuery.data.pageId} title="See" />
+                <Infocard pageId={wikiQuery.data.pageId} title="Eat" />
+                <Infocard pageId={wikiQuery.data.pageId} title="Drink" />
               </View>
             </>
           )}
@@ -67,11 +69,27 @@ export default function Infobox({
   );
 }
 
-function Infocard({ title, icon }: { title: string; icon?: string }) {
+function Infocard({
+  title,
+  icon,
+  pageId,
+}: {
+  title: string;
+  icon?: string;
+  pageId: string;
+}) {
   return (
-    <View bg-$backgroundNeutralMedium padding-6 br30 flex height={50}>
-      {icon && <Icon source={icon} />}
-      <Text text60L>{title}</Text>
-    </View>
+    <Link
+      asChild
+      href={{
+        pathname: "/page/[pageId]/section/[title]",
+        params: { pageId, title },
+      }}
+    >
+      <TouchableOpacity bg-$backgroundNeutralMedium padding-8 br30 flex>
+        {icon && <Icon source={icon} />}
+        <Text text60L>{title}</Text>
+      </TouchableOpacity>
+    </Link>
   );
 }
