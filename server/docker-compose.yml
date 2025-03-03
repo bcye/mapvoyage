@@ -1,6 +1,6 @@
 services:
   server:
-    build: Dockerfile.server
+    build: .
     env_file: .env.server
     restart: always
     volumes:
@@ -14,10 +14,10 @@ services:
     volumes:
       - db_data:/var/lib/mysql
   caddy:
-    build: Dockerfile.caddy
+    build: ./caddy
     ports:
-      - "127.0.0.1:80:80"
-      - "127.0.0.1:443:443"
+      - "80:80"
+      - "443:443"
     restart: always
     depends_on:
       - server

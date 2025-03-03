@@ -3,7 +3,7 @@ FROM oven/bun:1
 WORKDIR /usr/src/app
 
 COPY package.json .
-COPY bun.lock .
+COPY bun.lockb .
 RUN bun install --frozen-lockfile --production
 
 ENV NODE_ENV=production
