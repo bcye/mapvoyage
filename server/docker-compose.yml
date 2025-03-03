@@ -1,0 +1,33 @@
+services:
+  server:
+    build: Dockerfile.server
+    env_file: .env.server
+    restart: always
+    volumes:
+      - wikitext:/wikitext
+    depends_on:
+      - db
+  db:
+    image: mariadb:11
+    restart: always
+    env_file: .env.db
+    volumes:
+      - db_data:/var/lib/mysql
+  caddy:
+    build: Dockerfile.caddy
+    ports:
+      - "127.0.0.1:80:80"
+      - "127.0.0.1:443:443"
+    restart: always
+    depends_on:
+      - server
+      - db
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  wikitext:
+  caddy_data:
+  caddy_config:
+  db_data:
