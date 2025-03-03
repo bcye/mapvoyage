@@ -24,7 +24,11 @@ const trpcClient = trpc.createClient({
   ],
 });
 
-// The map is inside the layout component, such that the stack is inside the bottom sheet.
+/**
+ * Root layout component that wraps the application with data providers and renders the main interface.
+ *
+ * This component provides the TRPC and QueryClient contexts for state and data management, and embeds a MapLayout that displays the map along with a bottom sheet containing the navigation stack.
+ */
 
 export default function RootLayout() {
   return (
@@ -43,6 +47,17 @@ setAccessToken?.("adsfwads");
 
 const snapPoints = ["20%", "40%", "100%"];
 
+/**
+ * Renders a layout that integrates a full-screen map view with an overlaying bottom sheet.
+ *
+ * The component displays a map using MapTiler styles along with user location tracking and map tile sources.
+ * It listens for the map's idle event to update the global map region state via the useMapStore hook.
+ * The layout is wrapped in a gesture handler view to support touch interactions, and the supplied children
+ * are rendered within the bottom sheet.
+ *
+ * @param children - The content to display inside the bottom sheet.
+ * @returns A React element representing the combined map and bottom sheet layout.
+ */
 function MapLayout({ children }: { children: React.ReactNode }) {
   const { setRegion } = useMapStore();
 

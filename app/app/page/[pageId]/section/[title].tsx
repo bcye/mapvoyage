@@ -10,6 +10,13 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
 wtf.extend(mdPlugin);
 
+/**
+ * Renders a specific section of a Wikipedia page in Markdown format.
+ *
+ * The component retrieves the page title and ID from local search parameters, fetches the page's wikitext
+ * via a TRPC query, and then extracts and converts the designated section—identified by the title—to Markdown.
+ * It slices off the section header from the converted Markdown and displays a skeleton view while the content loads.
+ */
 export default function Section() {
   const { title, pageId } = useLocalSearchParams();
   const wikiQuery = trpc.getWikitext.useQuery({ pageId: parseInt(pageId) });
