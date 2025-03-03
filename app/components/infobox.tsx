@@ -1,20 +1,10 @@
 import { trpc } from "@/utils/trpc";
-import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { MapState } from "@rnmapbox/maps";
 import { Bbox } from "@server/types/maptiler";
 import { Link, Stack } from "expo-router";
 import React, { useMemo } from "react";
-import {
-  Card,
-  Icon,
-  SkeletonView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native-ui-lib";
+import { Card, SkeletonView, View } from "react-native-ui-lib";
 import { useDebounce } from "use-debounce";
-
-const snapPoints = ["20%", "40%", "100%"];
 
 export default function Infobox({
   region,
