@@ -1,8 +1,6 @@
 import { geocoding } from "@maptiler/client";
 import { TRPCError } from "@trpc/server";
-import { readFile } from "fs/promises";
 import { RowDataPacket } from "mysql2";
-import path from "path";
 import { z } from "zod";
 import connection from "../clients/db";
 import { publicProcedure } from "../trpc";
@@ -29,11 +27,6 @@ const getPage = publicProcedure
       types: ["country", "region", "locality", "neighbourhood", "municipality"],
     });
     const features = geocodeResult.features as Feature[];
-    console.log(
-      latLng,
-      bbox,
-      features.map((f) => f.place_name),
-    );
 
     // select the feature whose bbox matches the input bbox the most and has a wikidata property
     const feature = features
@@ -72,12 +65,11 @@ const getPage = publicProcedure
 
     if (!rows[0]) throw err;
 
-    const wikitext = await readFile(
-      path.join(process.env.WIKITEXT_DIR!, `${rows[0].wikidata_id}.txt`),
-      "utf-8",
-    );
+    const pageId: string = rows[0].wikidata_id;
 
-    return { title, wikitext };
+    console.log("page", pageId, title);
+
+    return { title, pageId };
   });
 
 export default getPage;

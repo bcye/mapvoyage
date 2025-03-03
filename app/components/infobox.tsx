@@ -1,20 +1,10 @@
 import { trpc } from "@/utils/trpc";
-import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { MapState } from "@rnmapbox/maps";
 import { Bbox } from "@server/types/maptiler";
-import React from "react";
-import { useMemo } from "react";
-import {
-  GridList,
-  GridView,
-  Icon,
-  SkeletonView,
-  Text,
-  View,
-} from "react-native-ui-lib";
+import { Link, Stack } from "expo-router";
+import React, { useMemo } from "react";
+import { Card, SkeletonView, View } from "react-native-ui-lib";
 import { useDebounce } from "use-debounce";
-
-const snapPoints = ["20%", "40%", "100%"];
 
 export default function Infobox({
   region,
@@ -36,42 +26,46 @@ export default function Infobox({
   );
   const wikiQuery = trpc.getPage.useQuery(query);
 
+  console.log(!!wikiQuery.data, wikiQuery.data);
+
   return (
-    <BottomSheet index={1} snapPoints={snapPoints} enableDynamicSizing={false}>
-      <BottomSheetScrollView>
-        <View padding-8>
-          <Text text40M center>
-            {wikiQuery.data?.title ?? "Loading"}
-          </Text>
-          {false ? (
-            <SkeletonView
-              template={SkeletonView.templates.TEXT_CONTENT}
-              showContent={wikiQuery.isLoading}
-            />
-          ) : (
-            <>
-              <View flex row gap-4 marginT-12>
-                <Infocard title="Understand" />
-                <Infocard title="History" />
+    <View padding-8 flex>
+      <Stack.Screen options={{ title: wikiQuery.data?.title ?? "Loading" }} />
+      <SkeletonView
+        template={SkeletonView.templates.TEXT_CONTENT}
+        showContent={wikiQuery.isSuccess}
+        renderContent={() =>
+          !!wikiQuery.data && (
+            <View flex>
+              <View row gap-8 marginT-12>
+                <Infocard pageId={wikiQuery.data.pageId} title="Understand" />
+                <Infocard pageId={wikiQuery.data.pageId} title="History" />
               </View>
-              <View flex row gap-4 marginT-12>
-                <Infocard title="See" />
-                <Infocard title="Eat" />
-                <Infocard title="Drink" />
+              <View row gap-8 marginT-8>
+                <Infocard pageId={wikiQuery.data.pageId} title="See" />
+                <Infocard pageId={wikiQuery.data.pageId} title="Eat" />
+                <Infocard pageId={wikiQuery.data.pageId} title="Drink" />
               </View>
-            </>
-          )}
-        </View>
-      </BottomSheetScrollView>
-    </BottomSheet>
+            </View>
+          )
+        }
+      />
+    </View>
   );
 }
 
-function Infocard({ title, icon }: { title: string; icon?: string }) {
+function Infocard({ title, pageId }: { title: string; pageId: string }) {
   return (
-    <View bg-$backgroundNeutralMedium padding-6 br30 flex height={50}>
-      {icon && <Icon source={icon} />}
-      <Text text60L>{title}</Text>
-    </View>
+    <Link
+      asChild
+      href={{
+        pathname: "/page/[pageId]/section/[title]",
+        params: { pageId, title },
+      }}
+    >
+      <Card flex padding-12 height={48}>
+        <Card.Section content={[{ text: title, text60: true, grey10: true }]} />
+      </Card>
+    </Link>
   );
 }
