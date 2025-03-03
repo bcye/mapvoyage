@@ -4,7 +4,7 @@ services:
     env_file: .env.server
     restart: always
     volumes:
-      - wikitext:/wikitext
+      - ./wikitext:/wikitext
     depends_on:
       - db
   db:
@@ -27,7 +27,6 @@ services:
       - caddy_config:/config
 
 volumes:
-  wikitext:
   caddy_data:
   caddy_config:
   db_data:
