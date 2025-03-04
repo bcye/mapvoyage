@@ -1,2 +1,3 @@
-.env
+.env.db
+.env.server
 node_modules
