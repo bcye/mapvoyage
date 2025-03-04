@@ -11,7 +11,7 @@ const connection = new Promise<Connection>((res, rej) =>
         res(conn);
       })
       .catch(rej);
-  }, 20000),
+  }, 10000),
 );
 
 export default connection;
