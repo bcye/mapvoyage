@@ -1,0 +1,32 @@
+services:
+  server:
+    build: .
+    env_file: .env.server
+    restart: unless-stopped
+    volumes:
+      - ./wikitext:/wikitext
+    depends_on:
+      - db
+  db:
+    image: mariadb:11
+    restart: always
+    env_file: .env.db
+    volumes:
+      - db_data:/var/lib/mysql
+  caddy:
+    build: ./caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
+    depends_on:
+      - server
+      - db
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:
+  db_data:

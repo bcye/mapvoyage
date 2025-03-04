@@ -3,6 +3,7 @@ node_modules
 
 # secrets and local config
 .env
+.env.*
 
 # local data
 wikitext

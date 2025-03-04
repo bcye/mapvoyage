@@ -1,0 +1,5 @@
+.env.db
+.env.server
+.env
+node_modules
+wikitext
