@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Mapvoyage",
-    "slug": "Mapvoyage",
+    "slug": "mapvoyage",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -16,7 +16,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -40,10 +44,22 @@
           "locationWhenInUsePermission": "Show current location on map."
         }
       ],
-      ["@rnmapbox/maps", {}]
+      [
+        "@rnmapbox/maps",
+        {}
+      ]
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "fe4d6236-c3f4-432e-b7c8-0576787c58be"
+      }
+    },
+    "owner": "mapvoyage-org"
   }
 }
