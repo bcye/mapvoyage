@@ -1,12 +1,11 @@
 import { trpc } from "@/utils/trpc";
-import { Stack, useLocalSearchParams } from "expo-router";
-import { SafeAreaView, ScrollView } from "react-native";
-import { View, Text, SkeletonView } from "react-native-ui-lib";
-import Markdown from "react-native-markdown-display";
-import { useMemo } from "react";
-import wtf from "wtf_wikipedia";
-import mdPlugin from "wtf-plugin-markdown";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import { Stack, useLocalSearchParams } from "expo-router";
+import { useMemo } from "react";
+import Markdown from "react-native-markdown-display";
+import { SkeletonView, View } from "react-native-ui-lib";
+import mdPlugin from "wtf-plugin-markdown";
+import wtf from "wtf_wikipedia";
 
 wtf.extend(mdPlugin);
 
@@ -43,7 +42,11 @@ export default function Section() {
         template={SkeletonView.templates.TEXT_CONTENT}
         showContent={wikiQuery.isSuccess}
         renderContent={() =>
-          !!displayMarkdown && <Markdown>{displayMarkdown}</Markdown>
+          !!displayMarkdown && (
+            <BottomSheetScrollView>
+              <Markdown>{displayMarkdown}</Markdown>
+            </BottomSheetScrollView>
+          )
         }
       />
     </View>
