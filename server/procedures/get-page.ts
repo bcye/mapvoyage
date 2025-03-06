@@ -54,8 +54,6 @@ const getPage = publicProcedure
 
     if (wikidataIds.length === 0) throw new Error("Non found");
 
-    console.log(features.map((f) => [f.place_name, f.properties.wikidata]));
-
     // Query all pages whose wikibase_item matches any of the features' wikidata props
     const [rows] = await db.query<RowDataPacket[]>(
       `SELECT p.page_id as page_id, pp.pp_value as wikidata_id
@@ -65,8 +63,6 @@ const getPage = publicProcedure
        AND pp.pp_value IN (?)`,
       [wikidataIds],
     );
-
-    console.log("rows", rows);
 
     const feature = features.find(
       (f) =>
