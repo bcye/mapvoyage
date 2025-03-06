@@ -26,11 +26,11 @@ const getPage = publicProcedure
     const geocodeResult = await geocoding.reverse([latLng[1], latLng[0]], {
       types: ["country", "region", "locality", "neighbourhood", "municipality"],
     });
-    const features = geocodeResult.features as Feature[];
+    let features = geocodeResult.features as Feature[];
 
     // select the feature whose bbox matches the input bbox the most and has a wikidata property
-    const feature = features
-      .filter((f) => f.bbox)
+    features = features
+      .filter((f) => f.bbox && f.properties.wikidata)
       .sort((a, b) => {
         const aDistance = Math.sqrt(
           a.bbox.reduce(
@@ -46,26 +46,41 @@ const getPage = publicProcedure
         );
 
         return aDistance - bDistance;
-      })[0];
-
-    if (!feature) throw err;
+      });
 
     const db = await connection;
-    const [rows] = await db.execute<RowDataPacket[]>(
-      `SELECT p.page_id as wikidata_id
+    // Extract all wikidata IDs from features
+    const wikidataIds = features.map((f) => f.properties.wikidata);
+
+    if (wikidataIds.length === 0) throw new Error("Non found");
+
+    console.log(features.map((f) => [f.place_name, f.properties.wikidata]));
+
+    // Query all pages whose wikibase_item matches any of the features' wikidata props
+    const [rows] = await db.query<RowDataPacket[]>(
+      `SELECT p.page_id as page_id, pp.pp_value as wikidata_id
        FROM page p
        JOIN page_props pp ON p.page_id = pp.pp_page
        WHERE pp.pp_propname = 'wikibase_item'
-       AND pp.pp_value = ? LIMIT 1`,
-      [feature.properties.wikidata],
+       AND pp.pp_value IN (?)`,
+      [wikidataIds],
     );
+
+    console.log("rows", rows);
+
+    const feature = features.find(
+      (f) =>
+        rows.findIndex((r) => r.wikidata_id == f.properties.wikidata) != -1,
+    );
+
+    if (!feature) throw new Error("Non found");
 
     // if it includes secondary info, remove it (e.g. "city, country" -> "city")
     const title = feature.place_name.split(",")[0];
 
-    if (!rows[0]) throw err;
-
-    const pageId: string = rows[0].wikidata_id;
+    const pageId: string = rows.find(
+      (r) => r.wikidata_id == feature.properties.wikidata,
+    )!.page_id;
 
     console.log("page", pageId, title);
 
