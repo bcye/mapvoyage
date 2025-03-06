@@ -2,7 +2,7 @@
   "expo": {
     "name": "Mapvoyage",
     "slug": "mapvoyage",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -44,10 +44,7 @@
           "locationWhenInUsePermission": "Show current location on map."
         }
       ],
-      [
-        "@rnmapbox/maps",
-        {}
-      ]
+      ["@rnmapbox/maps", {}]
     ],
     "experiments": {
       "typedRoutes": true
