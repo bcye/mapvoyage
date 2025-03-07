@@ -1,5 +1,5 @@
+import { Region } from "@/utils/store";
 import { trpc } from "@/utils/trpc";
-import { MapState } from "@rnmapbox/maps";
 import { Bbox } from "@server/types/maptiler";
 import { Link, Stack } from "expo-router";
 import React, { useMemo } from "react";
@@ -16,15 +16,11 @@ import { useDebounce } from "use-debounce";
  *
  * @param region - The map region properties, including the center coordinates and visible bounds.
  */
-export default function Infobox({
-  region,
-}: {
-  region: MapState["properties"];
-}) {
+export default function Infobox({ region }: { region: Region }) {
   const [dRegion] = useDebounce(region, 200);
-  const [lng, lat] = dRegion.center;
+  const [lng, lat] = dRegion.geometry.coordinates;
   // construct a bounding box from the visible bounds
-  const { ne, sw } = dRegion.bounds;
+  const [ne, sw] = dRegion.properties.visibleBounds;
   const bbox: Bbox = [sw[0], sw[1], ne[0], ne[1]];
 
   const query = useMemo(
@@ -32,11 +28,10 @@ export default function Infobox({
       bbox,
       latLng: [lat, lng] as [number, number],
     }),
-    [dRegion.center, dRegion.bounds],
+    [lat, lng, ne, sw],
   );
+  console.log(query);
   const wikiQuery = trpc.getPage.useQuery(query);
-
-  console.log(!!wikiQuery.data, wikiQuery.data);
 
   return (
     <View padding-8 flex>
@@ -67,7 +62,7 @@ export default function Infobox({
 /**
  * Renders a clickable infocard that links to a specific page section.
  *
- * This component creates a card-based link that navigates to a dynamic route structured as "/page/[pageId]/section/[title]". 
+ * This component creates a card-based link that navigates to a dynamic route structured as "/page/[pageId]/section/[title]".
  * The card displays the provided title, offering a concise navigational element within the app.
  *
  * @param title - The title displayed on the card and used as part of the destination route.

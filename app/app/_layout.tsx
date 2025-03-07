@@ -1,14 +1,13 @@
-import { useMapStore } from "@/utils/store";
+import { Region, useMapStore } from "@/utils/store";
 import { trpc } from "@/utils/trpc";
 import BottomSheet from "@gorhom/bottom-sheet";
 import {
   Camera,
-  LocationPuck,
-  MapState,
   MapView,
+  RegionPayload,
+  UserLocation,
   VectorSource,
-  setAccessToken,
-} from "@rnmapbox/maps";
+} from "@maplibre/maplibre-react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { Stack } from "expo-router";
@@ -42,9 +41,6 @@ export default function RootLayout() {
   );
 }
 
-// set a stub access token as were using maptiler
-setAccessToken?.("adsfwads");
-
 const snapPoints = ["20%", "40%", "100%"];
 
 /**
@@ -61,19 +57,22 @@ const snapPoints = ["20%", "40%", "100%"];
 function MapLayout({ children }: { children: React.ReactNode }) {
   const { setRegion } = useMapStore();
 
-  function onIdle(state: MapState) {
-    setRegion(state.properties);
+  function onIdle(state: Region) {
+    console.log("Idle");
+    setRegion(state);
   }
+
+  console.log("test");
 
   return (
     <GestureHandlerRootView style={styles.container}>
       <MapView
         style={styles.map}
-        styleURL={`https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.EXPO_PUBLIC_MAPTILER_KEY}`}
-        onMapIdle={onIdle}
+        mapStyle={`https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.EXPO_PUBLIC_MAPTILER_KEY}`}
+        onRegionDidChange={onIdle}
+        regionDidChangeDebounceTime={200}
       >
-        <Camera followUserLocation={true} />
-        <LocationPuck visible={true} />
+        <Camera />
         <VectorSource
           id="maptiler"
           url={`https://api.maptiler.com/tiles/v3/tiles.json?key=${process.env.EXPO_PUBLIC_MAPTILER_KEY}`}

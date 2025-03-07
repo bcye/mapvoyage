@@ -1,7 +1,7 @@
-import { MapState } from "@rnmapbox/maps";
+import { RegionPayload } from "@maplibre/maplibre-react-native";
 import { create } from "zustand";
 
-export type Region = MapState["properties"];
+export type Region = GeoJSON.Feature<GeoJSON.Point, RegionPayload>;
 
 export type Store = {
   region: Region | null;

@@ -44,7 +44,7 @@
           "locationWhenInUsePermission": "Show current location on map."
         }
       ],
-      ["@rnmapbox/maps", {}]
+      "@maplibre/maplibre-react-native"
     ],
     "experiments": {
       "typedRoutes": true
