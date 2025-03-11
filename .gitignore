@@ -4,6 +4,7 @@ node_modules
 # secrets and local config
 .env
 .env.*
+.dev.vars
 
 # local data
 wikitext

@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "dependencies": {
     "@maptiler/client": "^2.2.0",
     "@trpc/client": "11.0.0-rc.660",
@@ -12,7 +13,9 @@
   },
   "packageManager": "pnpm@9.13.2+sha512.88c9c3864450350e65a33587ab801acf946d7c814ed1134da4a924f6df5a2120fd36b46aab68f7cd1d413149112d53c7db3a4136624cfd00ff1846a0c6cef48a",
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250303.0",
     "@types/node": "^22.10.1",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "wrangler": "^3.112.0"
   }
 }

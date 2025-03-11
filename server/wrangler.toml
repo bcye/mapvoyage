@@ -1,0 +1,6 @@
+name = "server"
+compatibility_date = "2025-03-10"
+
+[[r2_buckets]]
+binding = 'wikiBucket'
+bucketName = 'wikivoyage'
