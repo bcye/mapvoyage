@@ -8,22 +8,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     
-    steps:
-    - uses: actions/checkout@v4
-    - run: cd jobs/process-dump
-    
+    steps:    
     - name: Login to Scaleway Container Registry
       uses: docker/login-action@v3
       with:
         username: nologin
         password: ${{ secrets.SCALEWAY_API_KEY }}
         registry: ${{ vars.SCALEWAY_CONTAINER_REGISTRY_ENDPOINT }}
-
     
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3    
-    - name: Build the Docker image
-      run: docker build . -t ${{ vars.SCALEWAY_CONTAINER_REGISTRY_ENDPOINT }}/my-docker-image
-    
-    - name: Push the Docker Image
-      run: docker push ${{ vars.SCALEWAY_CONTAINER_REGISTRY_ENDPOINT }}/my-docker-image
+    - name: Build and push
+      uses: docker/build-push-action@v6
+      with:
+        context: "{{defaultContext}}:jobs/process-dump"
+        push: true
+        tags: ${{ vars.SCALEWAY_CONTAINER_REGISTRY_ENDPOINT }}/job-process-dump:latest
