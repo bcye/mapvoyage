@@ -35,4 +35,4 @@ jobs:
         uses: "BunnyWay/actions/deploy-script@main"
         with:
           script_id: 21386
-          file: "curl -fsSL https://deno.land/install.sh | sh -s v1.0.0"
+          file: "server/index.ts"
