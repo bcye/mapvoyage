@@ -1,0 +1,24 @@
+name: Build & Deploy to Scaleway
+
+on:
+  push:
+    branches: [ "bunny-deploy" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:    
+    - name: Login to Scaleway Container Registry
+      uses: docker/login-action@v3
+      with:
+        username: nologin
+        password: ${{ secrets.SCALEWAY_API_KEY }}
+        registry: ${{ vars.SCALEWAY_CONTAINER_REGISTRY_ENDPOINT }}
+    
+    - name: Build and push
+      uses: docker/build-push-action@v6
+      with:
+        context: "{{defaultContext}}:jobs/process-dump"
+        push: true
+        tags: ${{ vars.SCALEWAY_CONTAINER_REGISTRY_ENDPOINT }}/job-process-dump:latest
