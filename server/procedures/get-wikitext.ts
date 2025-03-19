@@ -1,7 +1,7 @@
 import z from "zod";
-import { publicProcedure } from "../trpc";
-import path from "path";
-import { readFile } from "fs/promises";
+import { publicProcedure } from "../trpc.ts";
+import path from "node:path";
+import { readFile } from "node:fs/promises";
 
 const getWikitext = publicProcedure
   .input(

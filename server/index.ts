@@ -1,6 +1,6 @@
-import getPage from "./procedures/get-page";
-import getWikitext from "./procedures/get-wikitext";
-import { router } from "./trpc";
+import getPage from "./procedures/get-page.ts";
+import getWikitext from "./procedures/get-wikitext.ts";
+import { router } from "./trpc.ts";
 import * as maptiler from "@maptiler/client";
 import { createHTTPServer } from "@trpc/server/adapters/standalone";
 

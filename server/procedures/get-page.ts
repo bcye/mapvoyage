@@ -2,9 +2,8 @@ import { geocoding } from "@maptiler/client";
 import { TRPCError } from "@trpc/server";
 import { RowDataPacket } from "mysql2";
 import { z } from "zod";
-import connection from "../clients/db";
-import { publicProcedure } from "../trpc";
-import { Feature } from "../types/maptiler";
+import { publicProcedure } from "../trpc.ts";
+import { Feature } from "../types/maptiler.ts";
 
 const getPage = publicProcedure
   .input(
