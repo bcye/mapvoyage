@@ -1,7 +1,6 @@
 #!/bin/bash
-tmux new-session -s mapvoyage -n docker 'docker compose up' \; \
-  new-window -n tunnel 'cd server && npm run tunnel' \; \
-  new-window -n server 'sleep 5 && cd server && bun run --watch index.ts' \; \
+tmux new-session -s mapvoyage -n tunnel 'cd server && npm run tunnel' \; \
+  new-window -n server 'cd server && deno run -A --watch index.ts' \; \
   new-window -n app 'cd app && npm run android' \; \
   select-window -t 0
 

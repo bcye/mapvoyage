@@ -1,14 +1,13 @@
 import getPage from "./procedures/get-page.ts";
-import getWikitext from "./procedures/get-wikitext.ts";
 import { router } from "./trpc.ts";
 import * as maptiler from "@maptiler/client";
 import { createHTTPServer } from "@trpc/server/adapters/standalone";
+import process from "node:process";
 
 maptiler.config.apiKey = process.env.MAPTILER_API_KEY!;
 
 const appRouter = router({
   getPage,
-  getWikitext,
 });
 
 // Export type router type signature,

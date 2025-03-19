@@ -4,6 +4,8 @@ import { RowDataPacket } from "mysql2";
 import { z } from "zod";
 import { publicProcedure } from "../trpc.ts";
 import { Feature } from "../types/maptiler.ts";
+import { getWikiItem } from "../clients/bunny.ts";
+import { PageInfo } from "../types/wikivoyage.ts";
 
 const getPage = publicProcedure
   .input(
@@ -50,39 +52,30 @@ const getPage = publicProcedure
         return aDistance - bDistance;
       });
 
-    const db = await connection;
     // Extract all wikidata IDs from features
     const wikidataIds = features.map((f) => f.properties.wikidata);
 
     if (wikidataIds.length === 0) throw new Error("Non found");
 
-    // Query all pages whose wikibase_item matches any of the features' wikidata props
-    const [rows] = await db.query<RowDataPacket[]>(
-      `SELECT p.page_id as page_id, pp.pp_value as wikidata_id
-       FROM page p
-       JOIN page_props pp ON p.page_id = pp.pp_page
-       WHERE pp.pp_propname = 'wikibase_item'
-       AND pp.pp_value IN (?)`,
-      [wikidataIds],
+    const nfos: [string | undefined, PageInfo | null][] = await Promise.all(
+      wikidataIds.map(async (id) => [
+        id,
+        !id ? null : await getWikiItem(id, "en", "nfo"),
+      ]),
     );
 
-    const feature = features.find(
+    const finalId = features.find(
       (f) =>
-        rows.findIndex((r) => r.wikidata_id == f.properties.wikidata) != -1,
-    );
+        nfos.findIndex(([id, nfo]) => id == f.properties.wikidata && !!nfo) !=
+        -1,
+    )?.properties.wikidata!;
 
-    if (!feature) throw new Error("Non found");
+    if (!finalId) throw new Error("Non found");
 
-    // if it includes secondary info, remove it (e.g. "city, country" -> "city")
-    const title = feature.place_name.split(",")[0];
+    const final = nfos.find(([id]) => id == finalId);
+    const finalNfo = final![1]!;
 
-    const pageId: string = rows.find(
-      (r) => r.wikidata_id == feature.properties.wikidata,
-    )!.page_id;
-
-    console.log("page", pageId, title);
-
-    return { title, pageId };
+    return { ...finalNfo, wikidataId: finalId };
   });
 
 export default getPage;

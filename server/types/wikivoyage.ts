@@ -1,5 +1,6 @@
-interface Page {
+export interface PageInfo {
   title: string;
-  understand: string;
-  history: string;
+  description: string;
+  sections: string[];
+  pageId: string;
 }

@@ -43,13 +43,16 @@ export default function Infobox({ region }: { region: Region }) {
           !!wikiQuery.data && (
             <View flex>
               <View row gap-8 marginT-12>
-                <Infocard pageId={wikiQuery.data.pageId} title="Understand" />
-                <Infocard pageId={wikiQuery.data.pageId} title="History" />
+                <Infocard
+                  pageId={wikiQuery.data.wikidataId}
+                  title="Understand"
+                />
+                <Infocard pageId={wikiQuery.data.wikidataId} title="History" />
               </View>
               <View row gap-8 marginT-8>
-                <Infocard pageId={wikiQuery.data.pageId} title="See" />
-                <Infocard pageId={wikiQuery.data.pageId} title="Eat" />
-                <Infocard pageId={wikiQuery.data.pageId} title="Drink" />
+                <Infocard pageId={wikiQuery.data.wikidataId} title="See" />
+                <Infocard pageId={wikiQuery.data.wikidataId} title="Eat" />
+                <Infocard pageId={wikiQuery.data.wikidataId} title="Drink" />
               </View>
             </View>
           )

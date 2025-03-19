@@ -1,5 +1,6 @@
 import { trpc } from "@/utils/trpc";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import { useQuery } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useMemo } from "react";
 import Markdown from "react-native-markdown-display";
@@ -18,7 +19,13 @@ wtf.extend(mdPlugin);
  */
 export default function Section() {
   const { title, pageId } = useLocalSearchParams();
-  const wikiQuery = trpc.getWikitext.useQuery({ pageId: parseInt(pageId) });
+  const wikiQuery = useQuery({
+    queryKey: ["wikitext", pageId],
+    queryFn: () =>
+      fetch(`https://mapvoyage.b-cdn.net/en/${pageId}.wiki.txt`).then((r) =>
+        r.text(),
+      ),
+  });
   const sectionWikitext = useMemo(
     () => (wikiQuery.data ? wtf(wikiQuery.data).section(title) : null),
     [wikiQuery.data, title],
