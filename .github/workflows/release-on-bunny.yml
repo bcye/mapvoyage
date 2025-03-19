@@ -21,18 +21,14 @@ jobs:
         with:
           node-version: '22'
 
-      - uses: denoland/setup-deno@v1
-        with:
-          deno-version: v1.x
-
       - name: Install
-        run: "curl -fsSL https://deno.land/install.sh | sh -s v1.0.0"
+        run: "npm i"
 
       - name: Build
-        run: ""
+        run: "npm run bundle"
 
       - name: Publish the script to Bunny
         uses: "BunnyWay/actions/deploy-script@main"
         with:
           script_id: 21386
-          file: "server/index.ts"
+          file: "server/dist/index.cjs"

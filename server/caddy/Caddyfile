@@ -1,3 +1,0 @@
-fra.mapvoyage.app {
-    reverse_proxy server:3000
-}

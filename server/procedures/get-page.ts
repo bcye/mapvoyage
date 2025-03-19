@@ -1,11 +1,10 @@
 import { geocoding } from "@maptiler/client";
 import { TRPCError } from "@trpc/server";
-import { RowDataPacket } from "mysql2";
 import { z } from "zod";
-import { publicProcedure } from "../trpc.ts";
-import { Feature } from "../types/maptiler.ts";
-import { getWikiItem } from "../clients/bunny.ts";
-import { PageInfo } from "../types/wikivoyage.ts";
+import { getWikiItem } from "../clients/bunny.js";
+import { publicProcedure } from "../trpc.js";
+import { Feature } from "../types/maptiler.js";
+import { PageInfo } from "../types/wikivoyage.js";
 
 const getPage = publicProcedure
   .input(

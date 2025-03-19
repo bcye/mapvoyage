@@ -1,4 +1,4 @@
-import { PageInfo } from "../types/wikivoyage.ts";
+import { PageInfo } from "../types/wikivoyage.js";
 
 const BASE_URL = "https://mapvoyage.b-cdn.net";
 

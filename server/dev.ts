@@ -1,4 +1,4 @@
-import { appRouter } from "./router.ts";
+import { appRouter } from "./router.js";
 import { createHTTPServer } from "@trpc/server/adapters/standalone";
 import process from "node:process";
 

@@ -1,6 +1,6 @@
-import * as BunnySDK from "https://esm.sh/@bunny.net/edgescript-sdk@0.10.0";
+import * as BunnySDK from "@bunny.net/edgescript-sdk";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import { appRouter } from "./router.ts";
+import { appRouter } from "./router.js";
 
 BunnySDK.net.http.serve((req) => {
   return fetchRequestHandler({

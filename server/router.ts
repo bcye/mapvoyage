@@ -1,6 +1,6 @@
 import * as maptiler from "@maptiler/client";
-import { router } from "./trpc.ts";
-import getPage from "./procedures/get-page.ts";
+import { router } from "./trpc.js";
+import getPage from "./procedures/get-page.js";
 import process from "node:process";
 
 maptiler.config.apiKey = process.env.MAPTILER_API_KEY!;
