@@ -1,0 +1,38 @@
+
+name: Deploy Bunny Scripting Script
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  update-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Install
+        run: "curl -fsSL https://deno.land/install.sh | sh -s v1.0.0"
+
+      - name: Build
+        run: ""
+
+      - name: Publish the script to Bunny
+        uses: "BunnyWay/actions/deploy-script@main"
+        with:
+          script_id: 21386
+          file: "curl -fsSL https://deno.land/install.sh | sh -s v1.0.0"
