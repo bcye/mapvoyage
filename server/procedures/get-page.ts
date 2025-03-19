@@ -23,13 +23,10 @@ const getPage = publicProcedure
       input: { latLng, bbox },
     } = opts;
 
-    console.log(latLng, bbox);
-
     const geocodeResult = await geocoding.reverse([latLng[1], latLng[0]], {
       types: ["country", "region", "locality", "neighbourhood", "municipality"],
     });
     let features = geocodeResult.features as Feature[];
-    console.log(features);
 
     // select the feature whose bbox matches the input bbox the most and has a wikidata property
     features = features
