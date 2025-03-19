@@ -22,7 +22,7 @@ jobs:
           node-version: '22'
 
       - name: Install
-        run: "npm i"
+        run: "npm --prefix server i"
 
       - name: Build
         run: "npm --prefix server run bundle"
