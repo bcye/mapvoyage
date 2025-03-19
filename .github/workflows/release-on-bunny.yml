@@ -25,7 +25,7 @@ jobs:
         run: "npm i"
 
       - name: Build
-        run: "npm run bundle"
+        run: "npm --prefix server run bundle"
 
       - name: Publish the script to Bunny
         uses: "BunnyWay/actions/deploy-script@main"
