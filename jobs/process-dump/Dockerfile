@@ -9,4 +9,4 @@ RUN npm install
 
 COPY index.ts .
 
-CMD ["node", "--experimental-strip-types", "index.ts"]
+CMD [ "node", "--max-old-space-size=4096", "--experimental-strip-types", "index.ts" ]
