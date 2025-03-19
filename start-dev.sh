@@ -1,6 +1,6 @@
 #!/bin/bash
 tmux new-session -s mapvoyage -n tunnel 'cd server && npm run tunnel' \; \
-  new-window -n server 'cd server && deno run -A --watch index.ts' \; \
+  new-window -n server 'cd server && deno run -A --watch dev.ts' \; \
   new-window -n app 'cd app && npm run android' \; \
   select-window -t 0
 
