@@ -17,10 +17,13 @@ jobs:
       with:
         username: nologin
         password: ${{ secrets.SCALEWAY_API_KEY }}
-        registry: ${{ vars.CONTAINER_REGISTRY_ENDPOINT }}
-        
+        registry: ${{ vars.SCALEWAY_CONTAINER_REPOSITORY }}
+
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3    
     - name: Build the Docker image
-      run: docker build . -t ${{ vars.CONTAINER_REGISTRY_ENDPOINT }}/my-docker-image
+      run: docker build . -t ${{ vars.SCALEWAY_CONTAINER_REPOSITORY }}/my-docker-image
     
     - name: Push the Docker Image
-      run: docker push ${{ vars.CONTAINER_REGISTRY_ENDPOINT }}/my-docker-image
+      run: docker push ${{ vars.SCALEWAY_CONTAINER_REPOSITORY }}/my-docker-image
