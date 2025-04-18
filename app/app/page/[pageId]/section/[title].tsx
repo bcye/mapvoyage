@@ -1,8 +1,7 @@
 import WikiContent from "@/components/render-node";
-import renderNode from "@/components/render-node";
-import { NodeType, RootNode, SectionNode } from "@/types/nodes";
+import useWikiQuery from "@/hooks/use-wiki-query";
+import { NodeType, SectionNode } from "@/types/nodes";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
-import { useQuery } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { SkeletonView, View } from "react-native-ui-lib";
 
@@ -22,10 +21,7 @@ export default function Section() {
         r.text(),
       ),
   }); */
-  const wikiQuery = useQuery<RootNode>({
-    queryFn: async () => require("@/assets/output.json"),
-    queryKey: ["wiki"],
-  });
+  const wikiQuery = useWikiQuery(pageId as string);
   const section = wikiQuery.data?.children.find(
     (c) => c.type === NodeType.Section && c.properties.title === title,
   ) as SectionNode | undefined;

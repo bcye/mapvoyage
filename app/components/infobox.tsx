@@ -1,7 +1,8 @@
-import { NodeType, RootNode } from "@/types/nodes";
+import useWikiQuery from "@/hooks/use-wiki-query";
+import { Bbox } from "@/types/maptiler";
+import { NodeType } from "@/types/nodes";
 import { Region } from "@/utils/store";
-import { Bbox } from "@server/types/maptiler";
-import { useQuery } from "@tanstack/react-query";
+import { trpc } from "@/utils/trpc";
 import { Link, Stack } from "expo-router";
 import React, { useMemo } from "react";
 import { Card, GridList, SkeletonView, View } from "react-native-ui-lib";
@@ -30,11 +31,9 @@ export default function Infobox({ region }: { region: Region }) {
     }),
     [lat, lng, ne, sw],
   );
-  console.log(query);
-  const wikiQuery = useQuery<RootNode>({
-    queryFn: async () => require("@/assets/output.json"),
-    queryKey: ["wiki"],
-  });
+  const idQuery = trpc.getPage.useQuery(query);
+  const wikiQuery = useWikiQuery(idQuery.data);
+  console.log(wikiQuery.data?.properties);
 
   return (
     <View padding-8 flex>
@@ -53,7 +52,10 @@ export default function Infobox({ region }: { region: Region }) {
               numColumns={2}
               itemSpacing={8}
               renderItem={({ item }) => (
-                <Infocard title={item.properties.title} pageId="1" />
+                <Infocard
+                  title={item.properties.title}
+                  pageId={idQuery.data!}
+                />
               )}
             />
           )
