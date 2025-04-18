@@ -1,0 +1,1031 @@
+{
+  "type": "root",
+  "properties": {
+    "title": "Enschede",
+    "pagebanner": {
+      "1": "Enschede banner.jpg",
+      "caption": "The soccer Arke stadium of FC Twente in Enschede"
+    },
+    "mapframe": {
+      "1": "52.225",
+      "2": "6.890",
+      "height": "600",
+      "width": "500",
+      "zoom": "14"
+    },
+    "routebox": {
+      "image1": "NL-A1.png",
+      "imagesize1": "22",
+      "directionl1": "W",
+      "majorl1": "[[Amsterdam]]",
+      "minorl1": "[[Deventer]]",
+      "directionr1": "E",
+      "majorr1": "END",
+      "minorr1": ""
+    },
+    "geo": {
+      "1": "52.220000",
+      "2": "6.896389"
+    },
+    "usablecity": {}
+  },
+  "children": [
+    {
+      "type": "text",
+      "properties": {
+        "markdown": "**Enschede** is a city in the [Netherlands](Netherlands). It is the largest city of the Twente region (a former center of textile industry), and also of the [Overijssel](Overijssel) province. Enschede was designated the greenest town in the Netherlands in 2003."
+      },
+      "children": []
+    },
+    {
+      "type": "section",
+      "properties": {
+        "title": "Understand",
+        "level": 2
+      },
+      "children": [
+        {
+          "type": "text",
+          "properties": {
+            "markdown": "[thumb|350px|Oude Markt, Enschede](Image:Enschede Oude Markt.jpg)\nOn May 13, 2000, a fireworks storage in Enschede exploded, destroying an entire neighborhood and killing 23 people, including 4 firemen. This catastrophe is known in the Netherlands as the Vuurwerkramp, Dutch for *fireworks disaster*. Since this event, the city has undergone a major reconstruction process. After the fall of the textile industry, Enschede strives to become a center of business, innovation and technology through the Business and Science park next to the University of Twente.\n\nAs a city famous for being \"destroyed and reconstructed\" many times, Enschede does not offer much in terms of historical attractions. However, the city has nice displays of contemporary Dutch architecture, particularly in the Roombeek neighborhood and at University of Twente, and its nightlife, cultural vibrancy and shopping options are quite developed for a city of its size."
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "properties": {
+        "title": "Talk",
+        "level": 2
+      },
+      "children": [
+        {
+          "type": "text",
+          "properties": {
+            "markdown": "Official language is Dutch. Almost all understand English. Since Enschede is close to Germany, there are more tourist information brochures in German than English."
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "properties": {
+        "title": "Get in",
+        "level": 2
+      },
+      "children": [
+        {
+          "type": "section",
+          "properties": {
+            "title": "By train",
+            "level": 3
+          },
+          "children": [
+            {
+              "type": "text",
+              "properties": {
+                "markdown": "From elsewhere in the Netherlands, Enschede is easily accessible by train from all major Dutch cities, and can be reached from smaller cities with at most one or two transfers. The journey time from Amsterdam is approximately two hours. An excellent (train only) travel planner is available at [Nationale Spoorwegen](http://ns.nl/). Hourly intercity trains from [Amsterdam Schiphol Airport](Amsterdam Schiphol Airport), [The Hague](The Hague) and [Zwolle](Zwolle) terminate at"
+              },
+              "children": []
+            },
+            {
+              "type": "template",
+              "properties": {
+                "name": "marker",
+                "params": {
+                  "type": "go",
+                  "name": "Enschede railway station",
+                  "lat": "52.222372",
+                  "long": "6.890495"
+                }
+              },
+              "children": []
+            },
+            {
+              "type": "text",
+              "properties": {
+                "markdown": ". If you need to use a connecting bus or ferry from within the Netherlands, use [9292](http://9292.nl).\n\nFrom Germany, direct trains (ending in Enschede railway station) are available from Gronau, Dortmund, and M\u00c3\u00bcnster. From M\u00c3\u00bcnster, it takes 1 hr 20 min by hourly regional train to Enschede. To reach Enschede from Berlin, a stopover is available in Hengelo (a small city about 10 minutes by train from Enschede). Further guidance is available at [Die Bahn](http://www.db.de)."
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "properties": {
+            "title": "By bus",
+            "level": 3
+          },
+          "children": [
+            {
+              "type": "text",
+              "properties": {
+                "markdown": "KLM provides free [bus transfer](https://www.klm.com/travel/ca_en/plan_and_book/ticket_information/travel_by_train_or_bus_on_a_KLM_ticket/index.htm) for travellers arriving or departing on KLM flights from Amsterdam Schiphol airport. The bus leaves Amsterdam Schiphol twice a day, at 09:05 and 21:00. The entire ride takes 3 hours.\n\nFlixbus provides bus service from [major cities Netherlands and Germany](https://www.flixbus.com/bus/enschede) to Enschede. Buses stop at Enschede train station and University of Twente."
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "properties": {
+            "title": "By car",
+            "level": 3
+          },
+          "children": [
+            {
+              "type": "text",
+              "properties": {
+                "markdown": "There is a large parking lot underneath the market square in the centre of the city, the H.J. van Heekplein, which provides approximately 2000 parking spaces for visitors arriving by car.\n\nThere is a cheaper park-and-ride solution available at the expanded P+R Zuiderval. Frequent buses travel from here directly to the city center (approximately 5 minutes by bus). This is especially useful if you are arriving in Enschede via the highway, as the lot is just off the highway exit."
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "properties": {
+        "title": "Get around",
+        "level": 2
+      },
+      "children": [
+        {
+          "type": "text",
+          "properties": {
+            "markdown": "Enschede is a city best explored by bicycle, on foot or by public transportation. Parking spaces can be difficult to find and there are often traffic jams, especially during rush hour. The city center is also closed to motorized vehicles.\n\nBuses in Enschede do not accept cash. Payment by debit or credit cards are required."
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "properties": {
+        "title": "See",
+        "level": 2
+      },
+      "children": [
+        {
+          "type": "see",
+          "properties": {
+            "name": "Elderinkshuis",
+            "alt": "",
+            "url": "",
+            "email": "",
+            "address": "De Klomp 35",
+            "lat": "52.219634",
+            "long": "6.900369",
+            "directions": "",
+            "phone": "",
+            "tollfree": "",
+            "fax": "",
+            "hours": "",
+            "price": "",
+            "content": "The oldest building in the city (other than the Grote Kerk), built in 1783. It doesn't look extraordinary but it has the feat of surviving the city's many disasters."
+          },
+          "children": []
+        },
+        {
+          "type": "see",
+          "properties": {
+            "name": "Grote Kerk",
+            "alt": "",
+            "url": "",
+            "email": "",
+            "address": "Oude Markt",
+            "lat": "52.220773",
+            "long": "6.896050",
+            "directions": "",
+            "phone": "",
+            "tollfree": "",
+            "fax": "",
+            "hours": "",
+            "price": "",
+            "content": "Enschede's \"central church\" is also the oldest building of the city, dating from the Middle Ages (1200), although it has undergone several expansions and reforms across the time. It is now mainly used for weddings and concerts. The sundial in the right side of the church (looking at the entrance) was crafted in 1836."
+          },
+          "children": []
+        },
+        {
+          "type": "see",
+          "properties": {
+            "name": "De Museumfabriek",
+            "alt": "Museum TwentseWelle",
+            "url": "http://www.demuseumfabriek.nl",
+            "email": "",
+            "address": "Het Rozendaal 11",
+            "lat": "52.232357",
+            "long": "6.895115",
+            "directions": "",
+            "phone": "+31 53 480-7680",
+            "tollfree": "",
+            "hours": "",
+            "price": "\u00e2\u201a\u00ac12.50",
+            "lastedit": "2023-02-09",
+            "content": "A new museum set in the heart of the modern quarter Roombeek, which was destroyed in the Fireworks Disaster of 2000, Twentse Welle tells the story of mankind in Twente, the region in which Enschede is situated. While there are a number of exhibits that are visually appealing to speakers of any language, the museum, unlike many in the Netherlands, has information about most of its exhibits only in Dutch and German."
+          },
+          "children": []
+        },
+        {
+          "type": "see",
+          "properties": {
+            "name": "Rijksmuseum Twenthe",
+            "alt": "",
+            "url": "https://www.rijksmuseumtwenthe.nl/",
+            "email": "info@rijksmuseumtwenthe.nl",
+            "address": "Lasondersingel 129-131",
+            "lat": "52.227778",
+            "long": "6.896944",
+            "directions": "",
+            "phone": "+31 53 438675",
+            "tollfree": "",
+            "fax": "+31 53 4359002",
+            "hours": "Tu-Su 11:00-17:00",
+            "price": "Adult \u00e2\u201a\u00ac15, senior or student \u00e2\u201a\u00ac7, child 18 and under free",
+            "wikidata": "Q1505892",
+            "lastedit": "2019-12-01",
+            "content": "Large collection of 18th-century art and contemporary art."
+          },
+          "children": []
+        },
+        {
+          "type": "text",
+          "properties": {
+            "markdown": "[thumb|250px|Roombeek neighborhood](Image:Roombeek enschede 2.jpg)"
+          },
+          "children": []
+        },
+        {
+          "type": "see",
+          "properties": {
+            "name": "Roombeek",
+            "alt": "",
+            "url": "http://www.roombeek.nl/",
+            "email": "",
+            "address": "",
+            "lat": "52.2297",
+            "long": "6.8961",
+            "directions": "10 min walk north from Enschede Centraal station",
+            "phone": "",
+            "tollfree": "",
+            "hours": "",
+            "price": "",
+            "wikidata": "Q2018838",
+            "content": "Roombeek is the neighborhood between Deuningerstraat and Oldenzaalstraat, north of Lasondersingel, which corresponds to the neighborhood rebuilt after the fireworks disaster. It is now the finest neighborhood of Enschede, with all houses and buildings projected by renowned architects, plenty of green areas and exclusive lanes for buses and bicycles, and containing the Twentse Welle museum and the Rijksmuseum."
+          },
+          "children": []
+        },
+        {
+          "type": "see",
+          "properties": {
+            "name": "Stadshaard Enschede",
+            "alt": "",
+            "url": "",
+            "email": "",
+            "address": "Deurningerstraat, Roombeek",
+            "lat": "52.231287",
+            "long": "6.888673",
+            "directions": "",
+            "phone": "",
+            "tollfree": "",
+            "fax": "",
+            "hours": "",
+            "price": "",
+            "content": "Enschede's heating and power station, which was (perhaps unfairly) elected the \"ugliest building of Netherlands\" by a poll of the local newspaper TC Tubantia. It looks somewhat like a church covered with Delft-blue tiles. It is richly illustrated as a whole and artist Hugo Kaagman has placed images on the tiles that are associated with the production of electricity and well-known icons from Enschede's history, such as Jan Cremer and the Grolsch swing-top bottle."
+          },
+          "children": []
+        },
+        {
+          "type": "see",
+          "properties": {
+            "name": "Synagogue Enschede",
+            "alt": "",
+            "url": "",
+            "email": "",
+            "address": "Prinsestraat 14",
+            "lat": "52.218019",
+            "long": "6.885977",
+            "directions": "",
+            "phone": "+31 53 4324507",
+            "tollfree": "",
+            "hours": "Tu-Th, Su 11:00-17:00",
+            "price": "\u00e2\u201a\u00ac7.50",
+            "content": "Reputedly the most beautiful synagogue of the Netherlands. Tours available on Sunday at 14:00 (in Dutch). English tours are sporadically available."
+          },
+          "children": []
+        },
+        {
+          "type": "see",
+          "properties": {
+            "name": "University of Twente",
+            "alt": "Universiteit Twente",
+            "url": "https://www.utwente.nl",
+            "email": "",
+            "address": "Drienerlolaan 5",
+            "lat": "52.241102",
+            "long": "6.851912",
+            "directions": "",
+            "phone": "+31 53 489 9111",
+            "tollfree": "",
+            "hours": "",
+            "price": "",
+            "wikidata": "Q1547084",
+            "content": "The university has a number of buildings with interesting architecture, such as the **Drienerlo tower** (Torentje van Drienerlo), the **Cubicus** and the student dormitory at the crossing between Campuslaan and Matenweg."
+          },
+          "children": []
+        },
+        {
+          "type": "see",
+          "properties": {
+            "name": "Volkspark",
+            "alt": "",
+            "url": "http://www.volkspark.nl/index.php",
+            "email": "",
+            "address": "",
+            "lat": "52.220489",
+            "long": "6.879480",
+            "directions": "10 min walk from Enschede Centraal station",
+            "phone": "",
+            "tollfree": "",
+            "fax": "",
+            "hours": "",
+            "price": "",
+            "content": "The Volkspark is a beautiful park close to the city center. It was constructed in 1872 to serve as recreational area for the workers in the textile industry. It also hosts several cultural activities alongside the year, such as the spring and autumn Kermis."
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "properties": {
+        "title": "Do",
+        "level": 2
+      },
+      "children": [
+        {
+          "type": "text",
+          "properties": {
+            "markdown": "[ thumb | 300px | Grolsch Veste, stadium of FC Twente](Image:Grolsch veste.jpg )\n Enjoy the art in the many galleries in town.\n Take a guided tour through the nature parks surrounding Enschede or purchase a map with walking/cycling routes\n **Football:**"
+          },
+          "children": []
+        },
+        {
+          "type": "do",
+          "properties": {
+            "name": "FC Twente",
+            "alt": "",
+            "url": "https://www.fctwente.nl/en/",
+            "email": "",
+            "address": "",
+            "lat": "52.2367",
+            "long": "6.8375",
+            "directions": "next to Enschede Kennispark station",
+            "phone": "",
+            "tollfree": "",
+            "hours": "",
+            "price": "",
+            "lastedit": "2022-07-10",
+            "wikipedia": "De Grolsch Veste",
+            "image": "Grolsch Veste wedstrijd.JPG",
+            "wikidata": "Q727389",
+            "content": "They play football in the Eredivisie, the Dutch top tier, and usually do well and qualify for European tournaments. De Grolsch Veste stadium has a capacity of 30,000."
+          },
+          "children": []
+        },
+        {
+          "type": "do",
+          "properties": {
+            "name": "Go Planet Parc",
+            "url": "http://www.go-planet.nl/",
+            "email": "",
+            "address": "",
+            "lat": "",
+            "long": "",
+            "directions": "next to Grolsch Veste and Enschede Kennispark station",
+            "phone": "",
+            "tollfree": "",
+            "fax": "",
+            "hours": "",
+            "price": "",
+            "lastedit": "2024-10-30",
+            "content": "An entertainment park next to the Grolsch Veste football stadium, approximately midway between Enschede and Hengelo. It contains various facilities, including a cinema with 10 rooms, a 400-m-long ice skating track, a bowling, a diving school, a concert hall, a kart track, a couple of restaurants and others."
+          },
+          "children": []
+        },
+        {
+          "type": "do",
+          "properties": {
+            "name": "Het Rutbeek",
+            "alt": "",
+            "url": "http://www.hetrutbeek.nl",
+            "email": "",
+            "address": "Blikkersmaatweg 15",
+            "lat": "52.180771",
+            "long": "6.839242",
+            "directions": "",
+            "phone": "+31 50861050",
+            "tollfree": "",
+            "fax": "",
+            "hours": "during the day",
+            "price": "free",
+            "content": "A lake and recreational area in the south of Enschede. Contains beaches (including a nudist one), forests and recreational facilities. it is also possible to practise diving here."
+          },
+          "children": []
+        },
+        {
+          "type": "do",
+          "properties": {
+            "name": "Wilminktheater",
+            "alt": "Wenninkgaarde 40-42 7511 PH Enschede",
+            "url": "http://www.wilminktheater.nl/",
+            "email": "",
+            "address": "Wenninkgaarde 40-42, Oude Markt",
+            "lat": "52.222748",
+            "long": "6.895712",
+            "directions": "",
+            "phone": "+31 53 485 8500",
+            "tollfree": "",
+            "fax": "",
+            "hours": "M-Sa 12:00-17:00 (ticket counter)",
+            "price": "",
+            "content": "Enschede's main theatre and concert hall. Performances are usually in Dutch."
+          },
+          "children": []
+        },
+        {
+          "type": "do",
+          "properties": {
+            "name": "Aquadrome",
+            "alt": "",
+            "url": "https://sportaal.nl/aquadrome",
+            "email": "",
+            "address": "",
+            "lat": "52.20683",
+            "long": "6.89645",
+            "directions": "",
+            "phone": "",
+            "tollfree": "",
+            "fax": "",
+            "hours": "",
+            "price": "",
+            "content": "Swimming pool with two slides, a wave pool and wild water rapids."
+          },
+          "children": []
+        },
+        {
+          "type": "do",
+          "properties": {
+            "name": "Holland Casino Enschede",
+            "alt": "",
+            "url": "https://www.hollandcasino.nl/vestigingen/enschede",
+            "email": "",
+            "address": "Boulevard 1945 105",
+            "lat": "52.218037",
+            "long": "6.894599",
+            "directions": "",
+            "phone": "+31 53 7502750",
+            "tollfree": "",
+            "hours": "",
+            "price": "",
+            "lastedit": "2020-06-02",
+            "content": ""
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "properties": {
+        "title": "Learn",
+        "level": 2
+      },
+      "children": [
+        {
+          "type": "text",
+          "properties": {
+            "markdown": "International Institute for Geo-Information and Earth Observation (known as ITC) is the most known educational/training center in Geoghraphic Information System and Remote Sensing. Also located here is the [University of Twente](http://www.utwente.nl/en). Other educational institutes include Saxion Hogeschool and many schools for children. More information at (http://cms3.enschede.nl/)"
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "properties": {
+        "title": "Buy",
+        "level": 2
+      },
+      "children": [
+        {
+          "type": "text",
+          "properties": {
+            "markdown": "[thumb|250px|Dragonheart Medieval Lifestyle](Image:Dragonheart medieval shop.jpg)\n\nEnschede wishes to profile itself as the place to be in the eastern Netherlands when it concerns shopping. The large square, the Van Heekplein, has been modernised and been made the 'shopping-centre' of the city. Large stores such as V&D and Primark are there, as are many clothing stores such as H&M, WE and C&A. Many other shops can be found throughout the city centre. Every Thursday shops are opened until 21:00 instead of 18:00. All shops are open on Sundays, although they will usually open a few hours later and close a few hours earlier. \n\nOn Tuesdays and Saturdays from 08:00 to 17:00, there is a large"
+          },
+          "children": []
+        },
+        {
+          "type": "template",
+          "properties": {
+            "name": "marker",
+            "params": {
+              "type": "buy",
+              "name": "street market",
+              "lat": "52.217874",
+              "long": "6.897371"
+            }
+          },
+          "children": []
+        },
+        {
+          "type": "text",
+          "properties": {
+            "markdown": "at the Van Heekplein, which attracts quite a lot of Germans, as well as the locals of course. It offers bakeries, seafood, produce, cheese, clothing, takeout and other vendors."
+          },
+          "children": []
+        },
+        {
+          "type": "buy",
+          "properties": {
+            "name": "Dragonheart Medieval Lifestyle",
+            "url": "http://www.dragonheart.nl",
+            "email": "info@dragonheart.nl",
+            "address": "Stroinksweg 90",
+            "lat": "",
+            "long": "",
+            "directions": "",
+            "phone": "+31 53 4782005",
+            "tollfree": "",
+            "fax": "",
+            "hours": "",
+            "price": "",
+            "content": "An exotic medieval-themed shop where you can find all kinds of medieval clothes,  jewelery, accessories, furniture, and even weapons and armor."
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "properties": {
+        "title": "Eat",
+        "level": 2
+      },
+      "children": [
+        {
+          "type": "text",
+          "properties": {
+            "markdown": "Lots of bars and restaurants are located at the Oude Markt. The first weekend of September this square is the stage of the 'Proefeet', an event on which restaurants sell small samples of their best food in order to win a grand prize."
+          },
+          "children": []
+        },
+        {
+          "type": "section",
+          "properties": {
+            "title": "Budget",
+            "level": 3
+          },
+          "children": [
+            {
+              "type": "listing",
+              "properties": {
+                "type": "eat",
+                "name": "burgerme Enschede",
+                "alt": "",
+                "url": "https://www.burgerme.nl/",
+                "email": "",
+                "address": "Willem Wilminkplein 27",
+                "lat": "52.222417",
+                "long": "6.893084",
+                "directions": "",
+                "phone": "0900 8608 (high cost)",
+                "tollfree": "",
+                "hours": "Su-Th 11:00-23:00, F Sa 11:00-00:00",
+                "price": "",
+                "lastedit": "2019-12-01",
+                "content": "Burger joint that stays open late and has a fleet of motorcycles and bicycles for delivery. Burgers start at \u00e2\u201a\u00ac6.9 and combos start at \u00e2\u201a\u00ac8.5."
+              },
+              "children": []
+            },
+            {
+              "type": "listing",
+              "properties": {
+                "type": "eat",
+                "name": "Happy Italy",
+                "alt": "",
+                "url": "",
+                "email": "",
+                "address": "Willem Wilminkplein 31, 7511 PP",
+                "lat": "52.222215",
+                "long": "6.893067",
+                "directions": "",
+                "phone": "+31 53 744 0520",
+                "tollfree": "",
+                "hours": "",
+                "price": "Pastas ranging from \u00e2\u201a\u00ac5.5 to \u00e2\u201a\u00ac11",
+                "lastedit": "2019-12-21",
+                "content": "Italian restaurant with a large selection of pasta."
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "properties": {
+            "title": "Mid-range",
+            "level": 3
+          },
+          "children": [
+            {
+              "type": "listing",
+              "properties": {
+                "type": "eat",
+                "name": "Het Paradijs",
+                "alt": "",
+                "url": "https://hetparadijs.com",
+                "email": "info@hetparadijs.com",
+                "address": "Nicolaas Beetsstraat 48 7514 CW",
+                "lat": "52.227223",
+                "long": "6.894579",
+                "directions": "",
+                "phone": "+31 53 436-7919",
+                "tollfree": "",
+                "hours": "Th F 17:00-22:00, Sa Su noon-22:00",
+                "price": "",
+                "lastedit": "2022-07-31",
+                "content": "Vegetarian restaurant"
+              },
+              "children": []
+            },
+            {
+              "type": "listing",
+              "properties": {
+                "type": "eat",
+                "name": "Bardot",
+                "alt": "",
+                "url": "https://www.bardot.nl/",
+                "email": "",
+                "address": "Langestraat 47c",
+                "lat": "52.219941",
+                "long": "6.895695",
+                "directions": "",
+                "phone": "+31 53 3034020",
+                "tollfree": "",
+                "hours": "",
+                "price": "Entrees start at \u00e2\u201a\u00ac15",
+                "lastedit": "2020-06-02",
+                "content": "French and Mediterranean cuisine. Has seating to accommodate large groups."
+              },
+              "children": []
+            },
+            {
+              "type": "listing",
+              "properties": {
+                "type": "eat",
+                "name": "Aroy-D",
+                "alt": "",
+                "url": "https://www.aroy-d.nl",
+                "email": "",
+                "address": "Noorderhagen 20",
+                "lat": "52.221786",
+                "long": "6.894911",
+                "directions": "",
+                "phone": "+31 53 2302090",
+                "tollfree": "",
+                "hours": "Th-Sa 17:00-22:00; Su W 17:00-21:00; closed M Tu",
+                "price": "Entrees start at \u00e2\u201a\u00ac14.50",
+                "lastedit": "2020-06-02",
+                "content": "Thai restaurant with traditional southeast Asia dishes."
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "properties": {
+            "title": "Splurge",
+            "level": 3
+          },
+          "children": [
+            {
+              "type": "listing",
+              "properties": {
+                "type": "eat",
+                "name": "Bagels & Beans",
+                "alt": "",
+                "url": "http://bagelsbeans.nl",
+                "email": "",
+                "address": "Korte Hengelosestraat 33, 7511 JA",
+                "lat": "52.222265",
+                "long": "6.892709",
+                "directions": "",
+                "phone": "+31 53 436 4830",
+                "tollfree": "",
+                "hours": "",
+                "price": "",
+                "lastedit": "2019-12-21",
+                "content": "A high-end bagel shop and cafe"
+              },
+              "children": []
+            },
+            {
+              "type": "eat",
+              "properties": {
+                "name": "Yuen's Ori\u00c3\u00abntal",
+                "alt": "",
+                "url": "http://www.yuencooking.nl",
+                "email": "info@yuencooking.nl",
+                "address": "Noorderhagen 9",
+                "lat": "",
+                "long": "",
+                "directions": "",
+                "phone": "+31 53 434-6042",
+                "tollfree": "",
+                "fax": "",
+                "hours": "Th-Sa 17:00-22:00",
+                "price": "\u00e2\u201a\u00ac35",
+                "content": "Asian fusion restaurant with Japanese, Chinese, Thai, Korean and Vietnamese dishes all mixed up into one delicious treat. Try the surprise menu, it's always something new and always something good. Or the hotpot for a safe choice, with a bottle of wine."
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "properties": {
+        "title": "Drink",
+        "level": 2
+      },
+      "children": [
+        {
+          "type": "text",
+          "properties": {
+            "markdown": "As Enschede has a university and is the second largest town in the eastern Netherlands it has a fair number of bars and cafes. The Oude Markt is the location of many bars and bistros which have large terraces, making it the perfect location for a drink on a warm summer night. The oldest pub in Enschede is Het Bolwerk, in the Bolwerkstraat, where one can drink a wide variety of beers and spirits, with the shocking exception of the Enschede-brewed Grolsch.\n\nWhile the hipper crowds turn to places like **Aspen Valley** and **Central Park**, the alternative scene spends their Saturday night in **Atak**, where one can see a wide variety of customers from hippies to gothics to hard-core-metal-lovers. The student associations also have their own pub in de Pakkerij, like the largest student association of Enschede, [AEGEE-Enschede](http://www.aegee-enschede.nl) which is often also open to visits from AEGEE students visiting from other European student cities."
+          },
+          "children": []
+        },
+        {
+          "type": "listing",
+          "properties": {
+            "type": "drink",
+            "name": "Brewskovitch Stadsbrouwerij",
+            "alt": "",
+            "url": "https://www.stanislausbrewskovitch.nl/",
+            "email": "info@stanislausbrewskovitch.nl",
+            "address": "Stadsgravenstraat 59, 7511 ER",
+            "lat": "52.221301",
+            "long": "6.896740",
+            "directions": "",
+            "phone": "+31 53 203 2470",
+            "tollfree": "",
+            "hours": "",
+            "price": "",
+            "lastedit": "2019-12-24",
+            "content": "Pub with microbrewery."
+          },
+          "children": []
+        },
+        {
+          "type": "drink",
+          "properties": {
+            "name": "Paddy's",
+            "alt": "",
+            "url": "http://paddys.nl",
+            "email": "info@paddys.nl",
+            "address": "Oude Markt 12, 7511 GA",
+            "lat": "52.221269",
+            "long": "6.895531",
+            "directions": "",
+            "phone": "+31 53 432 8088",
+            "tollfree": "",
+            "hours": "Th noon-midnight, F Sa noon-3AM, Su noon-23:00",
+            "price": "",
+            "lastedit": "2022-07-31",
+            "content": "Intimate pub."
+          },
+          "children": []
+        },
+        {
+          "type": "drink",
+          "properties": {
+            "name": "De Beiaard",
+            "alt": "",
+            "url": "http://beiaardenschede.nl",
+            "email": "",
+            "address": "Oude Markt 24",
+            "lat": "52.220558",
+            "long": "6.89666",
+            "directions": "",
+            "phone": "+31 53 4306267",
+            "tollfree": "",
+            "hours": "",
+            "price": "",
+            "lastedit": "2020-06-02",
+            "content": "Local pub with ample of outdoor and indoor seating. Also has burgers, hot food and fish stew."
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "properties": {
+        "title": "Sleep",
+        "level": 2
+      },
+      "children": [
+        {
+          "type": "sleep",
+          "properties": {
+            "name": "IntercityHotel Enschede",
+            "alt": "",
+            "url": "https://www.intercityhotel.com/en/hotels/all-hotels/netherlands/enschede/intercityhotel-enschede",
+            "email": "enschede@intercityhotel.com",
+            "address": "Willem Wilminkplein 5",
+            "lat": "52.2227",
+            "long": "6.8935",
+            "directions": "exit Enschede railway station and head east for 2 minutes along Stationsplein, hotel is straight ahead at the end of Stationsplein",
+            "phone": "+31 532 070 000",
+            "tollfree": "",
+            "checkin": "noon",
+            "checkout": "14:00",
+            "price": "\u00e2\u201a\u00ac86",
+            "lastedit": "2022-07-31",
+            "content": ""
+          },
+          "children": []
+        },
+        {
+          "type": "sleep",
+          "properties": {
+            "name": "ITC International Hotel",
+            "alt": "",
+            "url": "https://www.itc.nl/Pub/ITC-International-Hotel/General-Information.html",
+            "email": "hotel-itc@utwente.nl",
+            "address": "Boulevard 1945 4",
+            "lat": "52.21775",
+            "long": "6.89120",
+            "directions": "",
+            "phone": "+31 534 803 999",
+            "tollfree": "+31 534 803 999",
+            "fax": "",
+            "checkin": "",
+            "checkout": "",
+            "price": "",
+            "lastedit": "2017-08-25",
+            "content": ""
+          },
+          "children": []
+        },
+        {
+          "type": "sleep",
+          "properties": {
+            "name": "Van der Valk Enschede",
+            "alt": "",
+            "url": "https://www.vandervalkhotelenschede.nl/",
+            "email": "",
+            "address": "Zuiderval 140",
+            "lat": "52.2035",
+            "long": "6.8894",
+            "directions": "",
+            "phone": "+31 538 000 800",
+            "tollfree": "",
+            "fax": "",
+            "checkin": "",
+            "checkout": "",
+            "price": "\u00e2\u201a\u00ac82",
+            "lastedit": "2017-08-25",
+            "content": ""
+          },
+          "children": []
+        },
+        {
+          "type": "listing",
+          "properties": {
+            "type": "sleep",
+            "name": "U Parkhotel",
+            "alt": "",
+            "url": "http://uparkhotel.nl",
+            "email": "",
+            "address": "De Veldmaat 8, 7522 NM",
+            "lat": "52.243046",
+            "long": "6.855474",
+            "directions": "in the University of Twente campus",
+            "phone": "+31 53 433 1366",
+            "tollfree": "",
+            "checkin": "",
+            "checkout": "",
+            "price": "",
+            "lastedit": "2019-09-02",
+            "content": ""
+          },
+          "children": []
+        },
+        {
+          "type": "listing",
+          "properties": {
+            "type": "sleep",
+            "name": "Fletcher Hotel-Restaurant De Broeierd-Enschede",
+            "alt": "",
+            "url": "http://fletcherhotelenschede.nl",
+            "email": "",
+            "address": "Hengelosestraat 725, 7521 PA",
+            "lat": "52.239996",
+            "long": "6.843608",
+            "directions": "",
+            "phone": "+31 53 850 6500",
+            "tollfree": "",
+            "checkin": "",
+            "checkout": "",
+            "price": "",
+            "lastedit": "2019-09-02",
+            "content": ""
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "properties": {
+        "title": "Connect",
+        "level": 2
+      },
+      "children": [
+        {
+          "type": "text",
+          "properties": {
+            "markdown": "As of July 2022, Enschede has 4G from KPN and Vodafone, and 5G from T-Mobile.\n\nThe city provides free WiFi network \"Enschede_Stad_Van_Nu\" at the Oude Markt, the Van Heekplein, the Langestraat and on University of Twente campus."
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "properties": {
+        "title": "Go next",
+        "level": 2
+      },
+      "children": [
+        {
+          "type": "text",
+          "properties": {
+            "markdown": "Enschede is a city surrounded by nature. It is a good base for walking, cycling or horse riding trips."
+          },
+          "children": []
+        },
+        {
+          "type": "section",
+          "properties": {
+            "title": "Netherlands",
+            "level": 3
+          },
+          "children": [
+            {
+              "type": "text",
+              "properties": {
+                "markdown": "[Deventer](Deventer), a city 62&nbsp;km from Enschede, has a charming medieval city center\n [Dinkelland](Dinkelland) is a municipality containing the picturesque town of **Ootmarsum** and the medieval monastery **Het Stift**\n [Tubbergen](Tubbergen) is a municipality that contains the nature reserve **Het Springendaal**, which is particularly beautiful during the autumn\n [Hof van Twente](Hof van Twente) is a municipality known for its castles and mansions, the most famous being **Castle Twickel**, in the village of **Delden**\n [Oldenzaal](Oldenzaal) is a city that annually celebrates most famous Carnival from Twente"
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "properties": {
+            "title": "Germany",
+            "level": 3
+          },
+          "children": [
+            {
+              "type": "text",
+              "properties": {
+                "markdown": "[M\u00c3\u00bcnster](M\u00c3\u00bcnster), a city 68&nbsp;km from Enschede, has various historical buildings and a large student population\n [Bad Bentheim](Bad Bentheim) is a town equally famous for its medieval castle and its hot springs\n [Tecklenburg](Tecklenburg), 78&nbsp;km from Enschede, is a charming and picturesque town in the hills. Difficult to get in without a car"
+              },
+              "children": []
+            },
+            {
+              "type": "template",
+              "properties": {
+                "name": "ispartof",
+                "params": {
+                  "1": "Overijssel"
+                }
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

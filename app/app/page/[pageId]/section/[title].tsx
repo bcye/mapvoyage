@@ -1,14 +1,10 @@
-import { trpc } from "@/utils/trpc";
+import WikiContent from "@/components/render-node";
+import renderNode from "@/components/render-node";
+import { NodeType, RootNode, SectionNode } from "@/types/nodes";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { useQuery } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams } from "expo-router";
-import { useMemo } from "react";
-import Markdown from "react-native-markdown-display";
 import { SkeletonView, View } from "react-native-ui-lib";
-import mdPlugin from "wtf-plugin-markdown";
-import wtf from "wtf_wikipedia";
-
-wtf.extend(mdPlugin);
 
 /**
  * Renders a specific section of a Wikipedia page in Markdown format.
@@ -19,42 +15,34 @@ wtf.extend(mdPlugin);
  */
 export default function Section() {
   const { title, pageId } = useLocalSearchParams();
-  const wikiQuery = useQuery({
+  /* const wikiQuery = useQuery({
     queryKey: ["wikitext", pageId],
     queryFn: () =>
       fetch(`https://mapvoyage.b-cdn.net/en/${pageId}.wiki.txt`).then((r) =>
         r.text(),
       ),
+  }); */
+  const wikiQuery = useQuery<RootNode>({
+    queryFn: async () => require("@/assets/output.json"),
+    queryKey: ["wiki"],
   });
-  const sectionWikitext = useMemo(
-    () => (wikiQuery.data ? wtf(wikiQuery.data).section(title) : null),
-    [wikiQuery.data, title],
-  );
+  const section = wikiQuery.data?.children.find(
+    (c) => c.type === NodeType.Section && c.properties.title === title,
+  ) as SectionNode | undefined;
 
-  const displayMarkdown = useMemo<string | null>(() => {
-    if (sectionWikitext) {
-      //@ts-ignore ts files seem to not work
-      const md: string = sectionWikitext.markdown();
-
-      // we dont want to redundantly display the section title
-      const firstNL = md.indexOf("\n");
-      return md.slice(firstNL + 1);
-    } else return null;
-  }, [sectionWikitext]);
+  if (!section) return null;
 
   return (
     <View padding-8 flex>
-      <Stack.Screen options={{ title }} />
+      <Stack.Screen options={{ title: section.properties.title }} />
       <SkeletonView
         template={SkeletonView.templates.TEXT_CONTENT}
         showContent={wikiQuery.isSuccess}
-        renderContent={() =>
-          !!displayMarkdown && (
-            <BottomSheetScrollView>
-              <Markdown>{displayMarkdown}</Markdown>
-            </BottomSheetScrollView>
-          )
-        }
+        renderContent={() => (
+          <BottomSheetScrollView>
+            <WikiContent node={section} root={true} />
+          </BottomSheetScrollView>
+        )}
       />
     </View>
   );
