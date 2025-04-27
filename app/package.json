@@ -16,6 +16,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@bcye/structured-wikivoyage-types": "^0.2.3",
     "@expo/vector-icons": "^14.0.2",
     "@gorhom/bottom-sheet": "^5.0.6",
     "@maplibre/maplibre-react-native": "^10.1.0",
@@ -52,8 +53,8 @@
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
     "use-debounce": "^10.0.4",
-    "wtf_wikipedia": "^10.4.0",
     "wtf-plugin-markdown": "^1.0.1",
+    "wtf_wikipedia": "^10.4.0",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
