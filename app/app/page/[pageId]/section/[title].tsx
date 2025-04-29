@@ -1,10 +1,9 @@
 import WikiContent from "@/components/render-node";
 import useWikiQuery from "@/hooks/use-wiki-query";
+import { useScrollRef } from "@/utils/scroll-ref-context";
 import { NodeType, SectionNode } from "@bcye/structured-wikivoyage-types";
-import { useMapStore } from "@/utils/store";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { Stack, useLocalSearchParams } from "expo-router";
-import { useEffect, useRef } from "react";
 import { SkeletonView, View } from "react-native-ui-lib";
 
 /**
@@ -27,14 +26,7 @@ export default function Section() {
   const section = wikiQuery.data?.children.find(
     (c) => c.type === NodeType.Section && c.properties.title === title,
   ) as SectionNode | undefined;
-  const ref = useRef(null);
-  const setRef = useMapStore((s) => s.setContentScrollRef);
-  useEffect(() => {
-    setRef(ref);
-    return () => {
-      setRef(null);
-    };
-  }, []);
+  const ref = useScrollRef();
   if (!section) return null;
 
   return (

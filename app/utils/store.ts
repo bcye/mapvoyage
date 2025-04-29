@@ -12,10 +12,6 @@ export type Store = {
   setRegion: (region: Region) => void;
 
   markers: MapMarker[];
-  contentScrollRef: MutableRefObject<ScrollView | null> | null;
-  setContentScrollRef: (
-    ref: MutableRefObject<ScrollView | null> | null,
-  ) => void;
   registerMarker: (marker: MapMarker) => void;
   deregisterMarker: (marker: MapMarker) => void;
 };
@@ -25,7 +21,6 @@ export const useMapStore = create<Store>((set) => ({
   setRegion: (region: Region) => set({ region }),
 
   markers: [],
-  contentScrollRef: null,
   registerMarker(marker) {
     set((s) => ({
       ...s,
@@ -40,8 +35,5 @@ export const useMapStore = create<Store>((set) => ({
         1,
       ),
     }));
-  },
-  setContentScrollRef(ref) {
-    set((s) => ({ ...s, contentScrollRef: ref }));
   },
 }));

@@ -15,6 +15,7 @@ import { StyleSheet, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { TouchableOpacity } from "react-native-ui-lib";
 import Fontisto from "@expo/vector-icons/Fontisto";
+import { ScrollRefProvider } from "@/utils/scroll-ref-context";
 
 const queryClient = new QueryClient();
 const trpcClient = trpc.createClient({
@@ -35,9 +36,11 @@ export default function RootLayout() {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <MapLayout>
-          <Stack screenOptions={{}} />
-        </MapLayout>
+        <ScrollRefProvider>
+          <MapLayout>
+            <Stack screenOptions={{}} />
+          </MapLayout>
+        </ScrollRefProvider>
       </QueryClientProvider>
     </trpc.Provider>
   );
@@ -86,7 +89,7 @@ function MapLayout({ children }: { children: React.ReactNode }) {
             <MarkerView coordinate={[m.long, m.lat]} key={m.id}>
               <TouchableOpacity
                 onPress={() => router.navigate(m.link + "?scrollTo=" + m.id)}
-                style={{ position: "relative", width: 21 }}
+                style={{ position: "relative", width: 22 }}
               >
                 <Fontisto
                   name="map-marker"

@@ -25,6 +25,7 @@ import {
 } from "react-native";
 import { useMapStore } from "@/utils/store";
 import { useLocalSearchParams, usePathname } from "expo-router";
+import { useScrollRef } from "@/utils/scroll-ref-context";
 export default function WikiContent({
   node,
   root = false,
@@ -166,7 +167,7 @@ function useRegisterOnMap(
   const registerCard = useMapStore((s) => s.registerMarker);
   const deregisterCard = useMapStore((s) => s.deregisterMarker);
   const markerIdx = useMapStore((s) => s.markers.findIndex((m) => m.id == id));
-  const scrollRef = useMapStore((s) => s.contentScrollRef);
+  const scrollRef = useScrollRef();
   const path = usePathname();
   const { scrollTo } = useLocalSearchParams();
 
@@ -184,12 +185,12 @@ function useRegisterOnMap(
     };
   }, [id]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (scrollTo == id && scrollRef?.current && ref?.current) {
       ref.current!.measureLayout(
         scrollRef.current,
         (x, y) => {
-          scrollRef.current.scrollTo({ y, animated: true });
+          scrollRef.current.scrollTo({ x: 0, y: y - 130, animated: true });
         },
         () => {
           /* failure, noop */
