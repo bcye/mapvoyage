@@ -4,15 +4,18 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import {
   Camera,
   MapView,
-  RegionPayload,
+  MarkerView,
   UserLocation,
   VectorSource,
 } from "@maplibre/maplibre-react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
-import { Stack } from "expo-router";
-import { StyleSheet } from "react-native";
+import { Stack, useRouter } from "expo-router";
+import { StyleSheet, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native-ui-lib";
+import Fontisto from "@expo/vector-icons/Fontisto";
+import { ScrollRefProvider } from "@/utils/scroll-ref-context";
 
 const queryClient = new QueryClient();
 const trpcClient = trpc.createClient({
@@ -33,9 +36,11 @@ export default function RootLayout() {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <MapLayout>
-          <Stack screenOptions={{}} />
-        </MapLayout>
+        <ScrollRefProvider>
+          <MapLayout>
+            <Stack screenOptions={{}} />
+          </MapLayout>
+        </ScrollRefProvider>
       </QueryClientProvider>
     </trpc.Provider>
   );
@@ -55,14 +60,15 @@ const snapPoints = ["20%", "40%", "100%"];
  * @returns A React element representing the combined map and bottom sheet layout.
  */
 function MapLayout({ children }: { children: React.ReactNode }) {
-  const { setRegion } = useMapStore();
+  const { setRegion, markers } = useMapStore();
+  const router = useRouter();
 
   function onIdle(state: Region) {
     console.log("Idle");
     setRegion(state);
   }
 
-  console.log("test");
+  console.log("markers", markers);
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -72,11 +78,44 @@ function MapLayout({ children }: { children: React.ReactNode }) {
         onRegionDidChange={onIdle}
         regionDidChangeDebounceTime={200}
       >
+        <UserLocation />
         <Camera />
         <VectorSource
           id="maptiler"
           url={`https://api.maptiler.com/tiles/v3/tiles.json?key=${process.env.EXPO_PUBLIC_MAPTILER_KEY}`}
         />
+        {markers.map((m, idx) =>
+          m.long && m.lat ? (
+            <MarkerView coordinate={[m.long, m.lat]} key={m.id}>
+              <TouchableOpacity
+                onPress={() => router.navigate(m.link + "?scrollTo=" + m.id)}
+                style={{ position: "relative", width: 22 }}
+              >
+                <Fontisto
+                  name="map-marker"
+                  size={28}
+                  color={"red"}
+                  style={{ zIndex: 1 }}
+                />
+                <Text
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    right: 0,
+                    top: 2,
+                    textAlign: "center",
+                    color: "white",
+                    fontSize: 12,
+                    fontWeight: "bold",
+                    zIndex: 2,
+                  }}
+                >
+                  {idx + 1}
+                </Text>
+              </TouchableOpacity>
+            </MarkerView>
+          ) : null,
+        )}
       </MapView>
       <BottomSheet
         index={1}

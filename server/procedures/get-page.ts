@@ -1,7 +1,7 @@
 import { geocoding } from "@maptiler/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { getWikiItem } from "../clients/bunny.js";
+import { wikiItemExists } from "../clients/bunny.js";
 import { publicProcedure } from "../trpc.js";
 import { Feature } from "../types/maptiler.js";
 import { PageInfo } from "../types/wikivoyage.js";
@@ -53,25 +53,23 @@ const getPage = publicProcedure
 
     if (wikidataIds.length === 0) throw new Error("Non found");
 
-    const nfos: [string | undefined, PageInfo | null][] = await Promise.all(
+    const exists: [string | undefined, PageInfo | null][] = await Promise.all(
       wikidataIds.map(async (id) => [
         id,
-        !id ? null : await getWikiItem(id, "en", "nfo"),
+        !id ? false : await wikiItemExists(id, "en"),
       ]),
     );
 
     const finalId = features.find(
       (f) =>
-        nfos.findIndex(([id, nfo]) => id == f.properties.wikidata && !!nfo) !=
-        -1,
+        exists.findIndex(
+          ([id, exists]) => id == f.properties.wikidata && !!exists,
+        ) != -1,
     )?.properties.wikidata!;
 
     if (!finalId) throw new Error("Non found");
 
-    const final = nfos.find(([id]) => id == finalId);
-    const finalNfo = final![1]!;
-
-    return { ...finalNfo, wikidataId: finalId };
+    return finalId;
   });
 
 export default getPage;

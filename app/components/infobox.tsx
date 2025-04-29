@@ -1,11 +1,12 @@
+import useWikiQuery from "@/hooks/use-wiki-query";
+import { Bbox } from "@/types/maptiler";
+import { NodeType } from "@/types/nodes";
 import { Region } from "@/utils/store";
 import { trpc } from "@/utils/trpc";
-import { Bbox } from "@server/types/maptiler";
 import { Link, Stack } from "expo-router";
 import React, { useMemo } from "react";
-import { Card, SkeletonView, View } from "react-native-ui-lib";
+import { Card, GridList, SkeletonView, View } from "react-native-ui-lib";
 import { useDebounce } from "use-debounce";
-
 /**
  * Displays an information box using the provided map region.
  *
@@ -30,31 +31,33 @@ export default function Infobox({ region }: { region: Region }) {
     }),
     [lat, lng, ne, sw],
   );
-  console.log(query);
-  const wikiQuery = trpc.getPage.useQuery(query);
+  const idQuery = trpc.getPage.useQuery(query);
+  const wikiQuery = useWikiQuery(idQuery.data);
+  console.log(wikiQuery.data?.properties);
 
   return (
     <View padding-8 flex>
-      <Stack.Screen options={{ title: wikiQuery.data?.title ?? "Loading" }} />
+      <Stack.Screen
+        options={{ title: wikiQuery.data?.properties.title ?? "Loading" }}
+      />
       <SkeletonView
-        template={SkeletonView.templates.TEXT_CONTENT}
+        template={SkeletonView.templates.LIST_ITEM}
         showContent={wikiQuery.isSuccess}
         renderContent={() =>
           !!wikiQuery.data && (
-            <View flex>
-              <View row gap-8 marginT-12>
+            <GridList
+              data={wikiQuery.data.children.filter(
+                (c) => c.type === NodeType.Section,
+              )}
+              numColumns={2}
+              itemSpacing={8}
+              renderItem={({ item }) => (
                 <Infocard
-                  pageId={wikiQuery.data.wikidataId}
-                  title="Understand"
+                  title={item.properties.title}
+                  pageId={idQuery.data!}
                 />
-                <Infocard pageId={wikiQuery.data.wikidataId} title="History" />
-              </View>
-              <View row gap-8 marginT-8>
-                <Infocard pageId={wikiQuery.data.wikidataId} title="See" />
-                <Infocard pageId={wikiQuery.data.wikidataId} title="Eat" />
-                <Infocard pageId={wikiQuery.data.wikidataId} title="Drink" />
-              </View>
-            </View>
+              )}
+            />
           )
         }
       />
