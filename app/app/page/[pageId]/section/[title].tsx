@@ -15,13 +15,6 @@ import { SkeletonView, View } from "react-native-ui-lib";
  */
 export default function Section() {
   const { title, pageId } = useLocalSearchParams();
-  /* const wikiQuery = useQuery({
-    queryKey: ["wikitext", pageId],
-    queryFn: () =>
-      fetch(`https://mapvoyage.b-cdn.net/en/${pageId}.wiki.txt`).then((r) =>
-        r.text(),
-      ),
-  }); */
   const wikiQuery = useWikiQuery(pageId as string);
   const section = wikiQuery.data?.children.find(
     (c) => c.type === NodeType.Section && c.properties.title === title,

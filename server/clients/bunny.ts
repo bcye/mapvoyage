@@ -8,7 +8,7 @@ export function getObject(path: string) {
 }
 
 export async function wikiItemExists(id: string, lang: "en") {
-  const res = await fetch(`${BASE_URL}/${lang}-json/${id}.wiki.json`, {
+  const res = await fetch(`${BASE_URL}/${lang}/${id}.json`, {
     method: "HEAD",
   });
   if (res.ok) return true;
@@ -19,7 +19,7 @@ export async function wikiItemExists(id: string, lang: "en") {
 }
 
 export function getWikiItem(id: string, lang: "en"): Promise<RootNode | null> {
-  return getObject(`${lang}-json/${id}.wiki.json`).then((r) => {
+  return getObject(`${lang}/${id}.json`).then((r) => {
     if (r.status == 404) return null;
     else return r.json();
   });

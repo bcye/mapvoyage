@@ -6,9 +6,9 @@ export default function useWikiQuery(id: string | undefined) {
     enabled: !!id,
     queryKey: ["wiki", id],
     queryFn: () => {
-      return fetch(
-        "https://cdn.infra.mapvoyage.app/en-json/" + id + ".wiki.json",
-      ).then((r) => r.json() as Promise<RootNode>);
+      return fetch("https://cdn.infra.mapvoyage.app/en/" + id + ".json").then(
+        (r) => r.json() as Promise<RootNode>,
+      );
     },
   });
 }
