@@ -44,7 +44,15 @@
           "locationWhenInUsePermission": "Show current location on map."
         }
       ],
-      "@maplibre/maplibre-react-native"
+      "@maplibre/maplibre-react-native",
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "app",
+          "organization": "bcye"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

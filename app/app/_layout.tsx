@@ -1,5 +1,7 @@
+import { ScrollRefProvider } from "@/utils/scroll-ref-context";
 import { Region, useMapStore } from "@/utils/store";
 import { trpc } from "@/utils/trpc";
+import Fontisto from "@expo/vector-icons/Fontisto";
 import BottomSheet from "@gorhom/bottom-sheet";
 import {
   Camera,
@@ -8,14 +10,45 @@ import {
   UserLocation,
   VectorSource,
 } from "@maplibre/maplibre-react-native";
+import { init as initSentry, wrap as wrapSentry } from "@sentry/react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { Stack, useRouter } from "expo-router";
 import { StyleSheet, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { TouchableOpacity } from "react-native-ui-lib";
-import Fontisto from "@expo/vector-icons/Fontisto";
-import { ScrollRefProvider } from "@/utils/scroll-ref-context";
+
+initSentry({
+  dsn: "https://d10c9861a757ad983925f6f01d4dde59@o4509253037850624.ingest.de.sentry.io/4509253068718160",
+
+  beforeBreadcrumb(breadcrumb, hint) {
+    // ensure no PII is sent via http breadcrumbs (path & query encodes PII)
+    // IP storage is disabled server-side
+    if (
+      breadcrumb.category === "xhr" ||
+      breadcrumb.category === "http" ||
+      breadcrumb.category === "fetch"
+    ) {
+      if (breadcrumb.data?.url) {
+        try {
+          // Parse the URL to get just the origin
+          const url = new URL(breadcrumb.data.url);
+          breadcrumb.data.url = url.origin;
+          return breadcrumb;
+        } catch (e) {
+          console.error("url parsing failed for beforeBreadcrumb");
+        }
+      }
+
+      // should we not be able to parse correctly, return null to be on the safe side
+      return null;
+    } else {
+      return breadcrumb;
+    }
+  },
+
+  enabled: !__DEV__,
+});
 
 const queryClient = new QueryClient();
 const trpcClient = trpc.createClient({
@@ -32,7 +65,7 @@ const trpcClient = trpc.createClient({
  * This component provides the TRPC and QueryClient contexts for state and data management, and embeds a MapLayout that displays the map along with a bottom sheet containing the navigation stack.
  */
 
-export default function RootLayout() {
+export default wrapSentry(function RootLayout() {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
@@ -44,7 +77,7 @@ export default function RootLayout() {
       </QueryClientProvider>
     </trpc.Provider>
   );
-}
+});
 
 const snapPoints = ["20%", "40%", "100%"];
 
@@ -88,7 +121,9 @@ function MapLayout({ children }: { children: React.ReactNode }) {
           m.long && m.lat ? (
             <MarkerView coordinate={[m.long, m.lat]} key={m.id}>
               <TouchableOpacity
-                onPress={() => router.navigate(m.link + "?scrollTo=" + m.id)}
+                onPress={() => {
+                  router.navigate(m.link + "?scrollTo=" + m.id);
+                }}
                 style={{ position: "relative", width: 22 }}
               >
                 <Fontisto
