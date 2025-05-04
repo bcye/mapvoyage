@@ -16,7 +16,12 @@
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION"
-      ]
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon-colour.png",
+        "monochromeImage": "./assets/images/adaptive-icon-mono.png",
+        "backgroundColor": "#388659"
+      }
     },
     "plugins": [
       "expo-router",
