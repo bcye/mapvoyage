@@ -1,9 +1,11 @@
 import WikiContent from "@/components/render-node";
 import useWikiQuery from "@/hooks/use-wiki-query";
+import { useIsFullscreen } from "@/utils/fullscreen-context";
 import { useScrollRef } from "@/utils/scroll-ref-context";
 import { NodeType, SectionNode } from "@bcye/structured-wikivoyage-types";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { Stack, useLocalSearchParams } from "expo-router";
+import { ScrollView } from "react-native";
 import { SkeletonView, View } from "react-native-ui-lib";
 
 /**
@@ -20,6 +22,7 @@ export default function Section() {
     (c) => c.type === NodeType.Section && c.properties.title === title,
   ) as SectionNode | undefined;
   const ref = useScrollRef();
+  const isFullscreen = useIsFullscreen();
   if (!section) return null;
 
   return (
@@ -28,11 +31,17 @@ export default function Section() {
       <SkeletonView
         template={SkeletonView.templates.TEXT_CONTENT}
         showContent={wikiQuery.isSuccess}
-        renderContent={() => (
-          <BottomSheetScrollView ref={ref}>
-            <WikiContent node={section} root={true} />
-          </BottomSheetScrollView>
-        )}
+        renderContent={() =>
+          !isFullscreen ? (
+            <BottomSheetScrollView ref={ref}>
+              <WikiContent node={section} root={true} />
+            </BottomSheetScrollView>
+          ) : (
+            <ScrollView>
+              <WikiContent node={section} root={true} />
+            </ScrollView>
+          )
+        }
       />
     </View>
   );
