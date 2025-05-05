@@ -2,6 +2,7 @@ import { ScrollRefProvider } from "@/utils/scroll-ref-context";
 import { Region, useMapStore } from "@/utils/store";
 import { trpc } from "@/utils/trpc";
 import Fontisto from "@expo/vector-icons/Fontisto";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import BottomSheet from "@gorhom/bottom-sheet";
 import {
   Camera,
@@ -14,6 +15,7 @@ import { init as initSentry, wrap as wrapSentry } from "@sentry/react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { Stack, useRouter } from "expo-router";
+import { useState } from "react";
 import { StyleSheet, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { TouchableOpacity } from "react-native-ui-lib";
@@ -66,20 +68,36 @@ const trpcClient = trpc.createClient({
  */
 
 export default wrapSentry(function RootLayout() {
+  const [fullscreen, setFullscreen] = useState(false);
+
+  const stack = (
+    <Stack
+      screenOptions={{
+        headerRight: () => (
+          <TouchableOpacity onPress={() => setFullscreen(!fullscreen)}>
+            <MaterialCommunityIcons
+              name={fullscreen ? "fullscreen-exit" : "fullscreen"}
+              size={28}
+              color="inherit"
+            />
+          </TouchableOpacity>
+        ),
+      }}
+    />
+  );
+
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <ScrollRefProvider>
-          <MapLayout>
-            <Stack screenOptions={{}} />
-          </MapLayout>
+          {!fullscreen ? <MapLayout>{stack}</MapLayout> : stack}
         </ScrollRefProvider>
       </QueryClientProvider>
     </trpc.Provider>
   );
 });
 
-const snapPoints = ["20%", "40%", "100%"];
+const snapPoints = ["20%", "40%", "50%"];
 
 /**
  * Renders a layout that integrates a full-screen map view with an overlaying bottom sheet.
