@@ -1,4 +1,8 @@
-import { ScrollRefProvider } from "@/utils/scroll-ref-context";
+import { FullScreenProvider } from "@/utils/fullscreen-context";
+import {
+  ScrollRefProvider,
+  useBottomSheetRef,
+} from "@/utils/scroll-ref-context";
 import { Region, useMapStore } from "@/utils/store";
 import { trpc } from "@/utils/trpc";
 import Fontisto from "@expo/vector-icons/Fontisto";
@@ -87,13 +91,15 @@ export default wrapSentry(function RootLayout() {
   );
 
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
-        <ScrollRefProvider>
-          {!fullscreen ? <MapLayout>{stack}</MapLayout> : stack}
-        </ScrollRefProvider>
-      </QueryClientProvider>
-    </trpc.Provider>
+    <FullScreenProvider fullscreen={fullscreen}>
+      <trpc.Provider client={trpcClient} queryClient={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <ScrollRefProvider>
+            {!fullscreen ? <MapLayout>{stack}</MapLayout> : stack}
+          </ScrollRefProvider>
+        </QueryClientProvider>
+      </trpc.Provider>
+    </FullScreenProvider>
   );
 });
 
@@ -113,13 +119,12 @@ const snapPoints = ["20%", "40%", "50%"];
 function MapLayout({ children }: { children: React.ReactNode }) {
   const { setRegion, markers } = useMapStore();
   const router = useRouter();
+  const bottomSheetRef = useBottomSheetRef();
 
   function onIdle(state: Region) {
     console.log("Idle");
     setRegion(state);
   }
-
-  console.log("markers", markers);
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -174,6 +179,7 @@ function MapLayout({ children }: { children: React.ReactNode }) {
         index={1}
         snapPoints={snapPoints}
         enableDynamicSizing={false}
+        ref={bottomSheetRef}
       >
         {children}
       </BottomSheet>

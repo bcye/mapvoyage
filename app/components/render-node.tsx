@@ -25,7 +25,7 @@ import {
 } from "react-native";
 import { useMapStore } from "@/utils/store";
 import { useLocalSearchParams, usePathname } from "expo-router";
-import { useScrollRef } from "@/utils/scroll-ref-context";
+import { useBottomSheetRef, useScrollRef } from "@/utils/scroll-ref-context";
 export default function WikiContent({
   node,
   root = false,
@@ -168,6 +168,7 @@ function useRegisterOnMap(
   const deregisterCard = useMapStore((s) => s.deregisterMarker);
   const markerIdx = useMapStore((s) => s.markers.findIndex((m) => m.id == id));
   const scrollRef = useScrollRef();
+  const bottomSheetRef = useBottomSheetRef();
   const path = usePathname();
   const { scrollTo } = useLocalSearchParams();
 
@@ -190,7 +191,10 @@ function useRegisterOnMap(
       ref.current!.measureLayout(
         scrollRef.current,
         (x, y) => {
-          scrollRef.current.scrollTo({ x: 0, y: y - 130, animated: true });
+          bottomSheetRef?.current?.expand();
+          requestAnimationFrame(() => {
+            scrollRef.current.scrollTo({ x: 0, y: y - 130, animated: true });
+          });
         },
         () => {
           /* failure, noop */
