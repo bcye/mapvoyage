@@ -33,7 +33,6 @@ export default function Infobox({ region }: { region: Region }) {
   );
   const idQuery = trpc.getPage.useQuery(query);
   const wikiQuery = useWikiQuery(idQuery.data);
-  console.log(wikiQuery.data?.properties);
 
   return (
     <View padding-8 flex>

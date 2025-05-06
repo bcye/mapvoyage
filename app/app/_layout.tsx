@@ -1,15 +1,18 @@
 import { FullScreenProvider } from "@/utils/fullscreen-context";
+import { IconName } from "@/utils/icon.types";
 import {
   ScrollRefProvider,
   useBottomSheetRef,
 } from "@/utils/scroll-ref-context";
 import { Region, useMapStore } from "@/utils/store";
 import { trpc } from "@/utils/trpc";
+import { IconProps } from "@expo/vector-icons/build/createIconSet";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import BottomSheet from "@gorhom/bottom-sheet";
 import {
   Camera,
+  CameraRef,
   MapView,
   MarkerView,
   UserLocation,
@@ -19,10 +22,16 @@ import { init as initSentry, wrap as wrapSentry } from "@sentry/react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { Stack, useRouter } from "expo-router";
-import { useState } from "react";
+import { MutableRefObject, useRef, useState } from "react";
 import { Dimensions, StyleSheet, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { TouchableOpacity } from "react-native-ui-lib";
+import { Card, TouchableOpacity } from "react-native-ui-lib";
+import {
+  requestForegroundPermissionsAsync,
+  getLastKnownPositionAsync,
+  getCurrentPositionAsync,
+  LocationAccuracy,
+} from "expo-location";
 
 initSentry({
   dsn: "https://d10c9861a757ad983925f6f01d4dde59@o4509253037850624.ingest.de.sentry.io/4509253068718160",
@@ -133,7 +142,6 @@ function MapLayout({ children }: { children: React.ReactNode }) {
   );
 
   function onIdle(state: Region) {
-    console.log("Idle");
     setRegion(state);
   }
 
@@ -141,7 +149,7 @@ function MapLayout({ children }: { children: React.ReactNode }) {
     setSheetHeight(getSheetPosition(snapIndex));
   }
 
-  console.log(sheetHeight);
+  const cameraRef: MutableRefObject<null | CameraRef> = useRef(null);
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -156,7 +164,7 @@ function MapLayout({ children }: { children: React.ReactNode }) {
         }}
       >
         <UserLocation />
-        <Camera />
+        <Camera ref={cameraRef} />
         <VectorSource
           id="maptiler"
           url={`https://api.maptiler.com/tiles/v3/tiles.json?key=${process.env.EXPO_PUBLIC_MAPTILER_KEY}`}
@@ -196,6 +204,13 @@ function MapLayout({ children }: { children: React.ReactNode }) {
           ) : null,
         )}
       </MapView>
+      <GeolocateControl
+        position={{
+          bottom: sheetHeight + 4,
+          right: 13,
+        }}
+        cameraRef={cameraRef}
+      />
       <BottomSheet
         index={initialSnapIndex}
         snapPoints={snapPoints}
@@ -206,6 +221,75 @@ function MapLayout({ children }: { children: React.ReactNode }) {
         {children}
       </BottomSheet>
     </GestureHandlerRootView>
+  );
+}
+
+type Position = Partial<{
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+}>;
+
+function MapControl({
+  position,
+  onPress,
+  icon,
+  color,
+}: {
+  icon: IconName;
+  position: Position;
+  onPress: () => void;
+  color?: string;
+}) {
+  return (
+    <Card
+      width={32}
+      height={32}
+      borderRadius={8}
+      style={{
+        position: "absolute",
+        ...position,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+      onPress={onPress}
+    >
+      <MaterialCommunityIcons name={icon} size={20} color={color} />
+    </Card>
+  );
+}
+
+function GeolocateControl({
+  cameraRef,
+  position,
+}: {
+  cameraRef: MutableRefObject<CameraRef | null>;
+  position: Position;
+}) {
+  async function onGeolocate() {
+    const { granted } = await requestForegroundPermissionsAsync();
+    if (!granted) return;
+
+    let location = await getLastKnownPositionAsync();
+    if (!location)
+      location = await getCurrentPositionAsync({
+        accuracy: LocationAccuracy.Low,
+      });
+
+    cameraRef.current?.moveTo(
+      [location.coords.longitude, location.coords.latitude],
+      300,
+    );
+    cameraRef.current?.zoomTo(12, 300);
+  }
+
+  return (
+    <MapControl
+      position={position}
+      icon="crosshairs-gps"
+      onPress={onGeolocate}
+    />
   );
 }
 
