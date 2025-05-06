@@ -20,7 +20,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { Stack, useRouter } from "expo-router";
 import { useState } from "react";
-import { StyleSheet, Text } from "react-native";
+import { Dimensions, StyleSheet, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { TouchableOpacity } from "react-native-ui-lib";
 
@@ -104,6 +104,14 @@ export default wrapSentry(function RootLayout() {
 });
 
 const snapPoints = ["20%", "40%", "50%"];
+const initialSnapIndex = 1;
+
+function getSheetPosition(snapIndex: number) {
+  return (
+    Dimensions.get("window").height *
+    (parseInt(snapPoints[snapIndex].slice(0, 2)) / 100)
+  );
+}
 
 /**
  * Renders a layout that integrates a full-screen map view with an overlaying bottom sheet.
@@ -120,11 +128,20 @@ function MapLayout({ children }: { children: React.ReactNode }) {
   const { setRegion, markers } = useMapStore();
   const router = useRouter();
   const bottomSheetRef = useBottomSheetRef();
+  const [sheetHeight, setSheetHeight] = useState(() =>
+    getSheetPosition(initialSnapIndex),
+  );
 
   function onIdle(state: Region) {
     console.log("Idle");
     setRegion(state);
   }
+
+  function onSheetPositionChange(snapIndex: number) {
+    setSheetHeight(getSheetPosition(snapIndex));
+  }
+
+  console.log(sheetHeight);
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -133,6 +150,10 @@ function MapLayout({ children }: { children: React.ReactNode }) {
         mapStyle={`https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.EXPO_PUBLIC_MAPTILER_KEY}`}
         onRegionDidChange={onIdle}
         regionDidChangeDebounceTime={200}
+        attributionPosition={{
+          left: 8,
+          top: 8,
+        }}
       >
         <UserLocation />
         <Camera />
@@ -176,10 +197,11 @@ function MapLayout({ children }: { children: React.ReactNode }) {
         )}
       </MapView>
       <BottomSheet
-        index={1}
+        index={initialSnapIndex}
         snapPoints={snapPoints}
         enableDynamicSizing={false}
         ref={bottomSheetRef}
+        onChange={onSheetPositionChange}
       >
         {children}
       </BottomSheet>
