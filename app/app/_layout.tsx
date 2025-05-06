@@ -32,6 +32,7 @@ import {
   getCurrentPositionAsync,
   LocationAccuracy,
 } from "expo-location";
+import useDebouncedEffect from "@/hooks/use-debounced-effect";
 
 initSentry({
   dsn: "https://d10c9861a757ad983925f6f01d4dde59@o4509253037850624.ingest.de.sentry.io/4509253068718160",
@@ -87,7 +88,7 @@ export default wrapSentry(function RootLayout() {
     <Stack
       screenOptions={{
         headerRight: () => (
-          <TouchableOpacity onPress={() => setFullscreen(!fullscreen)}>
+          <TouchableOpacity onPressIn={() => setFullscreen(!fullscreen)}>
             <MaterialCommunityIcons
               name={fullscreen ? "fullscreen-exit" : "fullscreen"}
               size={28}
@@ -134,15 +135,17 @@ function getSheetPosition(snapIndex: number) {
  * @returns A React element representing the combined map and bottom sheet layout.
  */
 function MapLayout({ children }: { children: React.ReactNode }) {
-  const { setRegion, markers } = useMapStore();
+  const { setRegion, markers, region } = useMapStore();
   const router = useRouter();
   const bottomSheetRef = useBottomSheetRef();
   const [sheetHeight, setSheetHeight] = useState(() =>
     getSheetPosition(initialSnapIndex),
   );
 
-  function onIdle(state: Region) {
-    setRegion(state);
+  const [_region, _setRegion] = useState<Region | null>(null);
+  function onIdle(region: Region) {
+    cameraRef.current?.setCamera({});
+    setRegion(region);
   }
 
   function onSheetPositionChange(snapIndex: number) {
@@ -163,8 +166,8 @@ function MapLayout({ children }: { children: React.ReactNode }) {
           top: 8,
         }}
       >
-        <UserLocation />
         <Camera ref={cameraRef} />
+        <UserLocation />
         <VectorSource
           id="maptiler"
           url={`https://api.maptiler.com/tiles/v3/tiles.json?key=${process.env.EXPO_PUBLIC_MAPTILER_KEY}`}
@@ -173,10 +176,11 @@ function MapLayout({ children }: { children: React.ReactNode }) {
           m.long && m.lat ? (
             <MarkerView coordinate={[m.long, m.lat]} key={m.id}>
               <TouchableOpacity
-                onPress={() => {
+                onPressIn={() => {
+                  console.log("navigating");
                   router.navigate(m.link + "?scrollTo=" + m.id);
                 }}
-                style={{ position: "relative", width: 22 }}
+                style={{ position: "relative", width: 22, zIndex: 1000 }}
               >
                 <Fontisto
                   name="map-marker"
@@ -277,11 +281,11 @@ function GeolocateControl({
         accuracy: LocationAccuracy.Low,
       });
 
-    cameraRef.current?.moveTo(
-      [location.coords.longitude, location.coords.latitude],
-      300,
-    );
-    cameraRef.current?.zoomTo(12, 300);
+    cameraRef.current?.setCamera({
+      centerCoordinate: [location.coords.longitude, location.coords.latitude],
+      zoomLevel: 13,
+      animationDuration: 300,
+    });
   }
 
   return (
