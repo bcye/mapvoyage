@@ -135,14 +135,13 @@ function getSheetPosition(snapIndex: number) {
  * @returns A React element representing the combined map and bottom sheet layout.
  */
 function MapLayout({ children }: { children: React.ReactNode }) {
-  const { setRegion, markers, region } = useMapStore();
+  const { setRegion, markers } = useMapStore();
   const router = useRouter();
   const bottomSheetRef = useBottomSheetRef();
   const [sheetHeight, setSheetHeight] = useState(() =>
     getSheetPosition(initialSnapIndex),
   );
 
-  const [_region, _setRegion] = useState<Region | null>(null);
   function onIdle(region: Region) {
     cameraRef.current?.setCamera({});
     setRegion(region);
