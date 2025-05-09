@@ -1,10 +1,11 @@
 import { PRIMARY_COLOR } from "@/utils/theme";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Tabs } from "expo-router";
+import { wrap as wrapSentry } from "@sentry/react-native";
 
 const TAB_ICON_SIZE = 24;
 
-export default function TabLayout() {
+export default wrapSentry(function TabLayout() {
   return (
     <Tabs
       screenOptions={{
@@ -53,4 +54,4 @@ export default function TabLayout() {
       />
     </Tabs>
   );
-}
+});

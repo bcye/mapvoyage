@@ -81,7 +81,7 @@ const trpcClient = trpc.createClient({
  * This component provides the TRPC and QueryClient contexts for state and data management, and embeds a MapLayout that displays the map along with a bottom sheet containing the navigation stack.
  */
 
-export default wrapSentry(function RootLayout() {
+export default function RootLayout() {
   const [fullscreen, setFullscreen] = useState(false);
 
   const stack = (
@@ -111,7 +111,7 @@ export default wrapSentry(function RootLayout() {
       </trpc.Provider>
     </FullScreenProvider>
   );
-});
+}
 
 const snapPoints = ["20%", "40%", "50%"];
 const initialSnapIndex = 1;
