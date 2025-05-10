@@ -21,7 +21,7 @@ export default function Layout() {
     AsyncStorage.getItem("sentryConsent").then((v) =>
       setSentryConsent(!!parseInt(v ?? "0")),
     );
-  });
+  }, []);
 
   useEffect(() => {
     if (sentryConsent) {
