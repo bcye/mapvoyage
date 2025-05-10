@@ -17,52 +17,19 @@ import {
   UserLocation,
   VectorSource,
 } from "@maplibre/maplibre-react-native";
-import { init as initSentry } from "@sentry/react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
+import {
+  getCurrentPositionAsync,
+  getLastKnownPositionAsync,
+  LocationAccuracy,
+  requestForegroundPermissionsAsync,
+} from "expo-location";
 import { Stack, useRouter } from "expo-router";
 import { MutableRefObject, useRef, useState } from "react";
 import { Dimensions, StyleSheet, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Card, TouchableOpacity } from "react-native-ui-lib";
-import {
-  requestForegroundPermissionsAsync,
-  getLastKnownPositionAsync,
-  getCurrentPositionAsync,
-  LocationAccuracy,
-} from "expo-location";
-
-initSentry({
-  dsn: "https://d10c9861a757ad983925f6f01d4dde59@o4509253037850624.ingest.de.sentry.io/4509253068718160",
-
-  beforeBreadcrumb(breadcrumb, hint) {
-    // ensure no PII is sent via http breadcrumbs (path & query encodes PII)
-    // IP storage is disabled server-side
-    if (
-      breadcrumb.category === "xhr" ||
-      breadcrumb.category === "http" ||
-      breadcrumb.category === "fetch"
-    ) {
-      if (breadcrumb.data?.url) {
-        try {
-          // Parse the URL to get just the origin
-          const url = new URL(breadcrumb.data.url);
-          breadcrumb.data.url = url.origin;
-          return breadcrumb;
-        } catch (e) {
-          console.error("url parsing failed for beforeBreadcrumb");
-        }
-      }
-
-      // should we not be able to parse correctly, return null to be on the safe side
-      return null;
-    } else {
-      return breadcrumb;
-    }
-  },
-
-  enabled: !__DEV__,
-});
 
 const queryClient = new QueryClient();
 const trpcClient = trpc.createClient({
