@@ -6,7 +6,6 @@ import {
 } from "@/utils/scroll-ref-context";
 import { Region, useMapStore } from "@/utils/store";
 import { trpc } from "@/utils/trpc";
-import { IconProps } from "@expo/vector-icons/build/createIconSet";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import BottomSheet from "@gorhom/bottom-sheet";
@@ -18,7 +17,7 @@ import {
   UserLocation,
   VectorSource,
 } from "@maplibre/maplibre-react-native";
-import { init as initSentry, wrap as wrapSentry } from "@sentry/react-native";
+import { init as initSentry } from "@sentry/react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { Stack, useRouter } from "expo-router";
@@ -32,7 +31,6 @@ import {
   getCurrentPositionAsync,
   LocationAccuracy,
 } from "expo-location";
-import useDebouncedEffect from "@/hooks/use-debounced-effect";
 
 initSentry({
   dsn: "https://d10c9861a757ad983925f6f01d4dde59@o4509253037850624.ingest.de.sentry.io/4509253068718160",
@@ -80,7 +78,6 @@ const trpcClient = trpc.createClient({
  *
  * This component provides the TRPC and QueryClient contexts for state and data management, and embeds a MapLayout that displays the map along with a bottom sheet containing the navigation stack.
  */
-
 export default function RootLayout() {
   const [fullscreen, setFullscreen] = useState(false);
 

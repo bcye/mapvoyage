@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Slot, Stack } from "expo-router";
 import { hide, preventAutoHideAsync } from "expo-splash-screen";
 import { useCallback, useEffect, useState } from "react";
 import { Button, Text, View } from "react-native-ui-lib";
@@ -111,10 +111,8 @@ export default function Layout() {
     );
   } else {
     return (
-      <View onLayout={hide}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
+      <View onLayout={hide} style={{ flex: 1 }}>
+        <Slot />
       </View>
     );
   }
