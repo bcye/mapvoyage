@@ -48,6 +48,31 @@
           "project": "app",
           "organization": "bcye"
         }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "node_modules/@expo-google-fonts/fraunces/100Thin/Fraunces_100Thin.ttf",
+            "node_modules/@expo-google-fonts/fraunces/100Thin_Italic/Fraunces_100Thin_Italic.ttf",
+            "node_modules/@expo-google-fonts/fraunces/200ExtraLight/Fraunces_200ExtraLight.ttf",
+            "node_modules/@expo-google-fonts/fraunces/200ExtraLight_Italic/Fraunces_200ExtraLight_Italic.ttf",
+            "node_modules/@expo-google-fonts/fraunces/300Light/Fraunces_300Light.ttf",
+            "node_modules/@expo-google-fonts/fraunces/300Light_Italic/Fraunces_300Light_Italic.ttf",
+            "node_modules/@expo-google-fonts/fraunces/400Regular/Fraunces_400Regular.ttf",
+            "node_modules/@expo-google-fonts/fraunces/400Regular_Italic/Fraunces_400Regular_Italic.ttf",
+            "node_modules/@expo-google-fonts/fraunces/500Medium/Fraunces_500Medium.ttf",
+            "node_modules/@expo-google-fonts/fraunces/500Medium_Italic/Fraunces_500Medium_Italic.ttf",
+            "node_modules/@expo-google-fonts/fraunces/600SemiBold/Fraunces_600SemiBold.ttf",
+            "node_modules/@expo-google-fonts/fraunces/600SemiBold_Italic/Fraunces_600SemiBold_Italic.ttf",
+            "node_modules/@expo-google-fonts/fraunces/700Bold/Fraunces_700Bold.ttf",
+            "node_modules/@expo-google-fonts/fraunces/700Bold_Italic/Fraunces_700Bold_Italic.ttf",
+            "node_modules/@expo-google-fonts/fraunces/800ExtraBold/Fraunces_800ExtraBold.ttf",
+            "node_modules/@expo-google-fonts/fraunces/800ExtraBold_Italic/Fraunces_800ExtraBold_Italic.ttf",
+            "node_modules/@expo-google-fonts/fraunces/900Black/Fraunces_900Black.ttf",
+            "node_modules/@expo-google-fonts/fraunces/900Black_Italic/Fraunces_900Black_Italic.ttf"
+          ]
+        }
       ]
     ],
     "experiments": {

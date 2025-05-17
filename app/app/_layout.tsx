@@ -1,14 +1,16 @@
 import { Slot, Stack } from "expo-router";
 import { hide, preventAutoHideAsync } from "expo-splash-screen";
 import { useCallback, useEffect, useState } from "react";
-import { Button, Text, View } from "react-native-ui-lib";
+import { Button, Text, ThemeManager, View } from "react-native-ui-lib";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Linking } from "react-native";
-import { PRIMARY_COLOR } from "@/utils/theme";
+import { initialiseTheme, PRIMARY_COLOR } from "@/utils/theme";
 import { init as initSentry, wrap as wrapSentry } from "@sentry/react-native";
 
 // See https://docs.expo.dev/versions/latest/sdk/splash-screen/#usage for explanation on how this works
 preventAutoHideAsync();
+
+initialiseTheme();
 
 export default function Layout() {
   const [privacyConsent, setPrivacyConsent] = useState<boolean | null>(null);
