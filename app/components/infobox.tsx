@@ -1,14 +1,14 @@
+import PageRootView from "@/app/(tabs)/index/page/[pageId]/_page-root-view";
 import useWikiQuery from "@/hooks/use-wiki-query";
 import { Bbox } from "@/types/maptiler";
-import { NodeType } from "@/types/nodes";
 import { Region } from "@/utils/store";
 import { trpc } from "@/utils/trpc";
-import { Link, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import React, { useMemo } from "react";
-import { Card, GridList, SkeletonView, View } from "react-native-ui-lib";
+import { View } from "react-native-ui-lib";
 import { useDebounce } from "use-debounce";
 /**
- * Displays an information box using the provided map region.
+ * Displays an information bx using the provided map region.
  *
  * The Infobox component debounces the region data, constructs a bounding box and coordinate pair from the region's
  * center and bounds, and uses these values to fetch page details via a TRPC query. While the query is in progress,
@@ -39,52 +39,7 @@ export default function Infobox({ region }: { region: Region }) {
       <Stack.Screen
         options={{ title: wikiQuery.data?.properties.title ?? "Loading" }}
       />
-      <SkeletonView
-        template={SkeletonView.templates.LIST_ITEM}
-        showContent={wikiQuery.isSuccess}
-        renderContent={() =>
-          !!wikiQuery.data && (
-            <GridList
-              data={wikiQuery.data.children.filter(
-                (c) => c.type === NodeType.Section,
-              )}
-              numColumns={2}
-              itemSpacing={8}
-              renderItem={({ item }) => (
-                <Infocard
-                  title={item.properties.title}
-                  pageId={idQuery.data!}
-                />
-              )}
-            />
-          )
-        }
-      />
+      <PageRootView pageQuery={wikiQuery} id={idQuery.data} />
     </View>
-  );
-}
-
-/**
- * Renders a clickable infocard that links to a specific page section.
- *
- * This component creates a card-based link that navigates to a dynamic route structured as "/page/[pageId]/section/[title]".
- * The card displays the provided title, offering a concise navigational element within the app.
- *
- * @param title - The title displayed on the card and used as part of the destination route.
- * @param pageId - The identifier for the page, used to construct the dynamic navigation route.
- */
-function Infocard({ title, pageId }: { title: string; pageId: string }) {
-  return (
-    <Link
-      asChild
-      href={{
-        pathname: "/page/[pageId]/section/[title]",
-        params: { pageId, title },
-      }}
-    >
-      <Card flex padding-12 height={48}>
-        <Card.Section content={[{ text: title, text60: true, grey10: true }]} />
-      </Card>
-    </Link>
   );
 }
