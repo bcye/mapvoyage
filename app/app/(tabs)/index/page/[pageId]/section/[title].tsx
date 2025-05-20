@@ -1,7 +1,7 @@
 import WikiContent from "@/components/render-node";
 import useWikiQuery from "@/hooks/use-wiki-query";
-import { useIsFullscreen } from "@/utils/fullscreen-context";
-import { useScrollRef } from "@/utils/scroll-ref-context";
+import { useIsFullscreen } from "@/hooks/fullscreen-context";
+import { useScrollRef } from "@/hooks/scroll-ref-context";
 import { NodeType, SectionNode } from "@bcye/structured-wikivoyage-types";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { Stack, useLocalSearchParams } from "expo-router";

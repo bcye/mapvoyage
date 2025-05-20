@@ -1,9 +1,9 @@
-import { FullScreenProvider } from "@/utils/fullscreen-context";
+import { FullScreenProvider } from "@/hooks/fullscreen-context";
 import { IconName } from "@/utils/icon.types";
 import {
   ScrollRefProvider,
   useBottomSheetRef,
-} from "@/utils/scroll-ref-context";
+} from "@/hooks/scroll-ref-context";
 import { Region, useMapStore } from "@/utils/store";
 import { trpc } from "@/utils/trpc";
 import Fontisto from "@expo/vector-icons/Fontisto";
