@@ -1,8 +1,10 @@
+import { useIsFullscreen } from "@/hooks/use-is-fullscreen";
 import { NodeType, RootNode } from "@bcye/structured-wikivoyage-types";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { UseQueryResult } from "@tanstack/react-query";
 import { Link } from "expo-router";
 import { filter, map, splitEvery } from "ramda";
+import { ScrollView } from "react-native";
 import { Card, SkeletonView, View } from "react-native-ui-lib";
 import { Text } from "react-native-ui-lib";
 
@@ -13,6 +15,28 @@ export default function PageRootView({
   pageQuery: UseQueryResult<RootNode, Error>;
   id: string;
 }) {
+  const isFullscreen = useIsFullscreen();
+
+  const getData = () =>
+    map(
+      ([item1, item2]) => (
+        <View
+          flex
+          row
+          gap-8
+          marginB-8
+          key={item1.properties.title + item2?.properties.title}
+        >
+          <Infocard title={item1.properties.title} pageId={id} />
+          {item2 && <Infocard title={item2.properties.title} pageId={id} />}
+        </View>
+      ),
+      splitEvery(
+        2,
+        filter((c) => c.type === NodeType.Section, pageQuery.data.children),
+      ),
+    );
+
   return (
     <SkeletonView
       template={SkeletonView.templates.LIST_ITEM}
@@ -24,31 +48,11 @@ export default function PageRootView({
             loaded.
           </Text>
         ) : pageQuery.data ? (
-          <BottomSheetScrollView>
-            {map(
-              ([item1, item2]) => (
-                <View
-                  flex
-                  row
-                  gap-8
-                  marginB-8
-                  key={item1.properties.title + item2?.properties.title}
-                >
-                  <Infocard title={item1.properties.title} pageId={id} />
-                  {item2 && (
-                    <Infocard title={item2.properties.title} pageId={id} />
-                  )}
-                </View>
-              ),
-              splitEvery(
-                2,
-                filter(
-                  (c) => c.type === NodeType.Section,
-                  pageQuery.data.children,
-                ),
-              ),
-            )}
-          </BottomSheetScrollView>
+          !isFullscreen ? (
+            <BottomSheetScrollView>{getData()}</BottomSheetScrollView>
+          ) : (
+            <ScrollView>{getData()}</ScrollView>
+          )
         ) : null
       }
     />

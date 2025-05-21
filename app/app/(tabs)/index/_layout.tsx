@@ -31,15 +31,6 @@ import { useDebounce } from "use-debounce";
 import { Bbox } from "@/types/maptiler";
 import { CurrentIdContext } from "@/hooks/use-current-id";
 
-const queryClient = new QueryClient();
-const trpcClient = trpc.createClient({
-  links: [
-    httpBatchLink({
-      url: `${process.env.EXPO_PUBLIC_TRPC_BASE_URL}`,
-    }),
-  ],
-});
-
 /**
  * Root layout component that wraps the application with data providers and renders the main interface.
  *
@@ -87,13 +78,9 @@ export default function RootLayout() {
   return (
     <CurrentIdContext.Provider value={idQuery.data?.id ?? null}>
       <FullScreenProvider fullscreen={fullscreen}>
-        <trpc.Provider client={trpcClient} queryClient={queryClient}>
-          <QueryClientProvider client={queryClient}>
-            <ScrollRefProvider>
-              {!fullscreen ? <MapLayout>{stack}</MapLayout> : stack}
-            </ScrollRefProvider>
-          </QueryClientProvider>
-        </trpc.Provider>
+        <ScrollRefProvider>
+          {!fullscreen ? <MapLayout>{stack}</MapLayout> : stack}
+        </ScrollRefProvider>
       </FullScreenProvider>
     </CurrentIdContext.Provider>
   );
