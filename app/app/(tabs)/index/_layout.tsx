@@ -1,9 +1,6 @@
-import { FullScreenProvider } from "@/hooks/fullscreen-context";
+import { FullScreenProvider } from "@/hooks/use-is-fullscreen";
 import { IconName } from "@/utils/icon.types";
-import {
-  ScrollRefProvider,
-  useBottomSheetRef,
-} from "@/hooks/scroll-ref-context";
+import { ScrollRefProvider, useBottomSheetRef } from "@/hooks/use-scroll-ref";
 import { Region, useMapStore } from "@/utils/store";
 import { trpc } from "@/utils/trpc";
 import Fontisto from "@expo/vector-icons/Fontisto";
@@ -26,10 +23,13 @@ import {
   requestForegroundPermissionsAsync,
 } from "expo-location";
 import { Stack, useRouter } from "expo-router";
-import { MutableRefObject, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
 import { Dimensions, StyleSheet, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Card, TouchableOpacity } from "react-native-ui-lib";
+import { useDebounce } from "use-debounce";
+import { Bbox } from "@/types/maptiler";
+import { CurrentIdContext } from "@/hooks/use-current-id";
 
 const queryClient = new QueryClient();
 const trpcClient = trpc.createClient({
@@ -48,6 +48,26 @@ const trpcClient = trpc.createClient({
 export default function RootLayout() {
   const [fullscreen, setFullscreen] = useState(false);
 
+  const { region } = useMapStore();
+  const [dRegion] = useDebounce(region, 200);
+
+  const query = useMemo(() => {
+    if (dRegion) {
+      const [lng, lat] = dRegion.geometry.coordinates;
+      // construct a bounding box from the visible bounds
+      const [ne, sw] = dRegion.properties.visibleBounds;
+      const bbox: Bbox = [sw[0], sw[1], ne[0], ne[1]];
+      return {
+        bbox,
+        latLng: [lat, lng] as [number, number],
+      };
+    } else return undefined;
+  }, [dRegion]);
+  // @ts-ignore query is not run when undefined so ok
+  const idQuery = trpc.getPage.useQuery(query, {
+    enabled: !!query,
+  });
+
   const stack = (
     <Stack
       screenOptions={{
@@ -65,15 +85,17 @@ export default function RootLayout() {
   );
 
   return (
-    <FullScreenProvider fullscreen={fullscreen}>
-      <trpc.Provider client={trpcClient} queryClient={queryClient}>
-        <QueryClientProvider client={queryClient}>
-          <ScrollRefProvider>
-            {!fullscreen ? <MapLayout>{stack}</MapLayout> : stack}
-          </ScrollRefProvider>
-        </QueryClientProvider>
-      </trpc.Provider>
-    </FullScreenProvider>
+    <CurrentIdContext.Provider value={idQuery.data?.id ?? null}>
+      <FullScreenProvider fullscreen={fullscreen}>
+        <trpc.Provider client={trpcClient} queryClient={queryClient}>
+          <QueryClientProvider client={queryClient}>
+            <ScrollRefProvider>
+              {!fullscreen ? <MapLayout>{stack}</MapLayout> : stack}
+            </ScrollRefProvider>
+          </QueryClientProvider>
+        </trpc.Provider>
+      </FullScreenProvider>
+    </CurrentIdContext.Provider>
   );
 }
 
@@ -99,7 +121,7 @@ function getSheetPosition(snapIndex: number) {
  * @returns A React element representing the combined map and bottom sheet layout.
  */
 function MapLayout({ children }: { children: React.ReactNode }) {
-  const { setRegion, markers } = useMapStore();
+  const { setRegion, markers, region } = useMapStore();
   const router = useRouter();
   const bottomSheetRef = useBottomSheetRef();
   const [sheetHeight, setSheetHeight] = useState(() =>
@@ -110,6 +132,17 @@ function MapLayout({ children }: { children: React.ReactNode }) {
     cameraRef.current?.setCamera({});
     setRegion(region);
   }
+
+  useEffect(function recenterOnRegion() {
+    if (region && cameraRef.current) {
+      cameraRef.current?.setCamera({
+        centerCoordinate: region.geometry.coordinates,
+        zoomLevel: region.properties.zoomLevel,
+        animationDuration: 300,
+      });
+    }
+    // run only when toggling between full screen/reinstantiating map view
+  }, []);
 
   function onSheetPositionChange(snapIndex: number) {
     setSheetHeight(getSheetPosition(snapIndex));
