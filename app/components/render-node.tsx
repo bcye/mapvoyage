@@ -25,7 +25,7 @@ import {
 } from "react-native";
 import { useMapStore } from "@/utils/store";
 import { useLocalSearchParams, usePathname } from "expo-router";
-import { useBottomSheetRef, useScrollRef } from "@/hooks/scroll-ref-context";
+import { useBottomSheetRef, useScrollRef } from "@/hooks/use-scroll-ref";
 export default function WikiContent({
   node,
   root = false,
