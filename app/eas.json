@@ -6,40 +6,13 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal",
-      "ios": {
-        "bundleIdentifier": "eu.bruceroettgers.mapvoyage.development"
-      },
-      "android": {
-        "packageName": "eu.bruceroettgers.mapvoyage.development"
-      },
-      "configure": {
-        "appName": "Mapvoyage Development"
-      }
+      "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal",
-      "ios": {
-        "bundleIdentifier": "eu.bruceroettgers.mapvoyage.preview"
-      },
-      "android": {
-        "packageName": "eu.bruceroettgers.mapvoyage.preview"
-      },
-      "configure": {
-        "appName": "Mapvoyage Preview"
-      }
+      "distribution": "internal"
     },
     "production": {
-      "autoIncrement": true,
-      "ios": {
-        "bundleIdentifier": "eu.bruceroettgers.mapvoyage"
-      },
-      "android": {
-        "packageName": "eu.bruceroettgers.mapvoyage"
-      },
-      "configure": {
-        "appName": "Mapvoyage"
-      }
+      "autoIncrement": true
     }
   },
   "submit": {

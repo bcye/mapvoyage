@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Mapvoyage Development",
+    "name": "Mapvoyage",
     "slug": "mapvoyage",
-    "version": "0.8.0",
+    "version": "0.9.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -12,7 +12,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "eu.bruceroettgers.mapvoyage.development",
+      "package": "eu.bruceroettgers.mapvoyage",
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION"
