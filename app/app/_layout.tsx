@@ -1,11 +1,11 @@
-import { Slot, Stack } from "expo-router";
-import { hide, preventAutoHideAsync } from "expo-splash-screen";
-import { useCallback, useEffect, useState } from "react";
-import { Button, Text, View } from "react-native-ui-lib";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Linking } from "react-native";
 import { PRIMARY_COLOR } from "@/utils/theme";
-import { init as initSentry, wrap as wrapSentry } from "@sentry/react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { init as initSentry } from "@sentry/react-native";
+import { Stack } from "expo-router";
+import { hide, preventAutoHideAsync } from "expo-splash-screen";
+import { useEffect, useState } from "react";
+import { Linking } from "react-native";
+import { Button, Text, View } from "react-native-ui-lib";
 
 // See https://docs.expo.dev/versions/latest/sdk/splash-screen/#usage for explanation on how this works
 preventAutoHideAsync();
@@ -112,7 +112,7 @@ export default function Layout() {
   } else {
     return (
       <View onLayout={hide} style={{ flex: 1 }}>
-        <Slot />
+        <Stack screenOptions={{ headerShown: false }} />
       </View>
     );
   }

@@ -7,6 +7,7 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { ScrollView } from "react-native";
 import { SkeletonView, View } from "react-native-ui-lib";
+import useBackOnMapMove from "@/hooks/use-back-on-map-move";
 
 /**
  * Renders a specific section of a Wikipedia page in Markdown format.
@@ -23,6 +24,9 @@ export default function Section() {
   ) as SectionNode | undefined;
   const ref = useScrollRef();
   const isFullscreen = useIsFullscreen();
+
+  useBackOnMapMove();
+
   if (!section) return null;
 
   return (
