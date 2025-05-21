@@ -25,7 +25,7 @@ export default function Section() {
   const ref = useScrollRef();
   const isFullscreen = useIsFullscreen();
 
-  useBackOnMapMove();
+  useBackOnMapMove(wikiQuery.isSuccess);
 
   if (!section) return null;
 

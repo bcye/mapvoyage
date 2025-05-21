@@ -18,7 +18,12 @@ export type Store = {
 
 export const useMapStore = create<Store>((set) => ({
   region: null,
-  setRegion: (region: Region) => set({ region }),
+  setRegion: (region: Region | ((region: Region | null) => Region)) =>
+    set(
+      typeof region == "function"
+        ? (state) => ({ region: region(state.region) })
+        : { region },
+    ),
 
   markers: [],
   registerMarker(marker) {

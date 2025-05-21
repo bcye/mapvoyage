@@ -7,14 +7,19 @@ import {
 import useCurrentId from "./use-current-id";
 import { useEffect } from "react";
 
-export default function useBackOnMapMove() {
+export default function useBackOnMapMove(finishedLoading: boolean) {
   const { pageId } = useLocalSearchParams();
   const router = useRouter();
   const id = useCurrentId();
 
   useEffect(() => {
-    if (id !== null && typeof pageId == "string" && id !== pageId) {
+    if (
+      finishedLoading &&
+      id !== null &&
+      typeof pageId == "string" &&
+      id !== pageId
+    ) {
       router.dismissAll();
     }
-  }, [id, pageId]);
+  }, [finishedLoading, id, pageId]);
 }

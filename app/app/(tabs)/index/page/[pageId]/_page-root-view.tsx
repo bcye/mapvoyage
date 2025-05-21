@@ -1,9 +1,11 @@
 import { useIsFullscreen } from "@/hooks/use-is-fullscreen";
+import { useMapStore } from "@/utils/store";
 import { NodeType, RootNode } from "@bcye/structured-wikivoyage-types";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { UseQueryResult } from "@tanstack/react-query";
 import { Link, Stack } from "expo-router";
 import { filter, map, splitEvery } from "ramda";
+import { useEffect } from "react";
 import { ScrollView } from "react-native";
 import { Card, SkeletonView, View } from "react-native-ui-lib";
 import { Text } from "react-native-ui-lib";

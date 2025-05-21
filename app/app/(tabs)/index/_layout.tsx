@@ -1,5 +1,6 @@
 import { CurrentIdContext } from "@/hooks/use-current-id";
 import { FullScreenProvider } from "@/hooks/use-is-fullscreen";
+import { CameraRefContext } from "@/hooks/use-move-to";
 import { ScrollRefProvider, useBottomSheetRef } from "@/hooks/use-scroll-ref";
 import { Bbox } from "@/types/maptiler";
 import { IconName } from "@/utils/icon.types";
@@ -127,20 +128,22 @@ function MapLayout({ children }: { children: React.ReactNode }) {
     setRegion(region);
   }
 
-  useLayoutEffect(function recenterOnRegion() {
-    if (region) {
-      // kind of a hack, the camera is not immediately available and when it is region will already be overriden via onIdle
-      // so we wait for a frame and then move back to the region
-      requestAnimationFrame(() => {
-        cameraRef.current?.setCamera({
-          centerCoordinate: region.geometry.coordinates,
-          zoomLevel: region.properties.zoomLevel,
-          animationDuration: 0,
+  useLayoutEffect(
+    function recenterOnRegion() {
+      if (region) {
+        // kind of a hack, the camera is not immediately available and when it is region will already be overriden via onIdle
+        // so we wait for a frame and then move back to the region
+        requestAnimationFrame(() => {
+          cameraRef.current?.setCamera({
+            centerCoordinate: region.geometry.coordinates,
+            zoomLevel: region.properties.zoomLevel,
+            animationDuration: 0,
+          });
         });
-      });
-    }
-    // run only when toggling between full screen/reinstantiating map view
-  }, []);
+      }
+    },
+    [region],
+  );
 
   function onSheetPositionChange(snapIndex: number) {
     setSheetHeight(getSheetPosition(snapIndex));
@@ -149,76 +152,86 @@ function MapLayout({ children }: { children: React.ReactNode }) {
   const cameraRef: MutableRefObject<null | CameraRef> = useRef(null);
 
   return (
-    <GestureHandlerRootView style={styles.container}>
-      <MapView
-        style={styles.map}
-        mapStyle={`https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.EXPO_PUBLIC_MAPTILER_KEY}`}
-        onRegionDidChange={onIdle}
-        regionDidChangeDebounceTime={200}
-        attributionPosition={{
-          left: 8,
-          top: 8,
-        }}
-      >
-        <Camera ref={cameraRef} />
-        <UserLocation />
-        <VectorSource
-          id="maptiler"
-          url={`https://api.maptiler.com/tiles/v3/tiles.json?key=${process.env.EXPO_PUBLIC_MAPTILER_KEY}`}
-        />
-        {markers.map((m, idx) =>
-          m.long && m.lat ? (
-            <MarkerView coordinate={[m.long, m.lat]} key={m.id}>
-              <TouchableOpacity
-                onPressIn={() => {
-                  console.log("navigating");
-                  router.navigate(m.link + "?scrollTo=" + m.id);
-                }}
-                style={{ position: "relative", width: 22, zIndex: 1000 }}
-              >
-                <Fontisto
-                  name="map-marker"
-                  size={28}
-                  color={"red"}
-                  style={{ zIndex: 1 }}
-                />
-                <Text
-                  style={{
-                    position: "absolute",
-                    left: 0,
-                    right: 0,
-                    top: 2,
-                    textAlign: "center",
-                    color: "white",
-                    fontSize: 12,
-                    fontWeight: "bold",
-                    zIndex: 2,
+    <CameraRefContext.Provider
+      value={(lng, lat, zoom) => {
+        cameraRef.current?.setCamera({
+          centerCoordinate: [lng, lat],
+          zoomLevel: zoom,
+          animationDuration: 300,
+        });
+      }}
+    >
+      <GestureHandlerRootView style={styles.container}>
+        <MapView
+          style={styles.map}
+          mapStyle={`https://api.maptiler.com/maps/streets-v2/style.json?key=${process.env.EXPO_PUBLIC_MAPTILER_KEY}`}
+          onRegionDidChange={onIdle}
+          regionDidChangeDebounceTime={200}
+          attributionPosition={{
+            left: 8,
+            top: 8,
+          }}
+        >
+          <Camera ref={cameraRef} />
+          <UserLocation />
+          <VectorSource
+            id="maptiler"
+            url={`https://api.maptiler.com/tiles/v3/tiles.json?key=${process.env.EXPO_PUBLIC_MAPTILER_KEY}`}
+          />
+          {markers.map((m, idx) =>
+            m.long && m.lat ? (
+              <MarkerView coordinate={[m.long, m.lat]} key={m.id}>
+                <TouchableOpacity
+                  onPressIn={() => {
+                    console.log("navigating");
+                    router.navigate(m.link + "?scrollTo=" + m.id);
                   }}
+                  style={{ position: "relative", width: 22, zIndex: 1000 }}
                 >
-                  {idx + 1}
-                </Text>
-              </TouchableOpacity>
-            </MarkerView>
-          ) : null,
-        )}
-      </MapView>
-      <GeolocateControl
-        position={{
-          bottom: sheetHeight + 4,
-          right: 13,
-        }}
-        cameraRef={cameraRef}
-      />
-      <BottomSheet
-        index={initialSnapIndex}
-        snapPoints={snapPoints}
-        enableDynamicSizing={false}
-        ref={bottomSheetRef}
-        onChange={onSheetPositionChange}
-      >
-        {children}
-      </BottomSheet>
-    </GestureHandlerRootView>
+                  <Fontisto
+                    name="map-marker"
+                    size={28}
+                    color={"red"}
+                    style={{ zIndex: 1 }}
+                  />
+                  <Text
+                    style={{
+                      position: "absolute",
+                      left: 0,
+                      right: 0,
+                      top: 2,
+                      textAlign: "center",
+                      color: "white",
+                      fontSize: 12,
+                      fontWeight: "bold",
+                      zIndex: 2,
+                    }}
+                  >
+                    {idx + 1}
+                  </Text>
+                </TouchableOpacity>
+              </MarkerView>
+            ) : null,
+          )}
+        </MapView>
+        <GeolocateControl
+          position={{
+            bottom: sheetHeight + 4,
+            right: 13,
+          }}
+          cameraRef={cameraRef}
+        />
+        <BottomSheet
+          index={initialSnapIndex}
+          snapPoints={snapPoints}
+          enableDynamicSizing={false}
+          ref={bottomSheetRef}
+          onChange={onSheetPositionChange}
+        >
+          {children}
+        </BottomSheet>
+      </GestureHandlerRootView>
+    </CameraRefContext.Provider>
   );
 }
 
