@@ -2,7 +2,7 @@ import { useIsFullscreen } from "@/hooks/use-is-fullscreen";
 import { NodeType, RootNode } from "@bcye/structured-wikivoyage-types";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { UseQueryResult } from "@tanstack/react-query";
-import { Link } from "expo-router";
+import { Link, Stack } from "expo-router";
 import { filter, map, splitEvery } from "ramda";
 import { ScrollView } from "react-native";
 import { Card, SkeletonView, View } from "react-native-ui-lib";
@@ -38,24 +38,29 @@ export default function PageRootView({
     );
 
   return (
-    <SkeletonView
-      template={SkeletonView.templates.LIST_ITEM}
-      showContent={pageQuery.isSuccess}
-      renderContent={() =>
-        pageQuery.error ? (
-          <Text color="red" text60>
-            A network error occured and the place information could not be
-            loaded.
-          </Text>
-        ) : pageQuery.data && id ? (
-          !isFullscreen ? (
-            <BottomSheetScrollView>{getData()}</BottomSheetScrollView>
-          ) : (
-            <ScrollView>{getData()}</ScrollView>
-          )
-        ) : null
-      }
-    />
+    <View padding-8 flex>
+      <Stack.Screen
+        options={{ title: pageQuery.data?.properties.title ?? "Loading" }}
+      />
+      <SkeletonView
+        template={SkeletonView.templates.LIST_ITEM}
+        showContent={pageQuery.isSuccess}
+        renderContent={() =>
+          pageQuery.error ? (
+            <Text color="red" text60>
+              A network error occured and the place information could not be
+              loaded.
+            </Text>
+          ) : pageQuery.data && id ? (
+            !isFullscreen ? (
+              <BottomSheetScrollView>{getData()}</BottomSheetScrollView>
+            ) : (
+              <ScrollView>{getData()}</ScrollView>
+            )
+          ) : null
+        }
+      />
+    </View>
   );
 }
 
@@ -73,7 +78,7 @@ function Infocard({ title, pageId }: { title: string; pageId: string }) {
     <Link
       asChild
       href={{
-        pathname: "/index/page/[pageId]/section/[title]",
+        pathname: "/page/[pageId]/section/[title]",
         params: { pageId, title },
       }}
     >

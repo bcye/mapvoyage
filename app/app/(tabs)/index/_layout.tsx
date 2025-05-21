@@ -1,6 +1,8 @@
+import { CurrentIdContext } from "@/hooks/use-current-id";
 import { FullScreenProvider } from "@/hooks/use-is-fullscreen";
-import { IconName } from "@/utils/icon.types";
 import { ScrollRefProvider, useBottomSheetRef } from "@/hooks/use-scroll-ref";
+import { Bbox } from "@/types/maptiler";
+import { IconName } from "@/utils/icon.types";
 import { Region, useMapStore } from "@/utils/store";
 import { trpc } from "@/utils/trpc";
 import Fontisto from "@expo/vector-icons/Fontisto";
@@ -14,8 +16,6 @@ import {
   UserLocation,
   VectorSource,
 } from "@maplibre/maplibre-react-native";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink } from "@trpc/client";
 import {
   getCurrentPositionAsync,
   getLastKnownPositionAsync,
@@ -25,7 +25,6 @@ import {
 import { Stack, useRouter } from "expo-router";
 import {
   MutableRefObject,
-  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -35,8 +34,6 @@ import { Dimensions, StyleSheet, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Card, TouchableOpacity } from "react-native-ui-lib";
 import { useDebounce } from "use-debounce";
-import { Bbox } from "@/types/maptiler";
-import { CurrentIdContext } from "@/hooks/use-current-id";
 
 /**
  * Root layout component that wraps the application with data providers and renders the main interface.

@@ -14,6 +14,7 @@ import {
   UseSearchBoxProps,
 } from "react-instantsearch-core";
 import { useRef, useState } from "react";
+import { useRouter } from "expo-router";
 
 // See:
 // https://www.algolia.com/doc/guides/building-search-ui/going-further/native/react
@@ -41,17 +42,19 @@ function InfiniteHits(props: UseInfiniteHitsProps) {
     ...props,
     escapeHTML: false,
   });
+  const router = useRouter();
 
   function openPlace(objectID: string) {
     // TODO: Will be implemented in a later PR
     console.log(objectID);
+    router.navigate("/page/" + objectID);
   }
 
   return (
     <FlatList
       style={{ flex: 1 }}
       data={items}
-      keyExtractor={(item) => item.objectID}
+      keyExtractor={(item) => item.id}
       onEndReached={() => {
         if (!isLastPage) {
           showMore();
@@ -62,8 +65,8 @@ function InfiniteHits(props: UseInfiniteHitsProps) {
           paddingH-8
           paddingV-12
           margin-8
-          key={item.objectID}
-          onPress={() => openPlace(item.objectID)}
+          key={item.id}
+          onPress={() => openPlace(item.id)}
         >
           <Text text70>{item.title}</Text>
         </Card>

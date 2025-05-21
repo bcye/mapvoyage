@@ -39,7 +39,7 @@ export default wrapSentry(function TabLayout() {
           }}
         >
           <Tabs.Screen
-            name="explore"
+            name="index"
             options={{
               title: "Explore",
               tabBarIcon: getTabBarIcon("Explore", "map-legend"),

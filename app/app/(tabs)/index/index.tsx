@@ -13,16 +13,8 @@ import PageRootView from "./page/[pageId]/_page-root-view";
  * @returns A React element representing either the Infobox with region information or an empty view.
  */
 export default function Index() {
-  console.log("hello", usePathname());
   const id = useCurrentId();
   const wikiQuery = useWikiQuery(id ? id : undefined);
 
-  return (
-    <View padding-8 flex>
-      <Stack.Screen
-        options={{ title: wikiQuery.data?.properties.title ?? "Loading" }}
-      />
-      <PageRootView pageQuery={wikiQuery} id={id} />
-    </View>
-  );
+  return <PageRootView pageQuery={wikiQuery} id={id} />;
 }
