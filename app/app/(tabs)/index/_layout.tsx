@@ -23,7 +23,14 @@ import {
   requestForegroundPermissionsAsync,
 } from "expo-location";
 import { Stack, useRouter } from "expo-router";
-import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
+import {
+  MutableRefObject,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Dimensions, StyleSheet, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Card, TouchableOpacity } from "react-native-ui-lib";
@@ -116,16 +123,22 @@ function MapLayout({ children }: { children: React.ReactNode }) {
   );
 
   function onIdle(region: Region) {
+    // we cant recenter if we override it here before the cameraRef is available.
+    // so just skip it on the initial call
     cameraRef.current?.setCamera({});
     setRegion(region);
   }
 
-  useEffect(function recenterOnRegion() {
-    if (region && cameraRef.current) {
-      cameraRef.current?.setCamera({
-        centerCoordinate: region.geometry.coordinates,
-        zoomLevel: region.properties.zoomLevel,
-        animationDuration: 300,
+  useLayoutEffect(function recenterOnRegion() {
+    if (region) {
+      // kind of a hack, the camera is not immediately available and when it is region will already be overriden via onIdle
+      // so we wait for a frame and then move back to the region
+      requestAnimationFrame(() => {
+        cameraRef.current?.setCamera({
+          centerCoordinate: region.geometry.coordinates,
+          zoomLevel: region.properties.zoomLevel,
+          animationDuration: 0,
+        });
       });
     }
     // run only when toggling between full screen/reinstantiating map view
