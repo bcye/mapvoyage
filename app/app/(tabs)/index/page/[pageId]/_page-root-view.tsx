@@ -13,7 +13,7 @@ export default function PageRootView({
   id,
 }: {
   pageQuery: UseQueryResult<RootNode, Error>;
-  id: string;
+  id: string | null;
 }) {
   const isFullscreen = useIsFullscreen();
 
@@ -27,13 +27,13 @@ export default function PageRootView({
           marginB-8
           key={item1.properties.title + item2?.properties.title}
         >
-          <Infocard title={item1.properties.title} pageId={id} />
-          {item2 && <Infocard title={item2.properties.title} pageId={id} />}
+          <Infocard title={item1.properties.title} pageId={id!} />
+          {item2 && <Infocard title={item2.properties.title} pageId={id!} />}
         </View>
       ),
       splitEvery(
         2,
-        filter((c) => c.type === NodeType.Section, pageQuery.data.children),
+        filter((c) => c.type === NodeType.Section, pageQuery.data!.children),
       ),
     );
 
@@ -47,7 +47,7 @@ export default function PageRootView({
             A network error occured and the place information could not be
             loaded.
           </Text>
-        ) : pageQuery.data ? (
+        ) : pageQuery.data && id ? (
           !isFullscreen ? (
             <BottomSheetScrollView>{getData()}</BottomSheetScrollView>
           ) : (

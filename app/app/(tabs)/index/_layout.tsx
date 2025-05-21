@@ -83,7 +83,7 @@ export default function RootLayout() {
   );
 
   return (
-    <CurrentIdContext.Provider value={idQuery.data?.id ?? null}>
+    <CurrentIdContext.Provider value={idQuery.data ?? null}>
       <FullScreenProvider fullscreen={fullscreen}>
         <ScrollRefProvider>
           {!fullscreen ? <MapLayout>{stack}</MapLayout> : stack}
@@ -106,7 +106,8 @@ function getSheetPosition(snapIndex: number) {
 /**
  * Renders a layout that integrates a full-screen map view with an overlaying bottom sheet.
  *
- * The component displays a map using MapTiler styles along with user location tracking and map tile sources.
+ * The component dis  console.log(query);
+plays a map using MapTiler styles along with user location tracking and map tile sources.
  * It listens for the map's idle event to update the global map region state via the useMapStore hook.
  * The layout is wrapped in a gesture handler view to support touch interactions, and the supplied children
  * are rendered within the bottom sheet.

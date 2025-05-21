@@ -1,6 +1,8 @@
-import Infobox from "@/components/infobox";
-import { useMapStore } from "@/utils/store";
-import { View } from "react-native";
+import useCurrentId from "@/hooks/use-current-id";
+import useWikiQuery from "@/hooks/use-wiki-query";
+import { Stack } from "expo-router";
+import { View } from "react-native-ui-lib";
+import PageRootView from "./page/[pageId]/_page-root-view";
 
 /**
  * Renders the main index component.
@@ -11,7 +13,15 @@ import { View } from "react-native";
  * @returns A React element representing either the Infobox with region information or an empty view.
  */
 export default function Index() {
-  const { region } = useMapStore();
+  const id = useCurrentId();
+  const wikiQuery = useWikiQuery(id ? id : undefined);
 
-  return region ? <Infobox region={region} /> : <View />;
+  return (
+    <View padding-8 flex>
+      <Stack.Screen
+        options={{ title: wikiQuery.data?.properties.title ?? "Loading" }}
+      />
+      <PageRootView pageQuery={wikiQuery} id={id} />
+    </View>
+  );
 }
