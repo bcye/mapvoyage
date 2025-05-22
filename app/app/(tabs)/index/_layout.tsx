@@ -128,22 +128,19 @@ function MapLayout({ children }: { children: React.ReactNode }) {
     setRegion(region);
   }
 
-  useLayoutEffect(
-    function recenterOnRegion() {
-      if (region) {
-        // kind of a hack, the camera is not immediately available and when it is region will already be overriden via onIdle
-        // so we wait for a frame and then move back to the region
-        requestAnimationFrame(() => {
-          cameraRef.current?.setCamera({
-            centerCoordinate: region.geometry.coordinates,
-            zoomLevel: region.properties.zoomLevel,
-            animationDuration: 0,
-          });
+  useLayoutEffect(function recenterOnRegion() {
+    if (region) {
+      // kind of a hack, the camera is not immediately available and when it is region will already be overriden via onIdle
+      // so we wait for a frame and then move back to the region
+      requestAnimationFrame(() => {
+        cameraRef.current?.setCamera({
+          centerCoordinate: region.geometry.coordinates,
+          zoomLevel: region.properties.zoomLevel,
+          animationDuration: 0,
         });
-      }
-    },
-    [region],
-  );
+      });
+    }
+  }, []);
 
   function onSheetPositionChange(snapIndex: number) {
     setSheetHeight(getSheetPosition(snapIndex));
