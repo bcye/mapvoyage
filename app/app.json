@@ -48,7 +48,8 @@
           "project": "app",
           "organization": "bcye"
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
