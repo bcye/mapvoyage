@@ -1,5 +1,8 @@
-import { View } from "react-native-ui-lib";
+import { SignedIn } from "@/utils/supabase";
+import { Text } from "react-native-ui-lib";
 
 export default function Bookmarks() {
-  return <View />;
+  return (
+    <SignedIn>{({ session }) => <Text>{session.user.email}</Text>}</SignedIn>
+  );
 }
