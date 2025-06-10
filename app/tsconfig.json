@@ -3,8 +3,15 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@server/*": ["../server/*"],
-      "@/*": ["./*"]
+      "@server/*": [
+        "../server/*"
+      ],
+      "@/*": [
+        "./*"
+      ],
+      "tailwind.config": [
+        "./tailwind.config.js"
+      ]
     }
   },
   "include": [
@@ -12,6 +19,7 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "utils/supabase.txs"
+    "utils/supabase.txs",
+    "nativewind-env.d.ts"
   ]
 }
