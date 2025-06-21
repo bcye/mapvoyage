@@ -59,6 +59,7 @@
     "expo-symbols": "~0.4.5",
     "expo-system-ui": "~5.0.8",
     "expo-web-browser": "~14.1.6",
+    "jotai": "^2.12.5",
     "lucide-react-native": "^0.514.0",
     "nativewind": "^4.1.23",
     "ramda": "^0.30.1",
