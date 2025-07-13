@@ -57,6 +57,7 @@ export default wrapSentry(function TabLayout() {
             options={{
               title: "Bookmarks",
               tabBarIcon: getTabBarIcon("Bookmarks", "bookmark-multiple"),
+              headerShown: true
             }}
           />
           <Tabs.Screen
@@ -64,6 +65,7 @@ export default wrapSentry(function TabLayout() {
             options={{
               title: "Settings",
               tabBarIcon: getTabBarIcon("Settings", "cog"),
+              headerShown: true
             }}
           />
         </Tabs>
