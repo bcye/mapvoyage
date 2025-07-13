@@ -120,21 +120,18 @@ function Listing({ listing: { properties } }: { listing: ListingNode }) {
         paddingT-8
         style={{ borderTopColor: "grey", borderTopWidth: 0.5 }}
       >
-        {!!(properties.address || properties.directions) && (
           <TouchableOpacity marginH-4 onPress={openMap}>
             <Text grey20 style={{ alignItems: "center" }}>
               <MaterialCommunityIcons name="map-marker-radius" size={20} />{" "}
               <Text blue10>
-                {properties.address}
+              {properties.address || [properties.lat, properties.long].join(", ")}
                 {!!properties.directions &&
-                  (properties.address ? " " : "") +
                     "(" +
                     properties.directions +
                     ")"}
               </Text>
             </Text>
           </TouchableOpacity>
-        )}
         {!!properties.email && (
           <TouchableOpacity marginH-4 onPress={openEmail}>
             <Text grey20 style={{ alignItems: "center" }}>
@@ -163,10 +160,10 @@ function useRegisterOnMap(
   long: string,
   ref: MutableRefObject<RView | null>,
 ) {
-  const id = useId();
+  const coordsId = `${lat},${long}`;
   const registerCard = useMapStore((s) => s.registerMarker);
   const deregisterCard = useMapStore((s) => s.deregisterMarker);
-  const markerIdx = useMapStore((s) => s.markers.findIndex((m) => m.id == id));
+  const markerIdx = useMapStore((s) => s.markers.findIndex((m) => m.id == coordsId));
   const scrollRef = useScrollRef();
   const bottomSheetRef = useBottomSheetRef();
   const path = usePathname();
@@ -174,7 +171,7 @@ function useRegisterOnMap(
 
   useEffect(() => {
     const marker = {
-      id,
+      id: coordsId,
       lat: parseFloat(lat),
       long: parseFloat(long),
       link: path,
@@ -184,10 +181,10 @@ function useRegisterOnMap(
     return () => {
       deregisterCard(marker);
     };
-  }, [id]);
+  }, [coordsId]);
 
   useEffect(() => {
-    if (scrollTo == id && scrollRef?.current && ref?.current) {
+    if (scrollTo == coordsId && scrollRef?.current && ref?.current) {
       ref.current!.measureLayout(
         scrollRef.current,
         (x, y) => {
@@ -201,7 +198,7 @@ function useRegisterOnMap(
         },
       );
     }
-  }, [scrollTo, id]);
+  }, [scrollTo, coordsId]);
 
   return markerIdx;
 }
