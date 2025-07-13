@@ -120,21 +120,18 @@ function Listing({ listing: { properties } }: { listing: ListingNode }) {
         paddingT-8
         style={{ borderTopColor: "grey", borderTopWidth: 0.5 }}
       >
-        {!!(properties.address || properties.directions) && (
           <TouchableOpacity marginH-4 onPress={openMap}>
             <Text grey20 style={{ alignItems: "center" }}>
               <MaterialCommunityIcons name="map-marker-radius" size={20} />{" "}
               <Text blue10>
-                {properties.address}
+              {properties.address || [properties.lat, properties.long].join(", ")}
                 {!!properties.directions &&
-                  (properties.address ? " " : "") +
                     "(" +
                     properties.directions +
                     ")"}
               </Text>
             </Text>
           </TouchableOpacity>
-        )}
         {!!properties.email && (
           <TouchableOpacity marginH-4 onPress={openEmail}>
             <Text grey20 style={{ alignItems: "center" }}>
