@@ -181,7 +181,7 @@ function MapLayout({ children }: { children: React.ReactNode }) {
                 <TouchableOpacity
                   onPressIn={() => {
                     console.log("navigating");
-                    router.navigate(m.link + "?scrollTo=" + m.id);
+                    router.navigate(m.link + "?scrollTo=" + m.lat + "," + m.long);
                   }}
                   style={{ position: "relative", width: 22, zIndex: 1000 }}
                 >

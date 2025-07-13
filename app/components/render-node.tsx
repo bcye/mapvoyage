@@ -163,10 +163,10 @@ function useRegisterOnMap(
   long: string,
   ref: MutableRefObject<RView | null>,
 ) {
-  const id = useId();
+  const coordsId = `${lat},${long}`;
   const registerCard = useMapStore((s) => s.registerMarker);
   const deregisterCard = useMapStore((s) => s.deregisterMarker);
-  const markerIdx = useMapStore((s) => s.markers.findIndex((m) => m.id == id));
+  const markerIdx = useMapStore((s) => s.markers.findIndex((m) => m.id == coordsId));
   const scrollRef = useScrollRef();
   const bottomSheetRef = useBottomSheetRef();
   const path = usePathname();
@@ -174,7 +174,7 @@ function useRegisterOnMap(
 
   useEffect(() => {
     const marker = {
-      id,
+      id: coordsId,
       lat: parseFloat(lat),
       long: parseFloat(long),
       link: path,
@@ -184,10 +184,10 @@ function useRegisterOnMap(
     return () => {
       deregisterCard(marker);
     };
-  }, [id]);
+  }, [coordsId]);
 
   useEffect(() => {
-    if (scrollTo == id && scrollRef?.current && ref?.current) {
+    if (scrollTo == coordsId && scrollRef?.current && ref?.current) {
       ref.current!.measureLayout(
         scrollRef.current,
         (x, y) => {
@@ -201,7 +201,7 @@ function useRegisterOnMap(
         },
       );
     }
-  }, [scrollTo, id]);
+  }, [scrollTo, coordsId]);
 
   return markerIdx;
 }
