@@ -7,7 +7,7 @@ import { Heading } from "@/components/ui/heading";
 import { useRouter } from "expo-router";
 
 export default function Bookmarks() {
-  const [cities, setCities] = useAtom(citiesAtom);
+  const [cities] = useAtom(citiesAtom);
   const router = useRouter();
 
   if (cities.length === 0) { 
