@@ -5,6 +5,7 @@ import { ScrollRefProvider, useBottomSheetRef } from "@/hooks/use-scroll-ref";
 import { Bbox } from "@/types/maptiler";
 import { IconName } from "@/utils/icon.types";
 import { Region, useMapStore } from "@/utils/store";
+import { PRIMARY_COLOR } from "@/utils/theme";
 import { trpc } from "@/utils/trpc";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -180,15 +181,16 @@ function MapLayout({ children }: { children: React.ReactNode }) {
               <MarkerView coordinate={[m.long, m.lat]} key={m.id}>
                 <TouchableOpacity
                   onPressIn={() => {
-                    console.log("navigating");
-                    router.navigate(m.link + "?scrollTo=" + m.lat + "," + m.long);
+                    router.navigate(
+                      m.link + "?scrollTo=" + m.lat + "," + m.long,
+                    );
                   }}
                   style={{ position: "relative", width: 22, zIndex: 1000 }}
                 >
                   <Fontisto
                     name="map-marker"
                     size={28}
-                    color={"red"}
+                    color={m.type == "normal" ? "red" : PRIMARY_COLOR}
                     style={{ zIndex: 1 }}
                   />
                   <Text

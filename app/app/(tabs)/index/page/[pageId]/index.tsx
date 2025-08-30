@@ -10,7 +10,6 @@ export default function Page() {
   let { pageId } = useLocalSearchParams();
   pageId = typeof pageId === "string" ? pageId : pageId[0];
   const pageQuery = useWikiQuery(pageId);
-  const { setRegion, region } = useMapStore();
   const moveTo = useMoveTo();
 
   useEffect(() => {
