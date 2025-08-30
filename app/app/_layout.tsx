@@ -1,4 +1,6 @@
 import { PRIMARY_COLOR } from "@/utils/theme";
+import "@/global.css";
+import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { init as initSentry } from "@sentry/react-native";
 import { Stack } from "expo-router";
@@ -62,58 +64,57 @@ export default function Layout() {
 
   if (!privacyConsent) {
     return (
-      <View
-        onLayout={hide}
-        padding-32
-        style={{ justifyContent: "center", height: "100%" }}
-      >
-        <Text text40BL>Welcome to Mapvoyage</Text>
-        <Text text70 marginT-8>
-          By using this app you agree to our{" "}
-          <Text
-            underline
-            onPress={() =>
-              Linking.openURL("https://docs.mapvoyage.app/privacy.html")
-            }
-          >
-            privacy policy
+      <GluestackUIProvider mode="light"><View
+          onLayout={hide}
+          padding-32
+          style={{ justifyContent: "center", height: "100%" }}
+        >
+          <Text text40BL>Welcome to Mapvoyage</Text>
+          <Text text70 marginT-8>
+            By using this app you agree to our{" "}
+            <Text
+              underline
+              onPress={() =>
+                Linking.openURL("https://docs.mapvoyage.app/privacy.html")
+              }
+            >
+              privacy policy
+            </Text>
+            . Data is only processed by European cloud providers.
           </Text>
-          . Data is only processed by European cloud providers.
-        </Text>
-        <Text text70 marginT-8>
-          If you allow for bug reporting, they will be processed on European
-          servers by Sentry, an American company.
-        </Text>
-
-        <Button
-          label="Allow Error Reports & Continue"
-          backgroundColor={PRIMARY_COLOR}
-          marginT-16
-          onPress={() => {
-            setPrivacyConsent(true);
-            setSentryConsent(true);
-            AsyncStorage.setItem("privacyConsent", "1");
-            AsyncStorage.setItem("sentryConsent", "1");
-          }}
-        />
-        <Button
-          label="Disallow Error Reports & Continue"
-          backgroundColor={PRIMARY_COLOR}
-          marginT-8
-          onPress={() => {
-            setPrivacyConsent(true);
-            setSentryConsent(false);
-            AsyncStorage.setItem("privacyConsent", "1");
-            AsyncStorage.setItem("sentryConsent", "0");
-          }}
-        />
-      </View>
+          <Text text70 marginT-8>
+            If you allow for bug reporting, they will be processed on European
+            servers by Sentry, an American company.
+          </Text>
+          <Button
+            label="Allow Error Reports & Continue"
+            backgroundColor={PRIMARY_COLOR}
+            marginT-16
+            onPress={() => {
+              setPrivacyConsent(true);
+              setSentryConsent(true);
+              AsyncStorage.setItem("privacyConsent", "1");
+              AsyncStorage.setItem("sentryConsent", "1");
+            }}
+          />
+          <Button
+            label="Disallow Error Reports & Continue"
+            backgroundColor={PRIMARY_COLOR}
+            marginT-8
+            onPress={() => {
+              setPrivacyConsent(true);
+              setSentryConsent(false);
+              AsyncStorage.setItem("privacyConsent", "1");
+              AsyncStorage.setItem("sentryConsent", "0");
+            }}
+          />
+        </View></GluestackUIProvider>
     );
   } else {
     return (
-      <View onLayout={hide} style={{ flex: 1 }}>
-        <Stack screenOptions={{ headerShown: false }} />
-      </View>
+      <GluestackUIProvider mode="light"><View onLayout={hide} style={{ flex: 1 }}>
+          <Stack screenOptions={{ headerShown: false }} />
+        </View></GluestackUIProvider>
     );
   }
 }

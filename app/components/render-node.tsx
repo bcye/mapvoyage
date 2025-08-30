@@ -1,37 +1,37 @@
+import { useBottomSheetRef, useScrollRef } from "@/hooks/use-scroll-ref";
 import {
   ListingNode,
-  MarkerNode,
   NodeType,
   TemplateNode,
-  WikiNode,
+  WikiNode
 } from "@/types/nodes";
+import { useMapStore } from "@/utils/store";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useLocalSearchParams, usePathname } from "expo-router";
 import {
   Fragment,
   MutableRefObject,
-  Ref,
   useEffect,
-  useId,
-  useLayoutEffect,
-  useRef,
+  useRef
 } from "react";
-import Markdown from "react-native-markdown-display";
-import { Card, Text, TouchableOpacity, View } from "react-native-ui-lib";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import {
   Linking,
-  UIManager,
-  View as RView,
-  findNodeHandle,
+  View as RView
 } from "react-native";
-import { useMapStore } from "@/utils/store";
-import { useLocalSearchParams, usePathname } from "expo-router";
-import { useBottomSheetRef, useScrollRef } from "@/hooks/use-scroll-ref";
+import Markdown from "react-native-markdown-display";
+import { Card, Text, TouchableOpacity, View } from "react-native-ui-lib";
+import { HStack } from "./ui/hstack";
+import { Pressable } from "./ui/pressable";
 export default function WikiContent({
   node,
   root = false,
+  isBookmarked,
+  toggleBookmarked,
 }: {
   node: WikiNode;
   root?: boolean;
+  isBookmarked: (id: string) => boolean;
+  toggleBookmarked: (id: string) => void;
 }) {
   switch (node.type) {
     case NodeType.Section:
@@ -50,6 +50,8 @@ export default function WikiContent({
             <WikiContent
               key={node.properties.title + idx.toString()}
               node={c}
+              isBookmarked={isBookmarked}
+              toggleBookmarked={toggleBookmarked}
             />
           ))}
         </Fragment>
@@ -61,7 +63,12 @@ export default function WikiContent({
       return (
         <Fragment>
           {node.children.map((c, idx) => (
-            <WikiContent key={idx} node={c} />
+            <WikiContent 
+              key={idx} 
+              node={c} 
+              isBookmarked={isBookmarked}
+              toggleBookmarked={toggleBookmarked}
+            />
           ))}
         </Fragment>
       );
@@ -72,7 +79,11 @@ export default function WikiContent({
     case NodeType.Buy:
     case NodeType.Sleep:
     case NodeType.Listing:
-      return <Listing listing={node} />;
+      return <Listing 
+        listing={node} 
+        isBookmarked={isBookmarked}
+        toggleBookmarked={toggleBookmarked}
+      />;
     case NodeType.Template:
       // @ts-ignore
       if (node.properties.name == "marker") return <Go node={node} />;
@@ -96,7 +107,15 @@ function Go({
   );
 }
 
-function Listing({ listing: { properties } }: { listing: ListingNode }) {
+function Listing({ 
+  listing: { properties },
+  isBookmarked,
+  toggleBookmarked
+}: { 
+  listing: ListingNode;
+  isBookmarked: (id: string) => boolean;
+  toggleBookmarked: (id: string) => void;
+}) {
   function openMap() {
     Linking.openURL("geo:" + properties.lat + "," + properties.long);
   }
@@ -110,9 +129,21 @@ function Listing({ listing: { properties } }: { listing: ListingNode }) {
 
   return (
     <Card flex paddingV-4 paddingH-8 marginV-4>
-      <Text text70BL>
-        {idx + 1}: {properties.name}
-      </Text>
+      <HStack className="items-center mb-2">
+        <Text text70BL flexG>
+          {idx + 1}: {properties.name}
+        </Text>
+          <Pressable 
+            onPress={() => toggleBookmarked(`${properties.lat},${properties.long}`)}
+            className="flex"
+          >
+            <MaterialCommunityIcons
+              name={isBookmarked(`${properties.lat},${properties.long}`) ? "bookmark" : "bookmark-outline"}
+              size={18}
+              color={isBookmarked(`${properties.lat},${properties.long}`) ? "primary" : "grey"}
+            />
+          </Pressable>
+      </HStack>
       {!!properties.content && <Text>{properties.content}</Text>}
       <View
         ref={ref}

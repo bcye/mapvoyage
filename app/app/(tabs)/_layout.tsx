@@ -53,17 +53,11 @@ export default wrapSentry(function TabLayout() {
             }}
           />
           <Tabs.Screen
-            name="bookmarks"
-            options={{
-              title: "Bookmarks",
-              tabBarIcon: getTabBarIcon("Bookmarks", "bookmark-multiple"),
-            }}
-          />
-          <Tabs.Screen
             name="settings"
             options={{
               title: "Settings",
               tabBarIcon: getTabBarIcon("Settings", "cog"),
+              headerShown: true
             }}
           />
         </Tabs>
