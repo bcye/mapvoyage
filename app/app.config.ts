@@ -11,14 +11,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     ios: {
+      bundleIdentifier: "eu.bruceroettgers.mapvoyage",
       supportsTablet: true,
     },
     android: {
       package: "eu.bruceroettgers.mapvoyage",
-      permissions: [
-        "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.ACCESS_FINE_LOCATION",
-      ],
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon-colour.png",
         monochromeImage: "./assets/images/adaptive-icon-mono.png",
@@ -68,6 +65,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
 
   if (process.env.VARIANT === "development") {
     baseConfig.android!.package = "eu.bruceroettgers.mapvoyage.dev";
+    baseConfig.ios!.bundleIdentifier = "eu.bruceroettgers.mapvoyage.dev";
     baseConfig.name = "Mapvoyage (Dev)";
   }
 
