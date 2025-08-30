@@ -19,3 +19,10 @@ Is not yet set in stone, but mainly:
 * tRPC if a backend is necessary
 * Maptiler for OSM Maps and Geocoding
 * Raw wikitext is precompiled to JSON and served statically from a CDN, see [bcye/structured-wikivoyage-exports](https://github.com/bcye/structured-wikivoyage-exports)
+
+## Supporters
+### SPH
+[![ETH Student Project House](https://github.com/user-attachments/assets/ba5974d7-8f50-4cfe-b082-53ebc93a3e4a)](https://sph.ethz.ch)
+
+### BrowserStack
+This project is tested with BrowserStack
