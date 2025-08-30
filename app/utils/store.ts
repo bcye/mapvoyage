@@ -5,7 +5,7 @@ import { create } from "zustand";
 
 export type Region = GeoJSON.Feature<GeoJSON.Point, RegionPayload>;
 
-export type MapMarker = { id: string; link: string; lat: number; long: number };
+export type MapMarker = { id: string; link: string; lat: number; long: number, isBookmarked: boolean };
 
 export type Store = {
   region: Region | null;
