@@ -6,6 +6,7 @@ import { IconName } from "@/utils/icon.types";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { trpc } from "@/utils/trpc";
 import { httpBatchLink } from "@trpc/client";
+import { Toaster } from "sonner-native";
 
 const TAB_ICON_SIZE = 24;
 
@@ -57,10 +58,11 @@ export default wrapSentry(function TabLayout() {
             options={{
               title: "Settings",
               tabBarIcon: getTabBarIcon("Settings", "cog"),
-              headerShown: true
+              headerShown: true,
             }}
           />
         </Tabs>
+        <Toaster />
       </QueryClientProvider>
     </trpc.Provider>
   );

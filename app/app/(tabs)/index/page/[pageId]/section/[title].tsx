@@ -5,13 +5,14 @@ import { useScrollRef } from "@/hooks/use-scroll-ref";
 import { NodeType, SectionNode } from "@bcye/structured-wikivoyage-types";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { Stack, useLocalSearchParams } from "expo-router";
-import { ScrollView } from "react-native";
+import { Alert, ScrollView } from "react-native";
 import { SkeletonView, View } from "react-native-ui-lib";
 import useBackOnMapMove from "@/hooks/use-back-on-map-move";
 import { citiesAtom, getCityAtom } from "@/utils/bookmarks";
 import { useAtom } from "jotai/react";
 import { useCallback } from "react";
 import { append, assoc, dissoc } from "ramda";
+import { toast } from "sonner-native";
 
 /**
  * Renders a specific section of a Wikipedia page in Markdown format.
@@ -41,6 +42,13 @@ export default function Section() {
 
   const toggleBookmarked = useCallback(
     function toggleBookmarked(id: string) {
+      if (id == ",") {
+        toast.error(
+          "This listing doesn't have a location and can't be bookmarked. Add one on en.wikivoyage.org",
+        );
+        return;
+      }
+
       if (isBookmarked(id)) {
         setBookmarks(dissoc(id, bookmarks));
       } else {
@@ -49,6 +57,7 @@ export default function Section() {
             append({ qid: pageId as string, name: pageTitle! }, cities),
           );
         }
+        // no valid lat-lng
         setBookmarks(
           assoc(
             id,

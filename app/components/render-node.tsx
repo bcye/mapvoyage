@@ -1,23 +1,10 @@
 import { useBottomSheetRef, useScrollRef } from "@/hooks/use-scroll-ref";
-import {
-  ListingNode,
-  NodeType,
-  TemplateNode,
-  WikiNode
-} from "@/types/nodes";
-import { useMapStore } from "@/utils/store";
+import { ListingNode, NodeType, TemplateNode, WikiNode } from "@/types/nodes";
+import { MarkerType, useMapStore } from "@/utils/store";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useLocalSearchParams, usePathname } from "expo-router";
-import {
-  Fragment,
-  MutableRefObject,
-  useEffect,
-  useRef
-} from "react";
-import {
-  Linking,
-  View as RView
-} from "react-native";
+import { Fragment, MutableRefObject, useEffect, useRef } from "react";
+import { Linking, View as RView } from "react-native";
 import Markdown from "react-native-markdown-display";
 import { Card, Text, TouchableOpacity, View } from "react-native-ui-lib";
 import { HStack } from "./ui/hstack";
@@ -63,9 +50,9 @@ export default function WikiContent({
       return (
         <Fragment>
           {node.children.map((c, idx) => (
-            <WikiContent 
-              key={idx} 
-              node={c} 
+            <WikiContent
+              key={idx}
+              node={c}
               isBookmarked={isBookmarked}
               toggleBookmarked={toggleBookmarked}
             />
@@ -79,11 +66,13 @@ export default function WikiContent({
     case NodeType.Buy:
     case NodeType.Sleep:
     case NodeType.Listing:
-      return <Listing 
-        listing={node} 
-        isBookmarked={isBookmarked}
-        toggleBookmarked={toggleBookmarked}
-      />;
+      return (
+        <Listing
+          listing={node}
+          isBookmarked={isBookmarked}
+          toggleBookmarked={toggleBookmarked}
+        />
+      );
     case NodeType.Template:
       // @ts-ignore
       if (node.properties.name == "marker") return <Go node={node} />;
@@ -107,11 +96,11 @@ function Go({
   );
 }
 
-function Listing({ 
+function Listing({
   listing: { properties },
   isBookmarked,
-  toggleBookmarked
-}: { 
+  toggleBookmarked,
+}: {
   listing: ListingNode;
   isBookmarked: (id: string) => boolean;
   toggleBookmarked: (id: string) => void;
@@ -125,7 +114,12 @@ function Listing({
   }
 
   const ref = useRef<RView>(null);
-  const idx = useRegisterOnMap(properties.lat, properties.long, ref);
+  const idx = useRegisterOnMap(
+    properties.lat,
+    properties.long,
+    ref,
+    isBookmarked,
+  );
 
   return (
     <Card flex paddingV-4 paddingH-8 marginV-4>
@@ -133,16 +127,26 @@ function Listing({
         <Text text70BL flexG>
           {idx + 1}: {properties.name}
         </Text>
-          <Pressable 
-            onPress={() => toggleBookmarked(`${properties.lat},${properties.long}`)}
-            className="flex"
-          >
-            <MaterialCommunityIcons
-              name={isBookmarked(`${properties.lat},${properties.long}`) ? "bookmark" : "bookmark-outline"}
-              size={18}
-              color={isBookmarked(`${properties.lat},${properties.long}`) ? "primary" : "grey"}
-            />
-          </Pressable>
+        <Pressable
+          onPress={() =>
+            toggleBookmarked(`${properties.lat},${properties.long}`)
+          }
+          className="flex"
+        >
+          <MaterialCommunityIcons
+            name={
+              isBookmarked(`${properties.lat},${properties.long}`)
+                ? "bookmark"
+                : "bookmark-outline"
+            }
+            size={18}
+            color={
+              isBookmarked(`${properties.lat},${properties.long}`)
+                ? "primary"
+                : "grey"
+            }
+          />
+        </Pressable>
       </HStack>
       {!!properties.content && <Text>{properties.content}</Text>}
       <View
@@ -151,18 +155,16 @@ function Listing({
         paddingT-8
         style={{ borderTopColor: "grey", borderTopWidth: 0.5 }}
       >
-          <TouchableOpacity marginH-4 onPress={openMap}>
-            <Text grey20 style={{ alignItems: "center" }}>
-              <MaterialCommunityIcons name="map-marker-radius" size={20} />{" "}
-              <Text blue10>
-              {properties.address || [properties.lat, properties.long].join(", ")}
-                {!!properties.directions &&
-                    "(" +
-                    properties.directions +
-                    ")"}
-              </Text>
+        <TouchableOpacity marginH-4 onPress={openMap}>
+          <Text grey20 style={{ alignItems: "center" }}>
+            <MaterialCommunityIcons name="map-marker-radius" size={20} />{" "}
+            <Text blue10>
+              {properties.address ||
+                [properties.lat, properties.long].join(", ")}
+              {!!properties.directions && "(" + properties.directions + ")"}
             </Text>
-          </TouchableOpacity>
+          </Text>
+        </TouchableOpacity>
         {!!properties.email && (
           <TouchableOpacity marginH-4 onPress={openEmail}>
             <Text grey20 style={{ alignItems: "center" }}>
@@ -190,29 +192,36 @@ function useRegisterOnMap(
   lat: string,
   long: string,
   ref: MutableRefObject<RView | null>,
+  isBookmarked: (id: string) => boolean,
 ) {
   const coordsId = `${lat},${long}`;
   const registerCard = useMapStore((s) => s.registerMarker);
   const deregisterCard = useMapStore((s) => s.deregisterMarker);
-  const markerIdx = useMapStore((s) => s.markers.findIndex((m) => m.id == coordsId));
+  const markerIdx = useMapStore((s) =>
+    s.markers.findIndex((m) => m.id == coordsId),
+  );
   const scrollRef = useScrollRef();
   const bottomSheetRef = useBottomSheetRef();
   const path = usePathname();
   const { scrollTo } = useLocalSearchParams();
 
   useEffect(() => {
+    // bookmarked items are registered elsewhere
+    if (isBookmarked(coordsId)) return;
+
     const marker = {
       id: coordsId,
       lat: parseFloat(lat),
       long: parseFloat(long),
       link: path,
+      type: MarkerType.Normal,
     };
     registerCard(marker);
 
     return () => {
       deregisterCard(marker);
     };
-  }, [coordsId]);
+  }, [coordsId, isBookmarked]);
 
   useEffect(() => {
     if (scrollTo == coordsId && scrollRef?.current && ref?.current) {
