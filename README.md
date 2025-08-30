@@ -3,6 +3,7 @@
 I'm building a mobile travel guide that lets you view and plan with Wikivoyage (a crowdsourced travel guide by Wikimedia) on a map. With it, you can bookmark sights, restaurants you plan to visit and see them and their descriptions side by side with a map for easy orientation and navigation.
 
 If this sounds exciting, you can:
+- [Join our travel community](https://chat.mapvoyage.app) to discuss this project and travel in general
 - Email me to discuss the project and how you can help (be it ideas, feedback, design, code or otherwise) at hello at mapvoyage dot app
 - **[Download the alpha version](https://alpha.mapvoyage.app)** of the app and try it out
 
