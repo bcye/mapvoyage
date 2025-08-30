@@ -11,6 +11,7 @@ import useBackOnMapMove from "@/hooks/use-back-on-map-move";
 import { citiesAtom, getCityAtom } from "@/utils/bookmarks";
 import { useAtom } from "jotai/react";
 import { useCallback } from "react";
+import { append, assoc, dissoc } from "ramda";
 
 /**
  * Renders a specific section of a Wikipedia page in Markdown format.
@@ -31,17 +32,43 @@ export default function Section() {
   const [cities, setCities] = useAtom(citiesAtom);
   const pageTitle = wikiQuery.data?.properties.title;
 
-  const isBookmarked = useCallback(function isBookmarked(id: string) { return bookmarks.some(b => b.id === id) }, [bookmarks]);
-  const toggleBookmarked = useCallback(function toggleBookmarked(id: string) {
-    if (isBookmarked(id)) {
-      setBookmarks(bookmarks.filter(b => b.id !== id));
-    } else {
-      if (!cities.find(c => c.qid === pageId)) {
-        setCities([...cities, { qid: pageId as string, name: pageTitle! }])
+  const isBookmarked = useCallback(
+    function isBookmarked(id: string) {
+      return !!bookmarks[id];
+    },
+    [bookmarks],
+  );
+
+  const toggleBookmarked = useCallback(
+    function toggleBookmarked(id: string) {
+      if (isBookmarked(id)) {
+        setBookmarks(dissoc(id, bookmarks));
+      } else {
+        if (!cities.find((c) => c.qid === pageId)) {
+          setCities(
+            append({ qid: pageId as string, name: pageTitle! }, cities),
+          );
+        }
+        setBookmarks(
+          assoc(
+            id,
+            { section: title, properties: section!.properties },
+            bookmarks,
+          ),
+        );
       }
-      setBookmarks([...bookmarks, { id, section: title, properties: section!.properties }]);
-    }
-  }, [bookmarks, setBookmarks, pageTitle, section, isBookmarked, pageTitle, cities, setCities]);
+    },
+    [
+      bookmarks,
+      setBookmarks,
+      pageTitle,
+      section,
+      isBookmarked,
+      pageTitle,
+      cities,
+      setCities,
+    ],
+  );
 
   useBackOnMapMove(wikiQuery.isSuccess);
 
@@ -56,11 +83,21 @@ export default function Section() {
         renderContent={() =>
           !isFullscreen ? (
             <BottomSheetScrollView ref={ref}>
-              <WikiContent node={section} root={true} isBookmarked={isBookmarked} toggleBookmarked={toggleBookmarked} />
+              <WikiContent
+                node={section}
+                root={true}
+                isBookmarked={isBookmarked}
+                toggleBookmarked={toggleBookmarked}
+              />
             </BottomSheetScrollView>
           ) : (
             <ScrollView>
-              <WikiContent node={section} root={true} isBookmarked={isBookmarked} toggleBookmarked={toggleBookmarked} />
+              <WikiContent
+                node={section}
+                root={true}
+                isBookmarked={isBookmarked}
+                toggleBookmarked={toggleBookmarked}
+              />
             </ScrollView>
           )
         }
