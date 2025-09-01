@@ -12,6 +12,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     newArchEnabled: true,
     ios: {
       supportsTablet: true,
+      bundleIdentifier: "eu.bruceroettgers.mapvoyage"
     },
     android: {
       package: "eu.bruceroettgers.mapvoyage",
@@ -68,6 +69,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
 
   if (process.env.VARIANT === "development") {
     baseConfig.android!.package = "eu.bruceroettgers.mapvoyage.dev";
+    baseConfig.ios!.bundleIdentifier = "eu.bruceroettgers.mapvoyage.dev";
     baseConfig.name = "Mapvoyage (Dev)";
   }
 
