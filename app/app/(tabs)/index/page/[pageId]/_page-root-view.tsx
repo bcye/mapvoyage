@@ -1,14 +1,72 @@
 import { useIsFullscreen } from "@/hooks/use-is-fullscreen";
-import { useMapStore } from "@/utils/store";
+import { getCityAtom } from "@/utils/bookmarks";
+import { MapMarker, MarkerType, useMapStore } from "@/utils/store";
 import { NodeType, RootNode } from "@bcye/structured-wikivoyage-types";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { UseQueryResult } from "@tanstack/react-query";
 import { Link, Stack } from "expo-router";
-import { filter, map, splitEvery } from "ramda";
+import { useAtom, useAtomValue } from "jotai/react";
+import { filter, map, split, splitEvery, values } from "ramda";
 import { useEffect } from "react";
 import { ScrollView } from "react-native";
 import { Card, SkeletonView, View } from "react-native-ui-lib";
 import { Text } from "react-native-ui-lib";
+
+function PageContent({
+  pageQuery,
+  id,
+}: {
+  pageQuery: UseQueryResult<RootNode, Error>;
+  id: string;
+}) {
+  const bookmarks = useAtomValue(getCityAtom(id));
+  const registerMarker = useMapStore((s) => s.registerMarker);
+  const deregisterMarker = useMapStore((s) => s.deregisterMarker);
+
+  useEffect(
+    function registerBookmarks() {
+      const markers: MapMarker[] = [];
+      for (const [bId, bookmark] of Object.entries(bookmarks)) {
+        const [lat, long] = map(parseFloat, split(",", bId));
+        const marker = {
+          id: bId,
+          link: `/page/${id}/section/${bookmark.section}`,
+          lat,
+          long,
+          type: MarkerType.Bookmark,
+        };
+        markers.push(marker);
+        registerMarker(marker);
+      }
+
+      return () => {
+        for (const marker of markers) {
+          deregisterMarker(marker);
+        }
+      };
+    },
+    [bookmarks],
+  );
+
+  return map(
+    ([item1, item2]) => (
+      <View
+        flex
+        row
+        gap-8
+        marginB-8
+        key={item1.properties.title + item2?.properties.title}
+      >
+        <Infocard title={item1.properties.title} pageId={id!} />
+        {item2 && <Infocard title={item2.properties.title} pageId={id!} />}
+      </View>
+    ),
+    splitEvery(
+      2,
+      filter((c) => c.type === NodeType.Section, pageQuery.data!.children),
+    ),
+  );
+}
 
 export default function PageRootView({
   pageQuery,
@@ -18,26 +76,6 @@ export default function PageRootView({
   id: string | null;
 }) {
   const isFullscreen = useIsFullscreen();
-
-  const getData = () =>
-    map(
-      ([item1, item2]) => (
-        <View
-          flex
-          row
-          gap-8
-          marginB-8
-          key={item1.properties.title + item2?.properties.title}
-        >
-          <Infocard title={item1.properties.title} pageId={id!} />
-          {item2 && <Infocard title={item2.properties.title} pageId={id!} />}
-        </View>
-      ),
-      splitEvery(
-        2,
-        filter((c) => c.type === NodeType.Section, pageQuery.data!.children),
-      ),
-    );
 
   return (
     <View padding-8 flex>
@@ -55,9 +93,13 @@ export default function PageRootView({
             </Text>
           ) : pageQuery.data && id ? (
             !isFullscreen ? (
-              <BottomSheetScrollView>{getData()}</BottomSheetScrollView>
+              <BottomSheetScrollView>
+                <PageContent id={id} pageQuery={pageQuery} />
+              </BottomSheetScrollView>
             ) : (
-              <ScrollView>{getData()}</ScrollView>
+              <ScrollView>
+                <PageContent id={id} pageQuery={pageQuery} />
+              </ScrollView>
             )
           ) : null
         }

@@ -5,7 +5,22 @@ import { create } from "zustand";
 
 export type Region = GeoJSON.Feature<GeoJSON.Point, RegionPayload>;
 
-export type MapMarker = { id: string; link: string; lat: number; long: number };
+export enum MarkerType {
+  Normal = "normal",
+  Bookmark = "bookmark",
+}
+
+export type MapMarker = {
+  id: string;
+  link: string;
+  lat: number;
+  long: number;
+  /**
+   * - Normal markers are exported from the relevant sections
+   * - Bookmarked markers are exported from the currently viewed page and thus always visible
+   */
+  type: MarkerType;
+};
 
 export type Store = {
   region: Region | null;

@@ -4,7 +4,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   const baseConfig: ExpoConfig = {
     name: "Mapvoyage",
     slug: "mapvoyage",
-    version: "0.10.0",
+    version: "0.11.0",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
     scheme: "myapp",
@@ -13,6 +13,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ios: {
       bundleIdentifier: "eu.bruceroettgers.mapvoyage",
       supportsTablet: true,
+      bundleIdentifier: "eu.bruceroettgers.mapvoyage"
     },
     android: {
       package: "eu.bruceroettgers.mapvoyage",

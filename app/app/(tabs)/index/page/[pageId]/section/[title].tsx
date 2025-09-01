@@ -5,9 +5,14 @@ import { useScrollRef } from "@/hooks/use-scroll-ref";
 import { NodeType, SectionNode } from "@bcye/structured-wikivoyage-types";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { Stack, useLocalSearchParams } from "expo-router";
-import { ScrollView } from "react-native";
+import { Alert, ScrollView } from "react-native";
 import { SkeletonView, View } from "react-native-ui-lib";
 import useBackOnMapMove from "@/hooks/use-back-on-map-move";
+import { citiesAtom, getCityAtom } from "@/utils/bookmarks";
+import { useAtom } from "jotai/react";
+import { useCallback } from "react";
+import { append, assoc, dissoc } from "ramda";
+import { toast } from "sonner-native";
 
 /**
  * Renders a specific section of a Wikipedia page in Markdown format.
@@ -24,6 +29,55 @@ export default function Section() {
   ) as SectionNode | undefined;
   const ref = useScrollRef();
   const isFullscreen = useIsFullscreen();
+  const [bookmarks, setBookmarks] = useAtom(getCityAtom(pageId as string));
+  const [cities, setCities] = useAtom(citiesAtom);
+  const pageTitle = wikiQuery.data?.properties.title;
+
+  const isBookmarked = useCallback(
+    function isBookmarked(id: string) {
+      return !!bookmarks[id];
+    },
+    [bookmarks],
+  );
+
+  const toggleBookmarked = useCallback(
+    function toggleBookmarked(id: string) {
+      if (id == ",") {
+        toast.error(
+          "This listing doesn't have a location and can't be bookmarked. Add one on en.wikivoyage.org",
+        );
+        return;
+      }
+
+      if (isBookmarked(id)) {
+        setBookmarks(dissoc(id, bookmarks));
+      } else {
+        if (!cities.find((c) => c.qid === pageId)) {
+          setCities(
+            append({ qid: pageId as string, name: pageTitle! }, cities),
+          );
+        }
+        // no valid lat-lng
+        setBookmarks(
+          assoc(
+            id,
+            { section: title, properties: section!.properties },
+            bookmarks,
+          ),
+        );
+      }
+    },
+    [
+      bookmarks,
+      setBookmarks,
+      pageTitle,
+      section,
+      isBookmarked,
+      pageTitle,
+      cities,
+      setCities,
+    ],
+  );
 
   useBackOnMapMove(wikiQuery.isSuccess);
 
@@ -38,11 +92,21 @@ export default function Section() {
         renderContent={() =>
           !isFullscreen ? (
             <BottomSheetScrollView ref={ref}>
-              <WikiContent node={section} root={true} />
+              <WikiContent
+                node={section}
+                root={true}
+                isBookmarked={isBookmarked}
+                toggleBookmarked={toggleBookmarked}
+              />
             </BottomSheetScrollView>
           ) : (
             <ScrollView>
-              <WikiContent node={section} root={true} />
+              <WikiContent
+                node={section}
+                root={true}
+                isBookmarked={isBookmarked}
+                toggleBookmarked={toggleBookmarked}
+              />
             </ScrollView>
           )
         }
