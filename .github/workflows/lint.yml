@@ -6,19 +6,47 @@ on:
 
 jobs:
   lint:
+    name: "ESLint"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-
       - uses: pnpm/action-setup@v4
-
       - uses: actions/setup-node@v4
         with:
           cache: "pnpm"
-      
       - name: "Install Dependencies"
         run: "pnpm --dir app install"
 
       - name: Run lint
         run: "pnpm --dir app run lint"
+  
+  tsc:
+    name: "TS"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          cache: "pnpm"
+      - name: "Install Dependencies"
+        run: "pnpm --dir app install"
+
+      - name: Run lint
+        run: "pnpm --dir app run type-check"
+
+  prettier:
+    name: "Prettier"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          cache: "pnpm"
+      - name: "Install Dependencies"
+        run: "pnpm --dir app install"
+
+      - name: Run lint
+        run: "pnpm --dir app run format-check"
       

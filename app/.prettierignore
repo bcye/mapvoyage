@@ -1,0 +1,5 @@
+android
+.vscode
+.expo
+node_modules
+*.yaml
