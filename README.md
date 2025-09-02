@@ -5,7 +5,7 @@ I'm building a mobile travel guide that lets you view and plan with Wikivoyage (
 If this sounds exciting, you can:
 - [Join our travel community](https://chat.mapvoyage.app) to discuss this project and travel in general
 - Email me to discuss the project and how you can help (be it ideas, feedback, design, code or otherwise) at hello at mapvoyage dot app
-- **[Download the alpha version](https://alpha.mapvoyage.app)** of the app and try it out
+- **[Download the alpha version](https://alpha.mapvoyage.app)** of the app and try it out **(available for iOS and Android)**
 
 ## Screenshots
 <img width="200"  alt="overview" src="https://github.com/user-attachments/assets/ad1bd375-3d5f-4211-b7e8-51d62debd038" />
