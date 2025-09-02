@@ -1,10 +1,9 @@
-import useWikiQuery from "@/hooks/use-wiki-query";
-import { useLocalSearchParams, useNavigation } from "expo-router";
-import PageRootView from "./_page-root-view";
 import useBackOnMapMove from "@/hooks/use-back-on-map-move";
-import { useMapStore } from "@/utils/store";
-import { useEffect } from "react";
 import useMoveTo from "@/hooks/use-move-to";
+import useWikiQuery from "@/hooks/use-wiki-query";
+import { useLocalSearchParams } from "expo-router";
+import { useEffect } from "react";
+import PageRootView from "./_page-root-view";
 
 export default function Page() {
   let { pageId } = useLocalSearchParams();
@@ -23,7 +22,7 @@ export default function Page() {
         parseFloat(pageQuery.data.properties.geo?.zoom),
       );
     }
-  }, [pageQuery.data]);
+  }, [pageQuery.data, moveTo]);
 
   useBackOnMapMove(pageQuery.isSuccess);
 

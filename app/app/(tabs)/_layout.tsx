@@ -11,13 +11,16 @@ import { Toaster } from "sonner-native";
 const TAB_ICON_SIZE = 24;
 
 function getTabBarIcon(name: string, iconName: IconName) {
-  return ({ color }: { color: string }) => (
+  const iconFunc = ({ color }: { color: string }) => (
     <MaterialCommunityIcons
       size={TAB_ICON_SIZE}
       name={iconName}
       color={color}
     />
   );
+
+  iconFunc.displayName = `TabBarIcon-${name}-${iconName}`;
+  return iconFunc;
 }
 
 const queryClient = new QueryClient();

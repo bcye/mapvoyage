@@ -45,7 +45,7 @@ export default function Layout() {
                 const url = new URL(breadcrumb.data.url);
                 breadcrumb.data.url = url.origin;
                 return breadcrumb;
-              } catch (e) {
+              } catch {
                 console.error("url parsing failed for beforeBreadcrumb");
               }
             }
@@ -64,7 +64,8 @@ export default function Layout() {
 
   if (!privacyConsent) {
     return (
-      <GluestackUIProvider mode="light"><View
+      <GluestackUIProvider mode="light">
+        <View
           onLayout={hide}
           padding-32
           style={{ justifyContent: "center", height: "100%" }}
@@ -108,13 +109,16 @@ export default function Layout() {
               AsyncStorage.setItem("sentryConsent", "0");
             }}
           />
-        </View></GluestackUIProvider>
+        </View>
+      </GluestackUIProvider>
     );
   } else {
     return (
-      <GluestackUIProvider mode="light"><View onLayout={hide} style={{ flex: 1 }}>
+      <GluestackUIProvider mode="light">
+        <View onLayout={hide} style={{ flex: 1 }}>
           <Stack screenOptions={{ headerShown: false }} />
-        </View></GluestackUIProvider>
+        </View>
+      </GluestackUIProvider>
     );
   }
 }

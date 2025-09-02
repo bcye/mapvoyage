@@ -1,11 +1,8 @@
 import { PRIMARY_COLOR } from "@/utils/theme";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { FlatList, TextInput } from "react-native";
-import { Card, ListItem, View, Text } from "react-native-ui-lib";
-import {
-  instantMeiliSearch,
-  InstantMeiliSearchInstance,
-} from "@meilisearch/instant-meilisearch";
+import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
+import { useRouter } from "expo-router";
+import { useRef, useState } from "react";
 import {
   InstantSearch,
   useInfiniteHits,
@@ -13,8 +10,8 @@ import {
   useSearchBox,
   UseSearchBoxProps,
 } from "react-instantsearch-core";
-import { useRef, useState } from "react";
-import { useRouter } from "expo-router";
+import { FlatList, TextInput } from "react-native";
+import { Card, Text, View } from "react-native-ui-lib";
 
 // See:
 // https://www.algolia.com/doc/guides/building-search-ui/going-further/native/react

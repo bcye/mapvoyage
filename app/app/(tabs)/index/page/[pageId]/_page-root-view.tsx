@@ -5,12 +5,11 @@ import { NodeType, RootNode } from "@bcye/structured-wikivoyage-types";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { UseQueryResult } from "@tanstack/react-query";
 import { Link, Stack } from "expo-router";
-import { useAtom, useAtomValue } from "jotai/react";
-import { filter, map, split, splitEvery, values } from "ramda";
+import { useAtomValue } from "jotai/react";
+import { filter, map, split, splitEvery } from "ramda";
 import { useEffect } from "react";
 import { ScrollView } from "react-native";
-import { Card, SkeletonView, View } from "react-native-ui-lib";
-import { Text } from "react-native-ui-lib";
+import { Card, SkeletonView, Text, View } from "react-native-ui-lib";
 
 function PageContent({
   pageQuery,
@@ -45,7 +44,7 @@ function PageContent({
         }
       };
     },
-    [bookmarks],
+    [bookmarks, id, registerMarker, deregisterMarker],
   );
 
   return map(
