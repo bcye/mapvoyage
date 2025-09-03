@@ -20,12 +20,16 @@ jobs:
                with:
                 eas-version: latest
                 token: ${{ secrets.EXPO_TOKEN }}
+                packager: "npm"
 
             - name: "Install Dependencies"
               run: "pnpm --dir app install"
 
-            - name: "Run EAS local workflow"
-              run: "cd app && eas build --local --platform ios --profile production --auto-submit --non-interactive"
+            - name: "Build App"
+              run: "cd app && eas build --local --platform ios --profile production --non-interactive --output build.ipa"
+
+            - name: "Submit Build"
+              run: "cd app && eas submit --profile production --platform ios --non-interactive build.ipa"
 
     android:
         runs-on: ubuntu-latest
@@ -41,9 +45,13 @@ jobs:
                with:
                 eas-version: latest
                 token: ${{ secrets.EXPO_TOKEN }}
+                packager: "npm"
 
             - name: "Install Dependencies"
               run: "pnpm --dir app install"
 
-            - name: "Run EAS local workflow"
-              run: "cd app && eas build --local --platform android --profile production --auto-submit --non-interactive"
+            - name: "Build App"
+              run: "cd app && eas build --local --platform android --profile production --non-interactive --output build.aab"
+
+            - name: "Submit Build"
+              run: "cd app && eas submit --profile production --platform android --non-interactive build.aab"
