@@ -1,0 +1,49 @@
+name: "Build & Submit App"
+
+on:
+    push:
+        tags:
+            - "releases/*"
+
+jobs:
+    ios:
+        runs-on: macos-latest
+        steps:
+            - uses: actions/checkout@v5
+            - uses: pnpm/action-setup@v4
+            - uses: actions/setup-node@v4
+              with:
+                cache: "pnpm"
+
+            
+            -  uses: expo/expo-github-action@v8
+               with:
+                eas-version: latest
+                token: ${{ secrets.EXPO_TOKEN }}
+
+            - name: "Install Dependencies"
+              run: "pnpm --dir app install"
+
+            - name: "Run EAS local workflow"
+              run: "cd app && eas build --local --platform ios --profile production --auto-submit --non-interactive"
+
+    android:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v5
+            - uses: pnpm/action-setup@v4
+            - uses: actions/setup-node@v4
+              with:
+                cache: "pnpm"
+
+            
+            -  uses: expo/expo-github-action@v8
+               with:
+                eas-version: latest
+                token: ${{ secrets.EXPO_TOKEN }}
+
+            - name: "Install Dependencies"
+              run: "pnpm --dir app install"
+
+            - name: "Run EAS local workflow"
+              run: "cd app && eas build --local --platform android --profile production --auto-submit --non-interactive"
