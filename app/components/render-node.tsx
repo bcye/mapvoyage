@@ -9,6 +9,8 @@ import Markdown from "react-native-markdown-display";
 import { Card, Text, TouchableOpacity, View } from "react-native-ui-lib";
 import { HStack } from "./ui/hstack";
 import { Pressable } from "./ui/pressable";
+import openGeo from "@/utils/open-geo";
+import { toast } from "sonner-native";
 export default function WikiContent({
   node,
   root = false,
@@ -106,7 +108,13 @@ function Listing({
   toggleBookmarked: (id: string) => void;
 }) {
   function openMap() {
-    Linking.openURL("geo:" + properties.lat + "," + properties.long);
+    const query = `${properties.lat},${properties.long}`;
+    if (query == ",") {
+      toast.error("Invalid location, cannot be opened");
+      return;
+    }
+
+    openGeo(query);
   }
 
   function openEmail() {
