@@ -29,7 +29,7 @@ jobs:
               run: "cd app && eas build --local --platform ios --profile production --non-interactive --output build.ipa"
 
             - name: "Submit Build"
-              run: "cd app && eas submit --profile production --platform ios --non-interactive build.ipa"
+              run: "cd app && eas submit --profile production --platform ios --non-interactive --path build.ipa"
 
     android:
         runs-on: ubuntu-latest
@@ -54,4 +54,4 @@ jobs:
               run: "cd app && eas build --local --platform android --profile production --non-interactive --output build.aab"
 
             - name: "Submit Build"
-              run: "cd app && eas submit --profile production --platform android --non-interactive build.aab"
+              run: "cd app && eas submit --profile production --platform android --non-interactive --path build.aab"
