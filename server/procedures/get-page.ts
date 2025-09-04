@@ -24,7 +24,19 @@ const getPage = publicProcedure
     } = opts;
 
     const geocodeResult = await geocoding.reverse([latLng[1], latLng[0]], {
-      types: ["country", "region", "subregion", "county", "joint_municipality", "joint_submunicipality", "municipality", "municipal_district", "locality", "neighbourhood", "place"],
+      types: [
+        "country",
+        "region",
+        "subregion",
+        "county",
+        "joint_municipality",
+        "joint_submunicipality",
+        "municipality",
+        "municipal_district",
+        "locality",
+        "neighbourhood",
+        "place",
+      ],
     });
     let features = geocodeResult.features as Feature[];
 

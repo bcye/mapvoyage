@@ -18,7 +18,6 @@
     "test": "jest --watchAll",
     "lint": "expo lint",
     "type-check": "tsc --noEmit",
-    "format-check": "prettier --check .",
     "build:android": "eas build --platform android --profile preview --local",
     "android:reconnect": "adb reverse tcp:8081 tcp:8081"
   },

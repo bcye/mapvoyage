@@ -4,4 +4,7 @@
   "devDependencies": {
     "prettier": "^3.4.2"
   }
+  "scripts": {
+    "format-check": "prettier --check ."
+  }
 }

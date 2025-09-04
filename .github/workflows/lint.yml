@@ -45,8 +45,7 @@ jobs:
         with:
           cache: "pnpm"
       - name: "Install Dependencies"
-        run: "pnpm --dir app install"
+        run: "pnpm install"
 
       - name: Run lint
-        run: "pnpm --dir app run format-check"
-      
+        run: "pnpm run format-check"

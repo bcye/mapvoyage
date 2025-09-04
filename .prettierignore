@@ -1,0 +1,10 @@
+android
+.vscode
+.expo
+node_modules
+*.yaml
+docs
+.github
+package-lock.json
+*.aab
+*.ipa

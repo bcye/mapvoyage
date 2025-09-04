@@ -13,7 +13,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ios: {
       bundleIdentifier: "eu.bruceroettgers.mapvoyage",
       supportsTablet: true,
-      bundleIdentifier: "eu.bruceroettgers.mapvoyage"
+      bundleIdentifier: "eu.bruceroettgers.mapvoyage",
     },
     android: {
       package: "eu.bruceroettgers.mapvoyage",
