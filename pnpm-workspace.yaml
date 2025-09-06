@@ -1,7 +1,0 @@
-onlyBuiltDependencies:
-  - dtrace-provider
-  - unrs-resolver
-
-packages:
-  - server
-  - app
