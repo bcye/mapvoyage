@@ -113,8 +113,8 @@ function Listing({
 
   const ref = useRef<RView>(null);
   const idx = useRegisterOnMap(
-    properties.lat,
-    properties.long,
+    properties.lat!,
+    properties.long!,
     ref,
     isBookmarked,
   );
@@ -224,10 +224,12 @@ function useRegisterOnMap(
   useEffect(() => {
     if (scrollTo == coordsId && scrollRef?.current && ref?.current) {
       ref.current!.measureLayout(
+        // @ts-ignore this stuff is very weird
         scrollRef.current,
         (x, y) => {
           bottomSheetRef?.current?.expand();
           requestAnimationFrame(() => {
+            // @ts-ignore
             scrollRef.current.scrollTo({ x: 0, y: y - 130, animated: true });
           });
         },

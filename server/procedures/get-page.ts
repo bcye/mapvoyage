@@ -65,7 +65,7 @@ const getPage = publicProcedure
 
     if (wikidataIds.length === 0) throw new Error("Non found");
 
-    const exists: [string | undefined, PageInfo | null][] = await Promise.all(
+    const exists: [string | undefined, boolean][] = await Promise.all(
       wikidataIds.map(async (id) => [
         id,
         !id ? false : await wikiItemExists(id, "en"),
