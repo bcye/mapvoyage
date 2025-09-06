@@ -29,8 +29,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           cache: "pnpm"
-      - name: "Install Dependencies"
+      - name: "Install App Dependencies"
         run: "pnpm --dir app install"
+      - name: "Install Server Dependencies"
+        run: "pnpm --dir server install"
 
       - name: Run lint
         run: "pnpm --dir app run type-check"
