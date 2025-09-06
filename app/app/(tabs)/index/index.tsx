@@ -1,7 +1,5 @@
 import useCurrentId from "@/hooks/use-current-id";
 import useWikiQuery from "@/hooks/use-wiki-query";
-import { Stack, usePathname } from "expo-router";
-import { View } from "react-native-ui-lib";
 import PageRootView from "./page/[pageId]/_page-root-view";
 
 /**

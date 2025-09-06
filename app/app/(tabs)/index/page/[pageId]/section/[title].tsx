@@ -1,17 +1,17 @@
 import WikiContent from "@/components/render-node";
-import useWikiQuery from "@/hooks/use-wiki-query";
+import useBackOnMapMove from "@/hooks/use-back-on-map-move";
 import { useIsFullscreen } from "@/hooks/use-is-fullscreen";
 import { useScrollRef } from "@/hooks/use-scroll-ref";
+import useWikiQuery from "@/hooks/use-wiki-query";
+import { citiesAtom, getCityAtom } from "@/utils/bookmarks";
 import { NodeType, SectionNode } from "@bcye/structured-wikivoyage-types";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { Stack, useLocalSearchParams } from "expo-router";
-import { Alert, ScrollView } from "react-native";
-import { SkeletonView, View } from "react-native-ui-lib";
-import useBackOnMapMove from "@/hooks/use-back-on-map-move";
-import { citiesAtom, getCityAtom } from "@/utils/bookmarks";
 import { useAtom } from "jotai/react";
-import { useCallback } from "react";
 import { append, assoc, dissoc } from "ramda";
+import { useCallback } from "react";
+import { ScrollView } from "react-native";
+import { SkeletonView, View } from "react-native-ui-lib";
 import { toast } from "sonner-native";
 
 /**
@@ -70,12 +70,13 @@ export default function Section() {
     [
       bookmarks,
       setBookmarks,
-      pageTitle,
       section,
       isBookmarked,
       pageTitle,
       cities,
       setCities,
+      pageId,
+      title,
     ],
   );
 

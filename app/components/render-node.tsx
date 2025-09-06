@@ -27,13 +27,11 @@ export default function WikiContent({
       return (
         <Fragment>
           {!root && node.properties.title && (
-            <Markdown
-              children={
-                "".padStart(node.properties.level, "#") +
+            <Markdown>
+              {"".padStart(node.properties.level, "#") +
                 " " +
-                node.properties.title
-              }
-            />
+                node.properties.title}
+            </Markdown>
           )}
           {node.children.map((c, idx) => (
             <WikiContent
@@ -47,7 +45,7 @@ export default function WikiContent({
       );
     case NodeType.Text:
       if (!node.properties.markdown) return null;
-      return <Markdown children={node.properties.markdown} />;
+      return <Markdown>{node.properties.markdown}</Markdown>;
     case NodeType.Root:
       return (
         <Fragment>
@@ -123,8 +121,8 @@ function Listing({
 
   const ref = useRef<RView>(null);
   const idx = useRegisterOnMap(
-    properties.lat,
-    properties.long,
+    properties.lat!,
+    properties.long!,
     ref,
     isBookmarked,
   );
@@ -229,15 +227,17 @@ function useRegisterOnMap(
     return () => {
       deregisterCard(marker);
     };
-  }, [coordsId, isBookmarked]);
+  }, [coordsId, isBookmarked, deregisterCard, lat, long, path, registerCard]);
 
   useEffect(() => {
     if (scrollTo == coordsId && scrollRef?.current && ref?.current) {
       ref.current!.measureLayout(
+        // @ts-ignore this stuff is very weird
         scrollRef.current,
         (x, y) => {
           bottomSheetRef?.current?.expand();
           requestAnimationFrame(() => {
+            // @ts-ignore
             scrollRef.current.scrollTo({ x: 0, y: y - 130, animated: true });
           });
         },
@@ -246,7 +246,7 @@ function useRegisterOnMap(
         },
       );
     }
-  }, [scrollTo, coordsId]);
+  }, [scrollTo, coordsId, bottomSheetRef, ref, scrollRef]);
 
   return markerIdx;
 }

@@ -4,7 +4,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   const baseConfig: ExpoConfig = {
     name: "Mapvoyage",
     slug: "mapvoyage",
-    version: "0.12.0",
+    version: "0.13.0",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
     scheme: "myapp",
@@ -53,7 +53,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       ],
     ],
     experiments: {
-      typedRoutes: true,
+      reactCompiler: true,
     },
     extra: {
       router: {

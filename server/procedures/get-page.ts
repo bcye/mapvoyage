@@ -24,7 +24,19 @@ const getPage = publicProcedure
     } = opts;
 
     const geocodeResult = await geocoding.reverse([latLng[1], latLng[0]], {
-      types: ["country", "region", "subregion", "county", "joint_municipality", "joint_submunicipality", "municipality", "municipal_district", "locality", "neighbourhood", "place"],
+      types: [
+        "country",
+        "region",
+        "subregion",
+        "county",
+        "joint_municipality",
+        "joint_submunicipality",
+        "municipality",
+        "municipal_district",
+        "locality",
+        "neighbourhood",
+        "place",
+      ],
     });
     let features = geocodeResult.features as Feature[];
 
@@ -53,7 +65,7 @@ const getPage = publicProcedure
 
     if (wikidataIds.length === 0) throw new Error("Non found");
 
-    const exists: [string | undefined, PageInfo | null][] = await Promise.all(
+    const exists: [string | undefined, boolean][] = await Promise.all(
       wikidataIds.map(async (id) => [
         id,
         !id ? false : await wikiItemExists(id, "en"),
