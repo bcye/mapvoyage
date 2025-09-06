@@ -7,4 +7,5 @@ docs
 .github
 package-lock.json
 *.aab
+*.apk
 *.ipa
