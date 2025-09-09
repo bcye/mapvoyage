@@ -13,6 +13,7 @@
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "DARK_MODE=media expo run:android",
+    "android:reconnect": "adb reverse tcp:8081 tcp:8081",
     "ios": "DARK_MODE=media expo run:ios",
     "web": "DARK_MODE=media expo start --web",
     "test": "jest --watchAll",

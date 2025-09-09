@@ -173,7 +173,8 @@ function MapLayout({ children }: { children: React.ReactNode }) {
             top: 8,
           }}
         >
-          <Camera ref={cameraRef} />
+          {/* place labels pop in at 14 causing performance drop */}
+          <Camera ref={cameraRef} maxZoomLevel={13.99} />
           <UserLocation />
           <VectorSource
             id="maptiler"
