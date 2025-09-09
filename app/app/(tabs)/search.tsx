@@ -42,8 +42,6 @@ function InfiniteHits(props: UseInfiniteHitsProps) {
   const router = useRouter();
 
   function openPlace(objectID: string) {
-    // TODO: Will be implemented in a later PR
-    console.log(objectID);
     router.navigate("/page/" + objectID);
   }
 
