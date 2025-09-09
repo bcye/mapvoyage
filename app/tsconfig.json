@@ -3,10 +3,22 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@server/*": ["../server/*"],
-      "@/*": ["./*"],
-      "tailwind.config": ["./tailwind.config.js"]
+      "@server/*": [
+        "../server/*"
+      ],
+      "@/*": [
+        "./*"
+      ],
+      "tailwind.config": [
+        "./tailwind.config.js"
+      ]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "nativewind-env.d.ts",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ]
 }

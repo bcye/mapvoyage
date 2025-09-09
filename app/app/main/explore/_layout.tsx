@@ -25,13 +25,7 @@ import {
   requestForegroundPermissionsAsync,
 } from "expo-location";
 import { Stack, useRouter } from "expo-router";
-import {
-  MutableRefObject,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { MutableRefObject, useMemo, useRef, useState } from "react";
 import { Dimensions, StyleSheet, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Card, TouchableOpacity } from "react-native-ui-lib";
@@ -115,7 +109,7 @@ plays a map using MapTiler styles along with user location tracking and map tile
  * @returns A React element representing the combined map and bottom sheet layout.
  */
 function MapLayout({ children }: { children: React.ReactNode }) {
-  const { setRegion, markers, region } = useMapStore();
+  const { setRegion, markers } = useMapStore();
   const router = useRouter();
   const bottomSheetRef = useBottomSheetRef();
   const [sheetHeight, setSheetHeight] = useState(() =>
@@ -168,9 +162,7 @@ function MapLayout({ children }: { children: React.ReactNode }) {
               <MarkerView coordinate={[m.long, m.lat]} key={m.id}>
                 <TouchableOpacity
                   onPressIn={() => {
-                    router.navigate(
-                      m.link + "?scrollTo=" + m.lat + "," + m.long,
-                    );
+                    router.navigate(`${m.link}?scrollTo=${m.lat},${m.long}`);
                   }}
                   style={{ position: "relative", width: 22, zIndex: 1000 }}
                 >

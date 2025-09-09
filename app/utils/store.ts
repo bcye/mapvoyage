@@ -1,6 +1,5 @@
 import { RegionPayload } from "@maplibre/maplibre-react-native";
-import { MutableRefObject, Ref } from "react";
-import { ScrollView } from "react-native";
+import { Route } from "expo-router";
 import { create } from "zustand";
 
 export type Region = GeoJSON.Feature<GeoJSON.Point, RegionPayload>;
@@ -12,7 +11,7 @@ export enum MarkerType {
 
 export type MapMarker = {
   id: string;
-  link: string;
+  link: Route;
   lat: number;
   long: number;
   /**

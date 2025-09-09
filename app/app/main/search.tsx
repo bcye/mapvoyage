@@ -42,7 +42,7 @@ function InfiniteHits(props: UseInfiniteHitsProps) {
   const router = useRouter();
 
   function openPlace(objectID: string) {
-    router.navigate("/page/" + objectID);
+    router.navigate(`/main/explore/page/${objectID}`);
   }
 
   return (

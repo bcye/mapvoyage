@@ -1,8 +1,8 @@
 import { useBottomSheetRef, useScrollRef } from "@/hooks/use-scroll-ref";
 import { ListingNode, NodeType, TemplateNode, WikiNode } from "@/types/nodes";
-import { MarkerType, useMapStore } from "@/utils/store";
+import { MapMarker, MarkerType, useMapStore } from "@/utils/store";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { useLocalSearchParams, usePathname } from "expo-router";
+import { Route, useLocalSearchParams, usePathname } from "expo-router";
 import { Fragment, MutableRefObject, useEffect, useRef } from "react";
 import { Linking, View as RView } from "react-native";
 import Markdown from "react-native-markdown-display";
@@ -208,14 +208,14 @@ function useRegisterOnMap(
   );
   const scrollRef = useScrollRef();
   const bottomSheetRef = useBottomSheetRef();
-  const path = usePathname();
+  const path = usePathname() as Route;
   const { scrollTo } = useLocalSearchParams();
 
   useEffect(() => {
     // bookmarked items are registered elsewhere
     if (isBookmarked(coordsId)) return;
 
-    const marker = {
+    const marker: MapMarker = {
       id: coordsId,
       lat: parseFloat(lat),
       long: parseFloat(long),

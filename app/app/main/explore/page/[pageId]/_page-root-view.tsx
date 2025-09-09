@@ -4,7 +4,7 @@ import { MapMarker, MarkerType, useMapStore } from "@/utils/store";
 import { NodeType, RootNode } from "@bcye/structured-wikivoyage-types";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { UseQueryResult } from "@tanstack/react-query";
-import { Link, Stack } from "expo-router";
+import { Link, Route, Stack } from "expo-router";
 import { useAtomValue } from "jotai/react";
 import { filter, map, split, splitEvery } from "ramda";
 import { useEffect } from "react";
@@ -27,9 +27,10 @@ function PageContent({
       const markers: MapMarker[] = [];
       for (const [bId, bookmark] of Object.entries(bookmarks)) {
         const [lat, long] = map(parseFloat, split(",", bId));
-        const marker = {
+        const marker: MapMarker = {
           id: bId,
-          link: `/page/${id}/section/${bookmark.section}`,
+          // somehow broken else
+          link: `/main/explore/page/${id}/section/${bookmark.section}` as Route,
           lat,
           long,
           type: MarkerType.Bookmark,
@@ -121,7 +122,7 @@ function Infocard({ title, pageId }: { title: string; pageId: string }) {
     <Link
       asChild
       href={{
-        pathname: "/page/[pageId]/section/[title]",
+        pathname: "/main/explore/page/[pageId]/section/[title]",
         params: { pageId, title },
       }}
     >
