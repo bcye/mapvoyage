@@ -1,57 +1,71 @@
 name: "Build & Submit App"
 
 on:
-    push:
-        tags:
-            - "releases/*"
+  push:
+    tags:
+      - "releases/*"
+  workflow_dispatch:
+    inputs:
+      platforms:
+        description: "Which platforms to build & submit"
+        required: true
+        type: choice
+        options:
+          - ios
+          - android
+          - both
+        default: both
 
 jobs:
-    ios:
-        runs-on: macos-latest
-        steps:
-            - uses: actions/checkout@v5
-            - uses: pnpm/action-setup@v4
-            - uses: actions/setup-node@v4
-              with:
-                cache: "pnpm"
+  ios:
+    # Run for tag pushes (original trigger) OR when manually dispatched selecting ios or both
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.platforms == 'ios' || inputs.platforms == 'both'))
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          cache: "pnpm"
 
-            
-            -  uses: expo/expo-github-action@v8
-               with:
-                eas-version: latest
-                token: ${{ secrets.EXPO_TOKEN }}
-                packager: "npm"
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+          packager: "npm"
 
-            - name: "Install Dependencies"
-              run: "pnpm --dir app install"
+      - name: "Install Dependencies"
+        run: "pnpm --dir app install"
 
-            - name: "Build App"
-              run: "cd app && eas build --local --platform ios --profile production --non-interactive --output build.ipa"
+      - name: "Build App"
+        run: "cd app && eas build --local --platform ios --profile production --non-interactive --output build.ipa"
 
-            - name: "Submit Build"
-              run: 'cd app && eas submit --profile production --platform ios --non-interactive --path build.ipa --what-to-test "Feel Free to try anything in the app. You may still experience issues with some large cities."'
+      - name: "Submit Build"
+        run: 'cd app && eas submit --profile production --platform ios --non-interactive --path build.ipa'
 
-    android:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v5
-            - uses: pnpm/action-setup@v4
-            - uses: actions/setup-node@v4
-              with:
-                cache: "pnpm"
+  android:
+    # Run for tag pushes OR when manually dispatched selecting android or both
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && (inputs.platforms == 'android' || inputs.platforms == 'both'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          cache: "pnpm"
 
-            
-            -  uses: expo/expo-github-action@v8
-               with:
-                eas-version: latest
-                token: ${{ secrets.EXPO_TOKEN }}
-                packager: "npm"
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+          packager: "npm"
 
-            - name: "Install Dependencies"
-              run: "pnpm --dir app install"
+      - name: "Install Dependencies"
+        run: "pnpm --dir app install"
 
-            - name: "Build App"
-              run: "cd app && eas build --local --platform android --profile production --non-interactive --output build.aab"
+      - name: "Build App"
+        run: "cd app && eas build --local --platform android --profile production --non-interactive --output build.aab"
 
-            - name: "Submit Build"
-              run: "cd app && eas submit --profile production --platform android --non-interactive --path build.aab"
+      - name: "Submit Build"
+        run: "cd app && eas submit --profile production --platform android --non-interactive --path build.aab"
