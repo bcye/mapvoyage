@@ -2,7 +2,6 @@ import { CurrentIdContext } from "@/hooks/use-current-id";
 import { FullScreenProvider } from "@/hooks/use-is-fullscreen";
 import { CameraRefContext } from "@/hooks/use-move-to";
 import { ScrollRefProvider, useBottomSheetRef } from "@/hooks/use-scroll-ref";
-import { Bbox } from "@/types/maptiler";
 import { IconName } from "@/utils/icon.types";
 import { Region, useMapStore } from "@/utils/store";
 import { PRIMARY_COLOR } from "@/utils/theme";
@@ -45,12 +44,11 @@ export default function RootLayout() {
   const query = useMemo(() => {
     if (dRegion) {
       const [lng, lat] = dRegion.geometry.coordinates;
-      // construct a bounding box from the visible bounds
-      const [ne, sw] = dRegion.properties.visibleBounds;
-      const bbox: Bbox = [sw[0], sw[1], ne[0], ne[1]];
+      const zoomLevel = dRegion.properties.zoomLevel;
+
       return {
-        bbox,
-        latLng: [lat, lng] as [number, number],
+        center: [lat, lng] as [number, number],
+        zoomLevel,
       };
     } else return undefined;
   }, [dRegion]);

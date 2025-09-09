@@ -1,4 +1,5 @@
 import { geocoding } from "@maptiler/client";
+import type { GeocodingPlaceType } from "@maptiler/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { wikiItemExists } from "../clients/bunny.js";
@@ -9,8 +10,8 @@ import { PageInfo } from "../types/wikivoyage.js";
 const getPage = publicProcedure
   .input(
     z.object({
-      latLng: z.tuple([z.number(), z.number()]),
-      bbox: z.tuple([z.number(), z.number(), z.number(), z.number()]),
+      center: z.tuple([z.number(), z.number()]),
+      zoomLevel: z.number(),
     }),
   )
   .query(async function getPage(opts) {
@@ -20,44 +21,74 @@ const getPage = publicProcedure
     });
 
     const {
-      input: { latLng, bbox },
+      input: { center, zoomLevel },
     } = opts;
 
-    const geocodeResult = await geocoding.reverse([latLng[1], latLng[0]], {
-      types: [
-        "country",
-        "region",
-        "subregion",
-        "county",
-        "joint_municipality",
-        "joint_submunicipality",
-        "municipality",
-        "municipal_district",
-        "locality",
-        "neighbourhood",
-        "place",
-      ],
-    });
+    // Truncate center to 3 decimals (111m precision) and zoomLevel to integer
+    const truncatedCenter: [number, number] = [
+      Math.round(center[0] * 1000) / 1000,
+      Math.round(center[1] * 1000) / 1000,
+    ];
+    const truncatedZoomLevel = Math.round(zoomLevel);
+
+    // Map zoom level to administrative types (heuristic)
+    // Higher zoom = more local/specific areas, lower zoom = broader areas
+    const getAdministrativeTypes = (zoom: number): GeocodingPlaceType[] => {
+      if (zoom >= 13) {
+        // Very local - neighborhoods, localities
+        return ["neighbourhood", "locality", "place"];
+      } else if (zoom >= 11) {
+        // Local - municipalities, districts
+        return [
+          "municipality",
+          "municipal_district",
+          "locality",
+          "neighbourhood",
+          "place",
+        ];
+      } else if (zoom >= 9) {
+        // Regional - counties, municipalities
+        return [
+          "county",
+          "joint_municipality",
+          "joint_submunicipality",
+          "municipality",
+          "municipal_district",
+        ];
+      } else if (zoom >= 7) {
+        // Sub-regional
+        return [
+          "subregion",
+          "county",
+          "joint_municipality",
+          "joint_submunicipality",
+        ];
+      } else if (zoom >= 5) {
+        // Regional
+        return ["region", "subregion", "county"];
+      } else {
+        // Country level
+        return ["country", "region"];
+      }
+    };
+
+    const adminTypes = getAdministrativeTypes(truncatedZoomLevel);
+
+    const geocodeResult = await geocoding.reverse(
+      [truncatedCenter[1], truncatedCenter[0]],
+      {
+        types: adminTypes,
+      },
+    );
     let features = geocodeResult.features as Feature[];
 
-    // select the feature whose bbox matches the input bbox the most and has a wikidata property
+    // Filter features that have wikidata property and sort by relevance (geocoding confidence)
     features = features
-      .filter((f) => f.bbox && f.properties.wikidata)
+      .filter((f) => f.properties.wikidata)
       .sort((a, b) => {
-        const aDistance = Math.sqrt(
-          a.bbox.reduce(
-            (sum, value, index) => sum + Math.pow(value - bbox[index], 2),
-            0,
-          ),
-        );
-        const bDistance = Math.sqrt(
-          b.bbox.reduce(
-            (sum, value, index) => sum + Math.pow(value - bbox[index], 2),
-            0,
-          ),
-        );
-
-        return aDistance - bDistance;
+        // Features are already sorted by relevance from the geocoding API
+        // We can also consider place_type hierarchy if needed
+        return 0; // Keep original order from geocoding API
       });
 
     // Extract all wikidata IDs from features
