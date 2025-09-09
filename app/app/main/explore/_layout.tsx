@@ -162,7 +162,9 @@ function MapLayout({ children }: { children: React.ReactNode }) {
               <MarkerView coordinate={[m.long, m.lat]} key={m.id}>
                 <TouchableOpacity
                   onPressIn={() => {
-                    router.navigate(`${m.link}?scrollTo=${m.lat},${m.long}`);
+                    console.log(m.link, m.lat, m.long);
+                    router.setParams({ scrollTo: `${m.lat},${m.long}` });
+                    router.navigate(m.link);
                   }}
                   style={{ position: "relative", width: 22, zIndex: 1000 }}
                 >
