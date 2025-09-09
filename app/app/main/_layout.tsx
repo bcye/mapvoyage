@@ -61,7 +61,7 @@ export default wrapSentry(function TabLayout() {
             options={{
               title: "Settings",
               tabBarIcon: getTabBarIcon("Settings", "cog"),
-              headerShown: true,
+              headerShown: false,
             }}
           />
         </Tabs>
