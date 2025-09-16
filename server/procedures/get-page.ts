@@ -4,7 +4,6 @@ import { z } from "zod";
 import { wikiItemExists } from "../clients/bunny.js";
 import { publicProcedure } from "../trpc.js";
 import { Feature } from "../types/maptiler.js";
-import { PageInfo } from "../types/wikivoyage.js";
 
 const getPage = publicProcedure
   .input(
