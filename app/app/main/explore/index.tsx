@@ -4,10 +4,20 @@ import { Button, ButtonText } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
+import { Coordinates } from "@/types/geo";
+import { handleForegroundError } from "@/utils/errors";
 import { hideNearYouAtom } from "@/utils/jotai";
-import { useForegroundPermissions } from "expo-location";
-import { Stack } from "expo-router";
+import { trpc } from "@/utils/trpc";
+import { skipToken } from "@tanstack/react-query";
+import {
+  getCurrentPositionAsync,
+  getLastKnownPositionAsync,
+  LocationAccuracy,
+  useForegroundPermissions,
+} from "expo-location";
+import { Stack, useFocusEffect } from "expo-router";
 import { useAtom } from "jotai/react";
+import { useCallback, useState } from "react";
 import { FlatList, Linking, View } from "react-native";
 
 export default function ExplorePage() {
@@ -81,7 +91,43 @@ function NearYou() {
 }
 
 function NearYouList() {
-  return null;
+  const [lngLat, setLngLat] = useState<Coordinates | null>(null);
+
+  const { data } = trpc.getAllResultsForLocation.useQuery(
+    lngLat ? { lngLat } : skipToken,
+  );
+
+  useFocusEffect(
+    useCallback(
+      function locate() {
+        let freshReceived = false;
+        let aborted = false;
+
+        const handleError = handleForegroundError(
+          "Your location could not be determined",
+        );
+
+        getLastKnownPositionAsync()
+          .then((location) => {
+            if (aborted || freshReceived || location === null) return;
+            const { longitude, latitude } = location.coords;
+            setLngLat([longitude, latitude]);
+          })
+          .catch(handleError);
+        getCurrentPositionAsync({ accuracy: LocationAccuracy.Balanced })
+          .then((location) => {
+            const { longitude, latitude } = location.coords;
+            setLngLat([longitude, latitude]);
+          })
+          .catch(handleError);
+
+        return () => (aborted = true);
+      },
+      [setLngLat],
+    ),
+  );
+
+  return <Text>{data?.toString()}</Text>;
 }
 
 function LocationList({

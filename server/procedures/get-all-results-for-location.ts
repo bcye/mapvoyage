@@ -4,7 +4,7 @@ import { z } from "zod";
 import { Feature } from "../types/maptiler.js";
 import { wikiItemExists } from "../clients/bunny.js";
 
-const getAllResultsForLocation = publicProcedure
+export const getAllResultsForLocation = publicProcedure
   .input(
     z.object({
       lngLat: z.tuple([z.number(), z.number()]),
@@ -14,6 +14,8 @@ const getAllResultsForLocation = publicProcedure
     const {
       input: { lngLat },
     } = opts;
+
+    console.log(lngLat);
 
     const placeTypes: GeocodingPlaceType[] = [
       "country",
@@ -57,5 +59,5 @@ const getAllResultsForLocation = publicProcedure
 
     wikidataIds = wikidataIds.filter((_, idx) => exists[idx]);
 
-    return wikidataIds;
+    return wikidataIds as string[];
   });
