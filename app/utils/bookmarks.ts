@@ -1,14 +1,12 @@
 import { ListingNode } from "@bcye/structured-wikivoyage-types";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { atomWithStorage, createJSONStorage } from "jotai/utils";
+import { atomWithStorage } from "jotai/utils";
 import { WritableAtom } from "jotai/vanilla";
+import { persistentStorage } from "./jotai";
 
 export type BookmarkFeature = {
   section: string;
   properties: ListingNode;
 };
-
-const storage = createJSONStorage<any>(() => AsyncStorage);
 
 const cityAtomRegistry: Record<
   string,
@@ -25,7 +23,7 @@ export function getCityAtom(qid: string) {
     (cityAtomRegistry[qid] = atomWithStorage<Record<string, BookmarkFeature>>(
       qid,
       {},
-      storage,
+      persistentStorage,
     ))
   );
 }
@@ -35,4 +33,8 @@ export type City = {
   name: string;
 };
 
-export const citiesAtom = atomWithStorage<City[]>("cities", [], storage);
+export const citiesAtom = atomWithStorage<City[]>(
+  "cities",
+  [],
+  persistentStorage,
+);
