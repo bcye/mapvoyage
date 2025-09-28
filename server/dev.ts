@@ -11,7 +11,7 @@ const server = createHTTPServer({
   router: appRouter,
 });
 
-const PORT = process.env.PORT ?? 3000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
-server.listen(PORT);
+server.listen(PORT, "127.0.0.1");
 console.log(`Listening on port ${PORT}`);
