@@ -12,7 +12,6 @@ export default function Page() {
 
   useEffect(() => {
     if (pageQuery.data) {
-      console.log(pageQuery.data.properties.geo);
       moveTo(
         // @ts-ignore NEEDS FIXING WHEN GEO REVISED
         parseFloat(pageQuery.data.properties.geo["2"]),

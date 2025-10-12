@@ -15,8 +15,6 @@ export const getAllResultsForLocation = publicProcedure
       input: { lngLat },
     } = opts;
 
-    console.log(lngLat);
-
     const placeTypes: GeocodingPlaceType[] = [
       "country",
       "region",

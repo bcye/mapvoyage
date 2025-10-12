@@ -105,7 +105,6 @@ function MapLayout({ children }: { children: React.ReactNode }) {
   return (
     <CameraRefContext.Provider
       value={(lng, lat, zoom) => {
-        console.log(lng, lat, zoom);
         cameraRef.current?.setCamera({
           centerCoordinate: [lng, lat],
           zoomLevel: zoom,
@@ -136,7 +135,6 @@ function MapLayout({ children }: { children: React.ReactNode }) {
               <MarkerView coordinate={[m.long, m.lat]} key={m.id}>
                 <TouchableOpacity
                   onPressIn={() => {
-                    console.log(m.link, m.lat, m.long);
                     router.setParams({ scrollTo: `${m.lat},${m.long}` });
                     router.navigate(m.link);
                   }}
