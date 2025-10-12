@@ -1,4 +1,3 @@
-import useBackOnMapMove from "@/hooks/use-back-on-map-move";
 import useMoveTo from "@/hooks/use-move-to";
 import useWikiQuery from "@/hooks/use-wiki-query";
 import { useLocalSearchParams } from "expo-router";
@@ -19,12 +18,10 @@ export default function Page() {
         // @ts-ignore NEEDS FIXING WHEN GEO REVISED
         parseFloat(pageQuery.data.properties.geo["1"]),
         // @ts-ignore NEEDS FIXING WHEN GEO REVISED
-        parseFloat(pageQuery.data.properties.geo?.zoom),
+        parseFloat(pageQuery.data.properties.geo?.zoom ?? "13"),
       );
     }
   }, [pageQuery.data, moveTo]);
-
-  useBackOnMapMove(pageQuery.isSuccess);
 
   return <PageRootView pageQuery={pageQuery} id={pageId} />;
 }

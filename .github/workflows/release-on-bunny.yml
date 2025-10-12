@@ -1,11 +1,9 @@
-
 name: Deploy Bunny Scripting Script
 
 on:
   push:
     branches:
       - main
-      - rendering
 
 permissions:
   id-token: write

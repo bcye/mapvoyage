@@ -1,5 +1,4 @@
 import WikiContent from "@/components/render-node";
-import useBackOnMapMove from "@/hooks/use-back-on-map-move";
 import { useIsFullscreen } from "@/hooks/use-is-fullscreen";
 import { useScrollRef } from "@/hooks/use-scroll-ref";
 import useWikiQuery from "@/hooks/use-wiki-query";
@@ -79,8 +78,6 @@ export default function Section() {
       title,
     ],
   );
-
-  useBackOnMapMove(wikiQuery.isSuccess);
 
   if (!section) return null;
 

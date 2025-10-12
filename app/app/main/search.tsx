@@ -1,7 +1,6 @@
-import { PRIMARY_COLOR } from "@/utils/theme";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import PlaceCard, { Place } from "@/components/place-card";
+import { SearchHeader } from "@/components/search-header";
 import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
-import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
 import {
   InstantSearch,
@@ -11,7 +10,7 @@ import {
   UseSearchBoxProps,
 } from "react-instantsearch-core";
 import { FlatList, TextInput } from "react-native";
-import { Card, Text, View } from "react-native-ui-lib";
+import { View } from "react-native-ui-lib";
 
 // See:
 // https://www.algolia.com/doc/guides/building-search-ui/going-further/native/react
@@ -39,11 +38,6 @@ function InfiniteHits(props: UseInfiniteHitsProps) {
     ...props,
     escapeHTML: false,
   });
-  const router = useRouter();
-
-  function openPlace(objectID: string) {
-    router.navigate(`/main/explore/page/${objectID}`);
-  }
 
   return (
     <FlatList
@@ -56,15 +50,7 @@ function InfiniteHits(props: UseInfiniteHitsProps) {
         }
       }}
       renderItem={({ item }) => (
-        <Card
-          paddingH-8
-          paddingV-12
-          margin-8
-          key={item.id}
-          onPress={() => openPlace(item.id)}
-        >
-          <Text text70>{item.title}</Text>
-        </Card>
+        <PlaceCard item={item as unknown as Place} key={item.id} />
       )}
     />
   );
@@ -86,23 +72,9 @@ function SearchBox(props: UseSearchBoxProps) {
   }
 
   return (
-    <View padding-8 paddingT-20 paddingB-16 backgroundColor={PRIMARY_COLOR}>
-      <Card
-        borderRadius={50}
-        paddingV-8
-        paddingH-16
-        style={{ flexDirection: "row", alignItems: "center" }}
-      >
-        <TextInput
-          autoFocus
-          value={input}
-          onChangeText={onChange}
-          placeholder="Search"
-          style={{ flex: 1, fontSize: 16 }}
-          ref={ref}
-        />
-        <MaterialCommunityIcons name="magnify" size={20} color="grey" />
-      </Card>
-    </View>
+    <SearchHeader
+      ref={ref}
+      textInputProps={{ value: input, onChangeText: onChange, autoFocus: true }}
+    />
   );
 }

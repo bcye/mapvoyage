@@ -27,7 +27,6 @@ function PageContent({
       const markers: MapMarker[] = [];
       for (const [bId, bookmark] of Object.entries(bookmarks)) {
         const [lat, long] = map(parseFloat, split(",", bId));
-        console.log(lat, long);
         const marker: MapMarker = {
           id: bId,
           // somehow broken else
