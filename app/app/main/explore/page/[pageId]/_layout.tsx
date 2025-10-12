@@ -1,5 +1,5 @@
 import { FullScreenProvider } from "@/hooks/use-is-fullscreen";
-import { CameraRefContext } from "@/hooks/use-move-to";
+import useMoveTo, { CameraRefContext } from "@/hooks/use-move-to";
 import { ScrollRefProvider, useBottomSheetRef } from "@/hooks/use-scroll-ref";
 import { IconName } from "@/utils/icon.types";
 import { Region, useMapStore } from "@/utils/store";
@@ -105,6 +105,7 @@ function MapLayout({ children }: { children: React.ReactNode }) {
   return (
     <CameraRefContext.Provider
       value={(lng, lat, zoom) => {
+        console.log(lng, lat, zoom);
         cameraRef.current?.setCamera({
           centerCoordinate: [lng, lat],
           zoomLevel: zoom,
@@ -172,7 +173,6 @@ function MapLayout({ children }: { children: React.ReactNode }) {
             bottom: sheetHeight + 4,
             right: 13,
           }}
-          cameraRef={cameraRef}
         />
         <BottomSheet
           index={initialSnapIndex}
@@ -224,13 +224,8 @@ function MapControl({
   );
 }
 
-function GeolocateControl({
-  cameraRef,
-  position,
-}: {
-  cameraRef: MutableRefObject<CameraRef | null>;
-  position: Position;
-}) {
+function GeolocateControl({ position }: { position: Position }) {
+  const moveTo = useMoveTo();
   async function onGeolocate() {
     const { granted } = await requestForegroundPermissionsAsync();
     if (!granted) return;
@@ -241,11 +236,7 @@ function GeolocateControl({
         accuracy: LocationAccuracy.Low,
       });
 
-    cameraRef.current?.setCamera({
-      centerCoordinate: [location.coords.longitude, location.coords.latitude],
-      zoomLevel: 13,
-      animationDuration: 300,
-    });
+    moveTo(location.coords.longitude, location.coords.latitude, 13);
   }
 
   return (
