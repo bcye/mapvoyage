@@ -134,7 +134,7 @@ function LocationList({
 }: {
   header: string;
   subheader?: string;
-  data: { id: string; title: string }[];
+  data?: { id: string; title: string }[];
 }) {
   return (
     <Box>

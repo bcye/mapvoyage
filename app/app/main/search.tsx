@@ -1,10 +1,7 @@
 import PlaceCard, { Place } from "@/components/place-card";
 import { SearchHeader } from "@/components/search-header";
-import { PRIMARY_COLOR } from "@/utils/theme";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
-import { useRouter } from "expo-router";
-import { forwardRef, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   InstantSearch,
   useInfiniteHits,
@@ -12,8 +9,8 @@ import {
   useSearchBox,
   UseSearchBoxProps,
 } from "react-instantsearch-core";
-import { FlatList, TextInput, TextInputProps } from "react-native";
-import { Card, Text, View } from "react-native-ui-lib";
+import { FlatList, TextInput } from "react-native";
+import { View } from "react-native-ui-lib";
 
 // See:
 // https://www.algolia.com/doc/guides/building-search-ui/going-further/native/react
@@ -41,7 +38,6 @@ function InfiniteHits(props: UseInfiniteHitsProps) {
     ...props,
     escapeHTML: false,
   });
-  const router = useRouter();
 
   return (
     <FlatList
