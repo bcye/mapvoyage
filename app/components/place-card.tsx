@@ -16,7 +16,7 @@ export default function PlaceCard({ item }: { item: Place }) {
   }
 
   return (
-    <Pressable onPress={openPlace}>
+    <Pressable onPress={openPlace} className="mb-1">
       <Card>
         <Heading size="lg">{item.title}</Heading>
       </Card>

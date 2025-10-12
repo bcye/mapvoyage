@@ -24,7 +24,5 @@ export default function Page() {
     }
   }, [pageQuery.data, moveTo]);
 
-  useBackOnMapMove(pageQuery.isSuccess);
-
   return <PageRootView pageQuery={pageQuery} id={pageId} />;
 }

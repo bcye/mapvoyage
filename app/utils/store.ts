@@ -22,23 +22,12 @@ export type MapMarker = {
 };
 
 export type Store = {
-  region: Region | null;
-  setRegion: (region: Region) => void;
-
   markers: MapMarker[];
   registerMarker: (marker: MapMarker) => void;
   deregisterMarker: (marker: MapMarker) => void;
 };
 
 export const useMapStore = create<Store>((set) => ({
-  region: null,
-  setRegion: (region: Region | ((region: Region | null) => Region)) =>
-    set(
-      typeof region == "function"
-        ? (state) => ({ region: region(state.region) })
-        : { region },
-    ),
-
   markers: [],
   registerMarker(marker) {
     set((s) => ({

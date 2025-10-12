@@ -80,8 +80,6 @@ export default function Section() {
     ],
   );
 
-  useBackOnMapMove(wikiQuery.isSuccess);
-
   if (!section) return null;
 
   return (

@@ -53,9 +53,6 @@ function NearYou() {
   else {
     return (
       <Box>
-        <Heading size="2xl" className="mb-2">
-          Near You
-        </Heading>
         {locationPermission?.granted ? (
           <NearYouList />
         ) : (
@@ -127,7 +124,7 @@ function NearYouList() {
     ),
   );
 
-  return <Text>{data?.toString()}</Text>;
+  return <LocationList header="Near You" data={data} />;
 }
 
 function LocationList({
@@ -136,17 +133,25 @@ function LocationList({
   data,
 }: {
   header: string;
-  subheader: string;
+  subheader?: string;
   data: { id: string; title: string }[];
 }) {
   return (
     <Box>
-      <Text className="text-2xl">{header}</Text>
-      <Text className="text-lg text-gray-500">{subheader}</Text>
-      <FlatList
-        data={data}
-        renderItem={({ item }) => <PlaceCard item={item} key={item.id} />}
-      />
+      <Heading size="2xl">{header}</Heading>
+      {subheader && (
+        <Heading size="xl" className="text-gray-500">
+          {subheader}
+        </Heading>
+      )}
+      <Box className="mt-1">
+        {data && (
+          <FlatList
+            data={data}
+            renderItem={({ item }) => <PlaceCard item={item} key={item.id} />}
+          />
+        )}
+      </Box>
     </Box>
   );
 }

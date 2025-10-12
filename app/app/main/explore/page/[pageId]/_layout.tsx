@@ -1,12 +1,9 @@
-import { CurrentIdContext } from "@/hooks/use-current-id";
 import { FullScreenProvider } from "@/hooks/use-is-fullscreen";
 import { CameraRefContext } from "@/hooks/use-move-to";
 import { ScrollRefProvider, useBottomSheetRef } from "@/hooks/use-scroll-ref";
-import { Bbox } from "@/types/maptiler";
 import { IconName } from "@/utils/icon.types";
 import { Region, useMapStore } from "@/utils/store";
 import { PRIMARY_COLOR } from "@/utils/theme";
-import { trpc } from "@/utils/trpc";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import BottomSheet from "@gorhom/bottom-sheet";
@@ -25,11 +22,10 @@ import {
   requestForegroundPermissionsAsync,
 } from "expo-location";
 import { Stack, useRouter } from "expo-router";
-import { MutableRefObject, useMemo, useRef, useState } from "react";
+import { MutableRefObject, useRef, useState } from "react";
 import { Dimensions, StyleSheet, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Card, TouchableOpacity } from "react-native-ui-lib";
-import { useDebounce } from "use-debounce";
 
 /**
  * Root layout component that wraps the application with data providers and renders the main interface.
@@ -38,26 +34,6 @@ import { useDebounce } from "use-debounce";
  */
 export default function RootLayout() {
   const [fullscreen, setFullscreen] = useState(false);
-
-  const { region } = useMapStore();
-  const [dRegion] = useDebounce(region, 200);
-
-  const query = useMemo(() => {
-    if (dRegion) {
-      const [lng, lat] = dRegion.geometry.coordinates;
-      // construct a bounding box from the visible bounds
-      const [ne, sw] = dRegion.properties.visibleBounds;
-      const bbox: Bbox = [sw[0], sw[1], ne[0], ne[1]];
-      return {
-        bbox,
-        latLng: [lat, lng] as [number, number],
-      };
-    } else return undefined;
-  }, [dRegion]);
-  // @ts-ignore query is not run when undefined so ok
-  const idQuery = trpc.getPage.useQuery(query, {
-    enabled: !!query,
-  });
 
   const stack = (
     <Stack
@@ -76,13 +52,11 @@ export default function RootLayout() {
   );
 
   return (
-    <CurrentIdContext.Provider value={idQuery.data ?? null}>
-      <FullScreenProvider fullscreen={fullscreen}>
-        <ScrollRefProvider>
-          {!fullscreen ? <MapLayout>{stack}</MapLayout> : stack}
-        </ScrollRefProvider>
-      </FullScreenProvider>
-    </CurrentIdContext.Provider>
+    <FullScreenProvider fullscreen={fullscreen}>
+      <ScrollRefProvider>
+        {!fullscreen ? <MapLayout>{stack}</MapLayout> : stack}
+      </ScrollRefProvider>
+    </FullScreenProvider>
   );
 }
 
@@ -109,7 +83,7 @@ plays a map using MapTiler styles along with user location tracking and map tile
  * @returns A React element representing the combined map and bottom sheet layout.
  */
 function MapLayout({ children }: { children: React.ReactNode }) {
-  const { setRegion, markers } = useMapStore();
+  const { markers } = useMapStore();
   const router = useRouter();
   const bottomSheetRef = useBottomSheetRef();
   const [sheetHeight, setSheetHeight] = useState(() =>
@@ -120,7 +94,6 @@ function MapLayout({ children }: { children: React.ReactNode }) {
     // we cant recenter if we override it here before the cameraRef is available.
     // so just skip it on the initial call
     cameraRef.current?.setCamera({});
-    setRegion(region);
   }
 
   function onSheetPositionChange(snapIndex: number) {

@@ -33,6 +33,7 @@ export const getAllResultsForLocation = publicProcedure
 
     const geocodeResult = await geocoding.reverse([lngLat[0], lngLat[1]], {
       types: placeTypes,
+      language: "en",
     });
 
     let features = geocodeResult.features as Feature[];
@@ -57,7 +58,9 @@ export const getAllResultsForLocation = publicProcedure
       ),
     );
 
-    wikidataIds = wikidataIds.filter((_, idx) => exists[idx]);
+    const results = features
+      .filter((_, idx) => exists[idx])
+      .map((f) => ({ title: f.place_name, id: f.properties.wikidata! }));
 
-    return wikidataIds as string[];
+    return results;
   });
