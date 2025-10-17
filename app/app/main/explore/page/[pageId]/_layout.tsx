@@ -52,7 +52,7 @@ export default function RootLayout() {
   );
 
   return (
-    <FullScreenProvider fullscreen={fullscreen}>
+    <FullScreenProvider fullscreen={fullscreen} setFullscreen={setFullscreen}>
       <ScrollRefProvider>
         {!fullscreen ? <MapLayout>{stack}</MapLayout> : stack}
       </ScrollRefProvider>
