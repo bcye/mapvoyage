@@ -2,19 +2,23 @@ import { getCityAtom } from "@/utils/bookmarks";
 import { MapMarker, MarkerType, useMapStore } from "@/utils/store";
 import { NodeType, RootNode } from "@bcye/structured-wikivoyage-types";
 import { UseQueryResult } from "@tanstack/react-query";
-import { Link, Route, Stack } from "expo-router";
+import { Link, Route } from "expo-router";
 import { useAtomValue } from "jotai/react";
 import { filter, map, split, splitEvery } from "ramda";
 import { useEffect } from "react";
-import { ScrollView } from "react-native";
-import { Card, SkeletonView, Text, View } from "react-native-ui-lib";
+import { Card, View } from "react-native-ui-lib";
 
-function PageContent({
+/**
+ * Shared page content component that displays section cards and registers bookmark markers.
+ */
+export function PageContent({
   pageQuery,
   id,
+  basePath,
 }: {
   pageQuery: UseQueryResult<RootNode, Error>;
   id: string;
+  basePath: string;
 }) {
   const bookmarks = useAtomValue(getCityAtom(id));
   const registerMarker = useMapStore((s) => s.registerMarker);
@@ -27,7 +31,7 @@ function PageContent({
         const [lat, long] = map(parseFloat, split(",", bId));
         const marker: MapMarker = {
           id: bId,
-          link: `/main/explore/page-fullscreen/${id}/section/${bookmark.section}` as Route,
+          link: `${basePath}/${id}/section/${bookmark.section}` as Route,
           lat,
           long,
           type: MarkerType.Bookmark,
@@ -42,7 +46,7 @@ function PageContent({
         }
       };
     },
-    [bookmarks, id, registerMarker, deregisterMarker],
+    [bookmarks, id, registerMarker, deregisterMarker, basePath],
   );
 
   return map(
@@ -54,8 +58,18 @@ function PageContent({
         marginB-8
         key={item1.properties.title + item2?.properties.title}
       >
-        <Infocard title={item1.properties.title} pageId={id!} />
-        {item2 && <Infocard title={item2.properties.title} pageId={id!} />}
+        <Infocard
+          title={item1.properties.title}
+          pageId={id!}
+          basePath={basePath}
+        />
+        {item2 && (
+          <Infocard
+            title={item2.properties.title}
+            pageId={id!}
+            basePath={basePath}
+          />
+        )}
       </View>
     ),
     splitEvery(
@@ -65,48 +79,23 @@ function PageContent({
   );
 }
 
-export default function PageRootView({
-  pageQuery,
-  id,
-}: {
-  pageQuery: UseQueryResult<RootNode, Error>;
-  id: string | null;
-}) {
-  return (
-    <View padding-8 flex>
-      <Stack.Screen
-        options={{ title: pageQuery.data?.properties.title ?? "Loading" }}
-      />
-      <SkeletonView
-        template={SkeletonView.templates.LIST_ITEM}
-        showContent={pageQuery.isSuccess}
-        renderContent={() =>
-          pageQuery.error ? (
-            <Text color="red" text60>
-              A network error occured and the place information could not be
-              loaded.
-            </Text>
-          ) : pageQuery.data && id ? (
-            <ScrollView>
-              <PageContent id={id} pageQuery={pageQuery} />
-            </ScrollView>
-          ) : null
-        }
-      />
-    </View>
-  );
-}
-
 /**
  * Renders a clickable infocard that links to a specific page section.
- * Links to the fullscreen section route.
  */
-function Infocard({ title, pageId }: { title: string; pageId: string }) {
+function Infocard({
+  title,
+  pageId,
+  basePath,
+}: {
+  title: string;
+  pageId: string;
+  basePath: string;
+}) {
   return (
     <Link
       asChild
       href={{
-        pathname: "/main/explore/page-fullscreen/[pageId]/section/[title]",
+        pathname: `${basePath}/[pageId]/section/[title]`,
         params: { pageId, title },
       }}
     >

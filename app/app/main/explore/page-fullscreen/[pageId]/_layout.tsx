@@ -1,3 +1,5 @@
+import { FullScreenProvider } from "@/hooks/use-is-fullscreen";
+import { ScrollRefProvider } from "@/hooks/use-scroll-ref";
 import { Stack } from "expo-router";
 
 /**
@@ -5,5 +7,11 @@ import { Stack } from "expo-router";
  * Used for pages that don't have geographic coordinates.
  */
 export default function FullscreenPageLayout() {
-  return <Stack />;
+  return (
+    <FullScreenProvider fullscreen={true}>
+      <ScrollRefProvider>
+        <Stack />
+      </ScrollRefProvider>
+    </FullScreenProvider>
+  );
 }
