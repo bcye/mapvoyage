@@ -20,8 +20,14 @@ export default function Page() {
         pageQuery.data.properties.geo["1"] &&
         pageQuery.data.properties.geo["2"];
 
+      const updateFullscreenIfNeeded = (shouldBeFullscreen: boolean) => {
+        if (isFullscreen !== shouldBeFullscreen) {
+          setFullscreen(shouldBeFullscreen);
+        }
+      };
+
       if (hasGeo) {
-        // Page has geo data, zoom to coordinates and exit fullscreen if needed
+        // Page has geo data, zoom to coordinates and exit fullscreen mode
         moveTo(
           // @ts-ignore NEEDS FIXING WHEN GEO REVISED
           parseFloat(pageQuery.data.properties.geo["2"]),
@@ -30,14 +36,10 @@ export default function Page() {
           // @ts-ignore NEEDS FIXING WHEN GEO REVISED
           parseFloat(pageQuery.data.properties.geo?.zoom ?? "13"),
         );
-        if (isFullscreen) {
-          setFullscreen(false);
-        }
+        updateFullscreenIfNeeded(false);
       } else {
-        // Page has no geo data, open in fullscreen mode if needed
-        if (!isFullscreen) {
-          setFullscreen(true);
-        }
+        // Page has no geo data, open in fullscreen mode
+        updateFullscreenIfNeeded(true);
       }
     }
   }, [pageQuery.data, moveTo, isFullscreen, setFullscreen]);
