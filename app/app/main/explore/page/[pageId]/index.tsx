@@ -1,6 +1,6 @@
 import useMoveTo from "@/hooks/use-move-to";
 import useWikiQuery from "@/hooks/use-wiki-query";
-import { useSetFullscreen } from "@/hooks/use-is-fullscreen";
+import { useIsFullscreen, useSetFullscreen } from "@/hooks/use-is-fullscreen";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import PageRootView from "./_page-root-view";
@@ -10,6 +10,7 @@ export default function Page() {
   pageId = typeof pageId === "string" ? pageId : pageId[0];
   const pageQuery = useWikiQuery(pageId);
   const moveTo = useMoveTo();
+  const isFullscreen = useIsFullscreen();
   const setFullscreen = useSetFullscreen();
 
   useEffect(() => {
@@ -20,7 +21,7 @@ export default function Page() {
         pageQuery.data.properties.geo["2"];
 
       if (hasGeo) {
-        // Page has geo data, zoom to coordinates and exit fullscreen
+        // Page has geo data, zoom to coordinates and exit fullscreen if needed
         moveTo(
           // @ts-ignore NEEDS FIXING WHEN GEO REVISED
           parseFloat(pageQuery.data.properties.geo["2"]),
@@ -29,13 +30,17 @@ export default function Page() {
           // @ts-ignore NEEDS FIXING WHEN GEO REVISED
           parseFloat(pageQuery.data.properties.geo?.zoom ?? "13"),
         );
-        setFullscreen(false);
+        if (isFullscreen) {
+          setFullscreen(false);
+        }
       } else {
-        // Page has no geo data, open in fullscreen mode
-        setFullscreen(true);
+        // Page has no geo data, open in fullscreen mode if needed
+        if (!isFullscreen) {
+          setFullscreen(true);
+        }
       }
     }
-  }, [pageQuery.data, moveTo, setFullscreen]);
+  }, [pageQuery.data, moveTo, isFullscreen, setFullscreen]);
 
   return <PageRootView pageQuery={pageQuery} id={pageId} />;
 }
