@@ -1,11 +1,23 @@
+import useWikiQuery from "@/hooks/use-wiki-query";
 import { RootNode } from "@bcye/structured-wikivoyage-types";
 import { UseQueryResult } from "@tanstack/react-query";
-import { Stack } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { PageContent } from "../../_shared/page-content";
 import { ScrollContainer } from "../../_shared/scroll-container";
 import { SkeletonView, Text, View } from "react-native-ui-lib";
 
-export default function PageRootView({
+/**
+ * Fullscreen page view for pages without geographic data.
+ */
+export default function FullscreenPage() {
+  let { pageId } = useLocalSearchParams();
+  pageId = typeof pageId === "string" ? pageId : pageId[0];
+  const pageQuery = useWikiQuery(pageId);
+
+  return <FullscreenPageRootView pageQuery={pageQuery} id={pageId} />;
+}
+
+function FullscreenPageRootView({
   pageQuery,
   id,
 }: {
@@ -31,7 +43,7 @@ export default function PageRootView({
               <PageContent
                 id={id}
                 pageQuery={pageQuery}
-                basePath="/main/explore/page"
+                basePath="/main/explore/page-fullscreen"
               />
             </ScrollContainer>
           ) : null

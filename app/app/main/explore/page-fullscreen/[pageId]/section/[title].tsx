@@ -8,9 +8,9 @@ import { useSectionBookmarks } from "../../../_shared/use-section-bookmarks";
 import { SkeletonView, View } from "react-native-ui-lib";
 
 /**
- * Renders a specific section of a Wikipedia page.
+ * Renders a specific section of a Wikipedia page in fullscreen mode.
  */
-export default function Section() {
+export default function FullscreenSection() {
   const { title, pageId } = useLocalSearchParams();
   const wikiQuery = useWikiQuery(pageId as string);
   const section = wikiQuery.data?.children.find(
