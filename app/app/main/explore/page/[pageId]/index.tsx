@@ -20,7 +20,7 @@ export default function Page() {
         pageQuery.data.properties.geo["2"];
 
       if (hasGeo) {
-        // Page has geo data, zoom to coordinates
+        // Page has geo data, zoom to coordinates and exit fullscreen
         moveTo(
           // @ts-ignore NEEDS FIXING WHEN GEO REVISED
           parseFloat(pageQuery.data.properties.geo["2"]),
@@ -29,6 +29,7 @@ export default function Page() {
           // @ts-ignore NEEDS FIXING WHEN GEO REVISED
           parseFloat(pageQuery.data.properties.geo?.zoom ?? "13"),
         );
+        setFullscreen(false);
       } else {
         // Page has no geo data, open in fullscreen mode
         setFullscreen(true);
