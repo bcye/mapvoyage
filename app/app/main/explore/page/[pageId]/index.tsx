@@ -3,6 +3,7 @@ import useWikiQuery from "@/hooks/use-wiki-query";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import PageRootView from "./_page-root-view";
+import { usePushCityVisit } from "@/hooks/visited-cities";
 
 export default function Page() {
   let { pageId } = useLocalSearchParams();
@@ -22,6 +23,8 @@ export default function Page() {
       );
     }
   }, [pageQuery.data, moveTo]);
+
+  usePushCityVisit({ id: pageId, title: pageQuery.data?.properties.title });
 
   return <PageRootView pageQuery={pageQuery} id={pageId} />;
 }

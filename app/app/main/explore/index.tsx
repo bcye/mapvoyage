@@ -4,6 +4,7 @@ import { Button, ButtonText } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
+import { useLastVisitedCities } from "@/hooks/visited-cities";
 import { Coordinates } from "@/types/geo";
 import { handleForegroundError } from "@/utils/errors";
 import { hideNearYouAtom } from "@/utils/jotai";
@@ -26,6 +27,7 @@ export default function ExplorePage() {
       <Stack.Screen options={{ headerShown: true, title: "Explore" }} />
       <Box className="p-4 px-3">
         <NearYou />
+        <RecentlyVisitedList />
       </Box>
     </View>
   );
@@ -52,39 +54,64 @@ function NearYou() {
   if (hideCard || locationPermission === null) return null;
   else {
     return (
-      <Box>
+      <Box className="mb-4">
         {locationPermission?.granted ? (
           <NearYouList />
         ) : (
-          <Card>
-            <Heading size="md" className="mb-1">
-              Location Permission Needed
-            </Heading>
-            <Text size="sm" className="mb-4">
-              If you want to quickly access guides for places close to you,
-              please allow the app access to your location.
-            </Text>
-            <Box className="flex-row gap-2">
-              <Button onPress={requestPermissions}>
-                <ButtonText>
-                  {!locationPermission?.canAskAgain
-                    ? "Go to Settings"
-                    : "Request Permissions"}
-                </ButtonText>
-              </Button>
-              <Button
-                variant="outline"
-                action="secondary"
-                onPress={dismissCard}
-              >
-                <ButtonText>Dismiss this</ButtonText>
-              </Button>
-            </Box>
-          </Card>
+          <Box>
+            <Heading size="2xl">Near You</Heading>
+            <Card>
+              <Heading size="md" className="mb-1">
+                Location Permission Needed
+              </Heading>
+              <Text size="sm" className="mb-4">
+                If you want to quickly access guides for places close to you,
+                please allow the app access to your location.
+              </Text>
+              <Box className="flex-row gap-2">
+                <Button onPress={requestPermissions}>
+                  <ButtonText>
+                    {!locationPermission?.canAskAgain
+                      ? "Go to Settings"
+                      : "Request Permissions"}
+                  </ButtonText>
+                </Button>
+                <Button
+                  variant="outline"
+                  action="secondary"
+                  onPress={dismissCard}
+                >
+                  <ButtonText>Dismiss this</ButtonText>
+                </Button>
+              </Box>
+            </Card>
+          </Box>
         )}
       </Box>
     );
   }
+}
+
+function RecentlyVisitedList() {
+  const recentlyVisited = useLastVisitedCities();
+
+  return recentlyVisited.length == 0 ? (
+    <Box>
+      <Heading size="2xl" className="mb-1">
+        Recently Viewed
+      </Heading>
+      <Card>
+        <Heading size="md" className="mb-1">
+          This list is empty (:
+        </Heading>
+        <Text size="sm">
+          Try searching for some places you are curious about in the search tab.
+        </Text>
+      </Card>
+    </Box>
+  ) : (
+    <LocationList header="Recently Viewed" data={recentlyVisited} />
+  );
 }
 
 function NearYouList() {
