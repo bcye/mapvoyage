@@ -32,7 +32,7 @@ import { withFullscreenLayout } from "../_layout-base";
  *
  * This component provides the TRPC and QueryClient contexts for state and data management, and embeds a MapLayout that displays the map along with a bottom sheet containing the navigation stack.
  */
-export default withFullscreenLayout(MapLayout);
+export default withFullscreenLayout(MapLayout, false);
 
 const snapPoints = ["20%", "40%", "50%"];
 const initialSnapIndex = 1;

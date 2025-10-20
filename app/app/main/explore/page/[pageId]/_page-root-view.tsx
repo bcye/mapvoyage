@@ -14,7 +14,7 @@ function PageContent({
   pageQuery,
   id,
 }: {
-  pageQuery: UseQdefaultueryResult<RootNode, Error>;
+  pageQuery: UseQueryResult<RootNode, Error>;
   id: string;
 }) {
   const bookmarks = useAtomValue(getCityAtom(id));
