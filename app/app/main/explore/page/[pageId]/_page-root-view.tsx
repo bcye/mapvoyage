@@ -3,7 +3,7 @@ import { MapMarker, MarkerType, useMapStore } from "@/utils/store";
 import { NodeType, RootNode } from "@bcye/structured-wikivoyage-types";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { UseQueryResult } from "@tanstack/react-query";
-import { Link, Route, Stack } from "expo-router";
+import { Link, Route, Stack, usePathname } from "expo-router";
 import { useAtomValue } from "jotai/react";
 import { filter, map, split, splitEvery } from "ramda";
 import { useEffect } from "react";
@@ -118,11 +118,17 @@ export default function PageRootView({
  * @param pageId - The identifier for the page, used to construct the dynamic navigation route.
  */
 function Infocard({ title, pageId }: { title: string; pageId: string }) {
+  const pathname = usePathname();
   return (
     <Link
       asChild
       href={{
-        pathname: "./section/[title]",
+        // ugly debounce, pathname gets updated before navigation
+        // if screen stalls we end up navigating to section/X/section/X -> 404
+        // @ts-ignore cannot be inferred
+        pathname: pathname.includes("section")
+          ? pathname
+          : pathname + "/section/[title]",
         params: { title },
       }}
     >

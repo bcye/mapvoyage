@@ -11,6 +11,7 @@
   },
   "scripts": {
     "start": "expo start",
+    "start:ng": "expo start --tunnel",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "DARK_MODE=media expo run:android",
     "android:reconnect": "adb reverse tcp:8081 tcp:8081",
