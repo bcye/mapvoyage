@@ -1,5 +1,6 @@
 import PlaceCard, { Place } from "@/components/place-card";
 import { SearchHeader } from "@/components/search-header";
+import { Box } from "@/components/ui/box";
 import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
 import { useRef, useState } from "react";
 import {
@@ -25,10 +26,10 @@ export default function Search() {
   return (
     // @ts-ignore should be right
     <InstantSearch indexName="wiki-en" searchClient={searchClient}>
-      <View flex>
+      <Box className="flex-auto">
         <SearchBox />
         <InfiniteHits />
-      </View>
+      </Box>
     </InstantSearch>
   );
 }
@@ -43,6 +44,7 @@ function InfiniteHits(props: UseInfiniteHitsProps) {
     <FlatList
       style={{ flex: 1 }}
       data={items}
+      className="p-3"
       keyExtractor={(item) => item.id}
       onEndReached={() => {
         if (!isLastPage) {
