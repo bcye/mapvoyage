@@ -1,4 +1,3 @@
-import { useIsFullscreen } from "@/hooks/use-is-fullscreen";
 import { getCityAtom } from "@/utils/bookmarks";
 import { MapMarker, MarkerType, useMapStore } from "@/utils/store";
 import { NodeType, RootNode } from "@bcye/structured-wikivoyage-types";
@@ -15,7 +14,7 @@ function PageContent({
   pageQuery,
   id,
 }: {
-  pageQuery: UseQueryResult<RootNode, Error>;
+  pageQuery: UseQdefaultueryResult<RootNode, Error>;
   id: string;
 }) {
   const bookmarks = useAtomValue(getCityAtom(id));
@@ -30,7 +29,8 @@ function PageContent({
         const marker: MapMarker = {
           id: bId,
           // somehow broken else
-          link: `/main/explore/page/${id}/section/${bookmark.section}` as Route,
+          // if this is fullscreen, the markers are not gonna be available anywhere so it is safe to hardcode this to map view.
+          link: `/main/explore/page/${id}/map/section/${bookmark.section}` as Route,
           lat,
           long,
           type: MarkerType.Bookmark,
@@ -71,12 +71,12 @@ function PageContent({
 export default function PageRootView({
   pageQuery,
   id,
+  isFullscreen,
 }: {
   pageQuery: UseQueryResult<RootNode, Error>;
   id: string | null;
+  isFullscreen: boolean;
 }) {
-  const isFullscreen = useIsFullscreen();
-
   return (
     <View padding-8 flex>
       <Stack.Screen
@@ -122,8 +122,8 @@ function Infocard({ title, pageId }: { title: string; pageId: string }) {
     <Link
       asChild
       href={{
-        pathname: "/main/explore/page/[pageId]/section/[title]",
-        params: { pageId, title },
+        pathname: "./section/[title]",
+        params: { title },
       }}
     >
       <Card flex padding-12 height={48}>

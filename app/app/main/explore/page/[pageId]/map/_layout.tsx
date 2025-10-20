@@ -1,6 +1,5 @@
-import { FullScreenProvider } from "@/hooks/use-is-fullscreen";
 import useMoveTo, { CameraRefContext } from "@/hooks/use-move-to";
-import { ScrollRefProvider, useBottomSheetRef } from "@/hooks/use-scroll-ref";
+import { useBottomSheetRef } from "@/hooks/use-scroll-ref";
 import { IconName } from "@/utils/icon.types";
 import { Region, useMapStore } from "@/utils/store";
 import { PRIMARY_COLOR } from "@/utils/theme";
@@ -21,44 +20,19 @@ import {
   LocationAccuracy,
   requestForegroundPermissionsAsync,
 } from "expo-location";
-import { Stack, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { MutableRefObject, useRef, useState } from "react";
 import { Dimensions, StyleSheet, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Card, TouchableOpacity } from "react-native-ui-lib";
+import { withFullscreenLayout } from "../_layout-base";
 
 /**
  * Root layout component that wraps the application with data providers and renders the main interface.
  *
  * This component provides the TRPC and QueryClient contexts for state and data management, and embeds a MapLayout that displays the map along with a bottom sheet containing the navigation stack.
  */
-export default function RootLayout() {
-  const [fullscreen, setFullscreen] = useState(false);
-
-  const stack = (
-    <Stack
-      screenOptions={{
-        headerRight: () => (
-          <TouchableOpacity onPressIn={() => setFullscreen(!fullscreen)}>
-            <MaterialCommunityIcons
-              name={fullscreen ? "fullscreen-exit" : "fullscreen"}
-              size={28}
-              color="inherit"
-            />
-          </TouchableOpacity>
-        ),
-      }}
-    />
-  );
-
-  return (
-    <FullScreenProvider fullscreen={fullscreen}>
-      <ScrollRefProvider>
-        {!fullscreen ? <MapLayout>{stack}</MapLayout> : stack}
-      </ScrollRefProvider>
-    </FullScreenProvider>
-  );
-}
+export default withFullscreenLayout(MapLayout);
 
 const snapPoints = ["20%", "40%", "50%"];
 const initialSnapIndex = 1;
