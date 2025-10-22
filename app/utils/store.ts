@@ -36,12 +36,22 @@ export const useMapStore = create<Store>((set) => ({
     }));
   },
   deregisterMarker(marker) {
-    set((s) => ({
-      ...s,
-      markers: s.markers.toSpliced(
-        s.markers.findIndex((m) => m.id == marker.id),
-        1,
-      ),
-    }));
+    set((s) => {
+      const prevL = s.markers.length;
+      const newM = {
+        ...s,
+        markers: s.markers.toSpliced(
+          s.markers.findIndex((m) => m.id == marker.id),
+          1,
+        ),
+      };
+      const newL = newM.markers.length;
+      if (prevL == newL) {
+        console.warn(
+          `Tried to deregister marker ${marker.id} but it was not found in store.`,
+        );
+      }
+      return newM;
+    });
   },
 }));

@@ -13,9 +13,11 @@ import { Card, SkeletonView, Text, View } from "react-native-ui-lib";
 function PageContent({
   pageQuery,
   id,
+  isFullscreen,
 }: {
   pageQuery: UseQueryResult<RootNode, Error>;
   id: string;
+  isFullscreen: boolean;
 }) {
   const bookmarks = useAtomValue(getCityAtom(id));
   const registerMarker = useMapStore((s) => s.registerMarker);
@@ -23,6 +25,8 @@ function PageContent({
 
   useEffect(
     function registerBookmarks() {
+      if (isFullscreen) return;
+
       const markers: MapMarker[] = [];
       for (const [bId, bookmark] of Object.entries(bookmarks)) {
         const [lat, long] = map(parseFloat, split(",", bId));
@@ -45,7 +49,7 @@ function PageContent({
         }
       };
     },
-    [bookmarks, id, registerMarker, deregisterMarker],
+    [bookmarks, id, registerMarker, deregisterMarker, isFullscreen],
   );
 
   return map(
@@ -94,11 +98,19 @@ export default function PageRootView({
           ) : pageQuery.data && id ? (
             !isFullscreen ? (
               <BottomSheetScrollView>
-                <PageContent id={id} pageQuery={pageQuery} />
+                <PageContent
+                  id={id}
+                  pageQuery={pageQuery}
+                  isFullscreen={isFullscreen}
+                />
               </BottomSheetScrollView>
             ) : (
               <ScrollView>
-                <PageContent id={id} pageQuery={pageQuery} />
+                <PageContent
+                  id={id}
+                  pageQuery={pageQuery}
+                  isFullscreen={isFullscreen}
+                />
               </ScrollView>
             )
           ) : null

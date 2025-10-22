@@ -194,6 +194,8 @@ function Listing({
   );
 }
 
+let count = 0;
+
 function useRegisterOnMap(
   lat: string,
   long: string,
@@ -212,6 +214,7 @@ function useRegisterOnMap(
   const { scrollTo } = useLocalSearchParams();
 
   useEffect(() => {
+    if (path.includes("fullscreen")) return;
     // bookmarked items are registered elsewhere
     if (isBookmarked(coordsId)) return;
 
@@ -223,9 +226,11 @@ function useRegisterOnMap(
       type: MarkerType.Normal,
     };
     registerCard(marker);
+    console.log("registered marker", ++count);
 
     return () => {
       deregisterCard(marker);
+      console.log("deregistered marker");
     };
   }, [coordsId, isBookmarked, deregisterCard, lat, long, path, registerCard]);
 
