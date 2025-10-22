@@ -1,10 +1,9 @@
-import { useIsFullscreen } from "@/hooks/use-is-fullscreen";
 import { getCityAtom } from "@/utils/bookmarks";
 import { MapMarker, MarkerType, useMapStore } from "@/utils/store";
 import { NodeType, RootNode } from "@bcye/structured-wikivoyage-types";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { UseQueryResult } from "@tanstack/react-query";
-import { Link, Route, Stack } from "expo-router";
+import { Link, Route, Stack, usePathname } from "expo-router";
 import { useAtomValue } from "jotai/react";
 import { filter, map, split, splitEvery } from "ramda";
 import { useEffect } from "react";
@@ -14,9 +13,11 @@ import { Card, SkeletonView, Text, View } from "react-native-ui-lib";
 function PageContent({
   pageQuery,
   id,
+  isFullscreen,
 }: {
   pageQuery: UseQueryResult<RootNode, Error>;
   id: string;
+  isFullscreen: boolean;
 }) {
   const bookmarks = useAtomValue(getCityAtom(id));
   const registerMarker = useMapStore((s) => s.registerMarker);
@@ -24,13 +25,16 @@ function PageContent({
 
   useEffect(
     function registerBookmarks() {
+      if (isFullscreen) return;
+
       const markers: MapMarker[] = [];
       for (const [bId, bookmark] of Object.entries(bookmarks)) {
         const [lat, long] = map(parseFloat, split(",", bId));
         const marker: MapMarker = {
           id: bId,
           // somehow broken else
-          link: `/main/explore/page/${id}/section/${bookmark.section}` as Route,
+          // if this is fullscreen, the markers are not gonna be available anywhere so it is safe to hardcode this to map view.
+          link: `/main/explore/page/${id}/map/section/${bookmark.section}` as Route,
           lat,
           long,
           type: MarkerType.Bookmark,
@@ -45,7 +49,7 @@ function PageContent({
         }
       };
     },
-    [bookmarks, id, registerMarker, deregisterMarker],
+    [bookmarks, id, registerMarker, deregisterMarker, isFullscreen],
   );
 
   return map(
@@ -71,12 +75,12 @@ function PageContent({
 export default function PageRootView({
   pageQuery,
   id,
+  isFullscreen,
 }: {
   pageQuery: UseQueryResult<RootNode, Error>;
   id: string | null;
+  isFullscreen: boolean;
 }) {
-  const isFullscreen = useIsFullscreen();
-
   return (
     <View padding-8 flex>
       <Stack.Screen
@@ -94,11 +98,19 @@ export default function PageRootView({
           ) : pageQuery.data && id ? (
             !isFullscreen ? (
               <BottomSheetScrollView>
-                <PageContent id={id} pageQuery={pageQuery} />
+                <PageContent
+                  id={id}
+                  pageQuery={pageQuery}
+                  isFullscreen={isFullscreen}
+                />
               </BottomSheetScrollView>
             ) : (
               <ScrollView>
-                <PageContent id={id} pageQuery={pageQuery} />
+                <PageContent
+                  id={id}
+                  pageQuery={pageQuery}
+                  isFullscreen={isFullscreen}
+                />
               </ScrollView>
             )
           ) : null
@@ -118,12 +130,18 @@ export default function PageRootView({
  * @param pageId - The identifier for the page, used to construct the dynamic navigation route.
  */
 function Infocard({ title, pageId }: { title: string; pageId: string }) {
+  const pathname = usePathname();
   return (
     <Link
       asChild
       href={{
-        pathname: "/main/explore/page/[pageId]/section/[title]",
-        params: { pageId, title },
+        // ugly debounce, pathname gets updated before navigation
+        // if screen stalls we end up navigating to section/X/section/X -> 404
+        // @ts-ignore cannot be inferred
+        pathname: pathname.includes("section")
+          ? pathname
+          : pathname + "/section/[title]",
+        params: { title },
       }}
     >
       <Card flex padding-12 height={48}>

@@ -12,7 +12,7 @@ export default function PlaceCard({ item }: { item: Place }) {
   const router = useRouter();
 
   function openPlace() {
-    router.navigate(`/main/explore/page/${item.id}`);
+    router.navigate(`/main/explore/page/${item.id}/map`);
   }
 
   return (
