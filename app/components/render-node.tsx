@@ -1,16 +1,17 @@
 import { useBottomSheetRef, useScrollRef } from "@/hooks/use-scroll-ref";
 import { ListingNode, NodeType, TemplateNode, WikiNode } from "@/types/nodes";
+import openGeo from "@/utils/open-geo";
 import { MapMarker, MarkerType, useMapStore } from "@/utils/store";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Route, useLocalSearchParams, usePathname } from "expo-router";
 import { Fragment, MutableRefObject, useEffect, useRef } from "react";
 import { Linking, View as RView } from "react-native";
 import Markdown from "react-native-markdown-display";
-import { Card, Text, TouchableOpacity, View } from "react-native-ui-lib";
+import { Card, Text } from "react-native-ui-lib";
+import { toast } from "sonner-native";
+import { Box } from "./ui/box";
 import { HStack } from "./ui/hstack";
 import { Pressable } from "./ui/pressable";
-import openGeo from "@/utils/open-geo";
-import { toast } from "sonner-native";
 export default function WikiContent({
   node,
   root = false,
@@ -155,13 +156,12 @@ function Listing({
         </Pressable>
       </HStack>
       {!!properties.content && <Text>{properties.content}</Text>}
-      <View
+      <Box
         ref={ref}
-        marginT-8
-        paddingT-8
-        style={{ borderTopColor: "grey", borderTopWidth: 0.5 }}
+        className="mt-2 pt-2 border-t-gray-400"
+        style={{ borderTopWidth: 1 }}
       >
-        <TouchableOpacity marginH-4 onPress={openMap}>
+        <Pressable className="m-1" onPress={openMap}>
           <Text grey20 style={{ alignItems: "center" }}>
             <MaterialCommunityIcons name="map-marker-radius" size={20} />{" "}
             <Text blue10>
@@ -170,14 +170,14 @@ function Listing({
               {!!properties.directions && "(" + properties.directions + ")"}
             </Text>
           </Text>
-        </TouchableOpacity>
+        </Pressable>
         {!!properties.email && (
-          <TouchableOpacity marginH-4 onPress={openEmail}>
+          <Pressable className="m-1" onPress={openEmail}>
             <Text grey20 style={{ alignItems: "center" }}>
               <MaterialCommunityIcons name="email" size={20} />{" "}
               <Text blue10>{properties.email}</Text>
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         )}
         {!!properties.price && (
           <Text marginH-4 grey20 style={{ alignItems: "center" }}>
@@ -189,7 +189,7 @@ function Listing({
             <MaterialCommunityIcons name="clock" size={20} /> {properties.hours}
           </Text>
         )}
-      </View>
+      </Box>
     </Card>
   );
 }

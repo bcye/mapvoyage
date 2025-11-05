@@ -1,13 +1,15 @@
-import { PRIMARY_COLOR } from "@/utils/theme";
-import "@/global.css";
+import { Box } from "@/components/ui/box";
+import { Button, ButtonText } from "@/components/ui/button";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
+import { Heading } from "@/components/ui/heading";
+import { Text } from "@/components/ui/text";
+import "@/global.css";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { init as initSentry } from "@sentry/react-native";
 import { Stack } from "expo-router";
 import { hide, preventAutoHideAsync } from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import { Linking } from "react-native";
-import { Button, Text, View } from "react-native-ui-lib";
 
 // See https://docs.expo.dev/versions/latest/sdk/splash-screen/#usage for explanation on how this works
 preventAutoHideAsync();
@@ -65,13 +67,12 @@ export default function Layout() {
   if (!privacyConsent) {
     return (
       <GluestackUIProvider mode="light">
-        <View
+        <Box
           onLayout={hide}
-          padding-32
-          style={{ justifyContent: "center", height: "100%" }}
+          className="flex-1  justify-center items-center p-8"
         >
-          <Text text40BL>Welcome to Mapvoyage</Text>
-          <Text text70 marginT-8>
+          <Heading size="2xl">Welcome to Mapvoyage</Heading>
+          <Text className="m-4">
             By using this app you agree to our{" "}
             <Text
               underline
@@ -83,41 +84,41 @@ export default function Layout() {
             </Text>
             . Data is only processed by European cloud providers.
           </Text>
-          <Text text70 marginT-8>
+          <Text className="m-4">
             If you allow for bug reporting, they will be processed on European
             servers by Sentry, an American company.
           </Text>
           <Button
-            label="Allow Error Reports & Continue"
-            backgroundColor={PRIMARY_COLOR}
-            marginT-16
+            className="mt-8"
             onPress={() => {
               setPrivacyConsent(true);
               setSentryConsent(true);
               AsyncStorage.setItem("privacyConsent", "1");
               AsyncStorage.setItem("sentryConsent", "1");
             }}
-          />
+          >
+            <ButtonText>Allow Error Reports & Continue</ButtonText>
+          </Button>
           <Button
-            label="Disallow Error Reports & Continue"
-            backgroundColor={PRIMARY_COLOR}
-            marginT-8
+            className="mt-4"
             onPress={() => {
               setPrivacyConsent(true);
               setSentryConsent(false);
               AsyncStorage.setItem("privacyConsent", "1");
               AsyncStorage.setItem("sentryConsent", "0");
             }}
-          />
-        </View>
+          >
+            <ButtonText>Disallow Error Reports & Continue</ButtonText>
+          </Button>
+        </Box>
       </GluestackUIProvider>
     );
   } else {
     return (
       <GluestackUIProvider mode="light">
-        <View onLayout={hide} style={{ flex: 1 }}>
+        <Box onLayout={hide} className="flex-1">
           <Stack screenOptions={{ headerShown: false }} />
-        </View>
+        </Box>
       </GluestackUIProvider>
     );
   }

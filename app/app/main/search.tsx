@@ -11,7 +11,6 @@ import {
   UseSearchBoxProps,
 } from "react-instantsearch-core";
 import { FlatList, TextInput } from "react-native";
-import { View } from "react-native-ui-lib";
 
 // See:
 // https://www.algolia.com/doc/guides/building-search-ui/going-further/native/react

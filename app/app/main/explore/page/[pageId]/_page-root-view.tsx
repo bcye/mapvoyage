@@ -1,3 +1,7 @@
+import { Box } from "@/components/ui/box";
+import { Card } from "@/components/ui/card";
+import { Heading } from "@/components/ui/heading/index";
+import { Text } from "@/components/ui/text";
 import { useIsFullscreen } from "@/hooks/use-is-fullscreen";
 import { getCityAtom } from "@/utils/bookmarks";
 import { MapMarker, MarkerType, useMapStore } from "@/utils/store";
@@ -9,7 +13,6 @@ import { useAtomValue } from "jotai/react";
 import { filter, map, split, splitEvery } from "ramda";
 import { useEffect } from "react";
 import { ScrollView } from "react-native";
-import { Card, SkeletonView, Text, View } from "react-native-ui-lib";
 
 function PageContent({
   pageQuery,
@@ -50,16 +53,13 @@ function PageContent({
 
   return map(
     ([item1, item2]) => (
-      <View
-        flex
-        row
-        gap-8
-        marginB-8
+      <Box
+        className="flex-1 flex-row gap-2 mb-2"
         key={item1.properties.title + item2?.properties.title}
       >
         <Infocard title={item1.properties.title} pageId={id!} />
         {item2 && <Infocard title={item2.properties.title} pageId={id!} />}
-      </View>
+      </Box>
     ),
     splitEvery(
       2,
@@ -78,33 +78,26 @@ export default function PageRootView({
   const isFullscreen = useIsFullscreen();
 
   return (
-    <View padding-8 flex>
+    <Box className="p-2 flex-1">
       <Stack.Screen
         options={{ title: pageQuery.data?.properties.title ?? "Loading" }}
       />
-      <SkeletonView
-        template={SkeletonView.templates.LIST_ITEM}
-        showContent={pageQuery.isSuccess}
-        renderContent={() =>
-          pageQuery.error ? (
-            <Text color="red" text60>
-              A network error occured and the place information could not be
-              loaded.
-            </Text>
-          ) : pageQuery.data && id ? (
-            !isFullscreen ? (
-              <BottomSheetScrollView>
-                <PageContent id={id} pageQuery={pageQuery} />
-              </BottomSheetScrollView>
-            ) : (
-              <ScrollView>
-                <PageContent id={id} pageQuery={pageQuery} />
-              </ScrollView>
-            )
-          ) : null
-        }
-      />
-    </View>
+      {pageQuery.error ? (
+        <Text className="text-sm color-red-700">
+          A network error occured and the place information could not be loaded.
+        </Text>
+      ) : pageQuery.data && id ? (
+        !isFullscreen ? (
+          <BottomSheetScrollView>
+            <PageContent id={id} pageQuery={pageQuery} />
+          </BottomSheetScrollView>
+        ) : (
+          <ScrollView>
+            <PageContent id={id} pageQuery={pageQuery} />
+          </ScrollView>
+        )
+      ) : null}
+    </Box>
   );
 }
 
@@ -119,16 +112,16 @@ export default function PageRootView({
  */
 function Infocard({ title, pageId }: { title: string; pageId: string }) {
   return (
-    <Link
-      asChild
-      href={{
-        pathname: "/main/explore/page/[pageId]/section/[title]",
-        params: { pageId, title },
-      }}
-    >
-      <Card flex padding-12 height={48}>
-        <Card.Section content={[{ text: title, text60: true, grey10: true }]} />
-      </Card>
-    </Link>
+    <Card className="flex-1 py-2 px-3">
+      <Link
+        asChild
+        href={{
+          pathname: "/main/explore/page/[pageId]/section/[title]",
+          params: { pageId, title },
+        }}
+      >
+        <Heading size="xl">{title}</Heading>
+      </Link>
+    </Card>
   );
 }

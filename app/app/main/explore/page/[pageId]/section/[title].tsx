@@ -1,4 +1,5 @@
 import WikiContent from "@/components/render-node";
+import { Box } from "@/components/ui/box";
 import { useIsFullscreen } from "@/hooks/use-is-fullscreen";
 import { useScrollRef } from "@/hooks/use-scroll-ref";
 import useWikiQuery from "@/hooks/use-wiki-query";
@@ -10,7 +11,6 @@ import { useAtom } from "jotai/react";
 import { append, assoc, dissoc } from "ramda";
 import { useCallback } from "react";
 import { ScrollView } from "react-native";
-import { SkeletonView, View } from "react-native-ui-lib";
 import { toast } from "sonner-native";
 
 /**
@@ -82,33 +82,27 @@ export default function Section() {
   if (!section) return null;
 
   return (
-    <View padding-8 flex>
+    <Box className="flex-1 p-2">
       <Stack.Screen options={{ title: section.properties.title }} />
-      <SkeletonView
-        template={SkeletonView.templates.TEXT_CONTENT}
-        showContent={wikiQuery.isSuccess}
-        renderContent={() =>
-          !isFullscreen ? (
-            <BottomSheetScrollView ref={ref}>
-              <WikiContent
-                node={section}
-                root={true}
-                isBookmarked={isBookmarked}
-                toggleBookmarked={toggleBookmarked}
-              />
-            </BottomSheetScrollView>
-          ) : (
-            <ScrollView>
-              <WikiContent
-                node={section}
-                root={true}
-                isBookmarked={isBookmarked}
-                toggleBookmarked={toggleBookmarked}
-              />
-            </ScrollView>
-          )
-        }
-      />
-    </View>
+      {!isFullscreen ? (
+        <BottomSheetScrollView ref={ref}>
+          <WikiContent
+            node={section}
+            root={true}
+            isBookmarked={isBookmarked}
+            toggleBookmarked={toggleBookmarked}
+          />
+        </BottomSheetScrollView>
+      ) : (
+        <ScrollView>
+          <WikiContent
+            node={section}
+            root={true}
+            isBookmarked={isBookmarked}
+            toggleBookmarked={toggleBookmarked}
+          />
+        </ScrollView>
+      )}
+    </Box>
   );
 }

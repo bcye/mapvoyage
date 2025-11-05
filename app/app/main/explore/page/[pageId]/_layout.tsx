@@ -1,3 +1,4 @@
+import { Pressable } from "@/components/ui/pressable";
 import { FullScreenProvider } from "@/hooks/use-is-fullscreen";
 import useMoveTo, { CameraRefContext } from "@/hooks/use-move-to";
 import { ScrollRefProvider, useBottomSheetRef } from "@/hooks/use-scroll-ref";
@@ -25,7 +26,7 @@ import { Stack, useRouter } from "expo-router";
 import { MutableRefObject, useRef, useState } from "react";
 import { Dimensions, StyleSheet, Text } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Card, TouchableOpacity } from "react-native-ui-lib";
+import { Card } from "@/components/ui/card";
 
 /**
  * Root layout component that wraps the application with data providers and renders the main interface.
@@ -39,13 +40,13 @@ export default function RootLayout() {
     <Stack
       screenOptions={{
         headerRight: () => (
-          <TouchableOpacity onPressIn={() => setFullscreen(!fullscreen)}>
+          <Pressable onPressIn={() => setFullscreen(!fullscreen)}>
             <MaterialCommunityIcons
               name={fullscreen ? "fullscreen-exit" : "fullscreen"}
               size={28}
               color="inherit"
             />
-          </TouchableOpacity>
+          </Pressable>
         ),
       }}
     />
@@ -133,18 +134,18 @@ function MapLayout({ children }: { children: React.ReactNode }) {
           {markers.map((m, idx) =>
             m.long && m.lat ? (
               <MarkerView coordinate={[m.long, m.lat]} key={m.id}>
-                <TouchableOpacity
+                <Pressable
                   onPressIn={() => {
                     router.setParams({ scrollTo: `${m.lat},${m.long}` });
                     router.navigate(m.link);
                   }}
-                  style={{ position: "relative", width: 22, zIndex: 1000 }}
+                  className="relative w-6 z-50"
                 >
                   <Fontisto
                     name="map-marker"
                     size={28}
                     color={m.type == "normal" ? "red" : PRIMARY_COLOR}
-                    style={{ zIndex: 1 }}
+                    style={{ zIndex: 10 }}
                   />
                   <Text
                     style={{
@@ -156,19 +157,19 @@ function MapLayout({ children }: { children: React.ReactNode }) {
                       color: "white",
                       fontSize: 12,
                       fontWeight: "bold",
-                      zIndex: 2,
+                      zIndex: 20,
                     }}
                   >
                     {idx + 1}
                   </Text>
-                </TouchableOpacity>
+                </Pressable>
               </MarkerView>
             ) : null,
           )}
         </MapView>
         <GeolocateControl
           position={{
-            bottom: sheetHeight + 4,
+            top: 13,
             right: 13,
           }}
         />
@@ -206,18 +207,17 @@ function MapControl({
 }) {
   return (
     <Card
-      width={32}
-      height={32}
-      borderRadius={8}
+      className="w-12 h-12 rounded-lg absolute flex-1 p-0"
       style={{
-        position: "absolute",
         ...position,
-        justifyContent: "center",
-        alignItems: "center",
       }}
-      onPress={onPress}
     >
-      <MaterialCommunityIcons name={icon} size={20} color={color} />
+      <Pressable
+        onPress={onPress}
+        className="justify-center items-center flex-1"
+      >
+        <MaterialCommunityIcons name={icon} size={24} color={color} />
+      </Pressable>
     </Card>
   );
 }

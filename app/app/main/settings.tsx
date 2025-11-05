@@ -1,5 +1,5 @@
-import { View } from "react-native-ui-lib";
+import { Box } from "@/components/ui/box";
 
 export default function Settings() {
-  return <View />;
+  return <Box />;
 }
